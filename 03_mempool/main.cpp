@@ -7,7 +7,7 @@
 #include <MemoryPool.h>
 
 static const size_t CHUNK_SIZE = sizeof(uint64_t); // each allocated entry will be 8 bytes
-static const size_t NUM_CHUNKS = 10; // there will be memory available for 50 chunks at a time
+static const size_t NUM_CHUNKS = 10; // there will be memory available for 10 chunks at a time
 
 int main(void)
 {
