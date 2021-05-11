@@ -1,0 +1,7 @@
+<Actor type="TreasureChest">
+
+    <AmmoPickup amount="10"/>
+    <HealthPickup amount="20"/>
+
+</Actor>
+

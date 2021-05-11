@@ -4,10 +4,11 @@
 #include <cstdint>
 #include <map>
 
+#include <ComponentTypes.h>
+#include <xml.h>
+
 // forward declaration
 class ActorFactory;
-
-typedef uint64_t ActorId;
 
 class Actor
 {
@@ -20,7 +21,7 @@ public:
     explicit Actor( ActorId id );
     ~Actor();
 
-    bool Init( TiXmlElement* pData );
+    bool Init( XMLElement* pData );
     void PostInit();
     void Destroy();
 
@@ -36,7 +37,7 @@ public:
             StrongActorComponentPtr pBase( componentIter->second );
             // cast to subclass version
             std::shared_ptr<ComponentType> pSub(
-                std::static_ptr_cast<ComponentType>( pBase ));
+                std::static_pointer_cast<ComponentType>( pBase ));
             // convert strong ptr to weak ptr
             std::weak_ptr<ComponentType> pWeakSub( pSub );
             return pWeakSub;
@@ -45,9 +46,12 @@ public:
         }
     }
 
+    void PrintComponents();
+
 private:
 
     ActorId m_id;
+    ActorType m_type;
     std::map<ComponentId, StrongActorComponentPtr> m_components;
 
     // only the ActorFactory should call this function

@@ -1,24 +1,37 @@
+#include <iostream>
 #include <ActorFactory.h>
+#include <AmmoPickup.h>
+#include <HealthPickup.h>
 
-StrongActorPtr ActorFactory::CreateActor(const char* actorResourceXML)
+ActorFactory::ActorFactory()
 {
-    TiXmlElement* pRoot = 
+    m_actorComponentCreators["AmmoPickup"] = AmmoPickup::Create;
+    m_actorComponentCreators["HealthPickup"] = HealthPickup::Create;
+}
+
+ActorFactory::~ActorFactory()
+{
+}
+
+StrongActorPtr ActorFactory::CreateActor( const char* actorResourceXML )
+{
+    XMLElement* pRoot = 
         XmlResourceLoader::LoadAndReturnRootXmlElement(actorResourceXML);
     if ( !pRoot ) {
-        std::cerr << __func__ << ": Failed to create actor from resource: " 
+        std::cout << __func__ << ": Failed to create actor from resource: " 
                   << actorResourceXML << std::endl;
         return StrongActorPtr();
     }
 
     StrongActorPtr pActor( new Actor( GetNextActorId() ) );
     if ( !pActor->Init( pRoot ) ) {
-        std::cerr << __func__ << ": failed to init actor "
+        std::cout << __func__ << ": failed to init actor "
                   << actorResourceXML << std::endl;
         return StrongActorPtr();
     }
 
     // loop through each child XML element and load the component
-    for ( TiXmlElement* pNode = pRoot->FirstChildElement();
+    for ( XMLElement* pNode = pRoot->FirstChildElement();
           pNode;
           pNode = pNode->NextSiblingElement())
     {
@@ -37,7 +50,7 @@ StrongActorPtr ActorFactory::CreateActor(const char* actorResourceXML)
 }
 
 StrongActorComponentPtr 
-ActorFactory::CreateComponent( TiXmlElement* pData )
+ActorFactory::CreateComponent( XMLElement* pData )
 {
     std::string name( pData->Value() );
     StrongActorComponentPtr pComponent;
@@ -48,13 +61,13 @@ ActorFactory::CreateComponent( TiXmlElement* pData )
         ActorComponentCreator creator = componentCreateIter->second;
         pComponent.reset( creator() );
     } else {
-        std::cerr << __func__ << ": failed to find ActorComponent named" 
+        std::cerr << __func__ << ": failed to find ActorComponent named " 
                   << name << std::endl;
         return StrongActorComponentPtr();
     }
 
     if ( pComponent ) {
-        if ( !pComponent->Init( pData ) ) {
+        if ( !pComponent->VInit( pData ) ) {
             std::cerr << __func__ << ": failed to init component named "
                       << name << std::endl;
             return StrongActorComponentPtr();
@@ -63,4 +76,6 @@ ActorFactory::CreateComponent( TiXmlElement* pData )
 
     return pComponent;
 }
+
+#undef DBG_PRINT
 

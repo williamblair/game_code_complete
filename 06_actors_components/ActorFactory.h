@@ -4,20 +4,18 @@
 #include <map>
 #include <memory>
 
+#include <xml.h>
+
+#include <ComponentTypes.h>
 #include <Actor.h>
 #include <ActorComponent.h>
-
-typedef ActorComponent *(*ActorComponentCreator)(void);
-typedef std::map<std::string, ActorComponentCreator> ActorComponentCreatorMap;
-
-typedef std::shared_ptr<Actor> StrongActorPtr;
-typedef std::shared_ptr<Component> StrongActorComponentPtr;
 
 class ActorFactory
 {
 public:
 
     ActorFactory();
+    ~ActorFactory();
 
     /**
      * parses the XML file indicated by actorResourceXML
@@ -29,7 +27,7 @@ private:
     ActorId m_lastActorId;
     ActorComponentCreatorMap m_actorComponentCreators;
 
-    virtual StrongActorComponentPtr CreateComponent( TiXmlElement* pData );
+    virtual StrongActorComponentPtr CreateComponent( XMLElement* pData );
     ActorId GetNextActorId() { ++m_lastActorId; return m_lastActorId; }
 };
 
