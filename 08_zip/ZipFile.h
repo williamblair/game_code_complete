@@ -3,6 +3,7 @@
 
 #include <cstdio>
 #include <memory>
+#include <map>
 #include <string>
 
 class ZipFile
@@ -45,7 +46,7 @@ private:
 
     FILE* m_pFile;
     char* m_pDirData;
-    int   m_nEntires;
+    int   m_nEntries;
 
     // pointers to the dir entries in pDirData
     const TZipDirFileHeader** m_ppDir;
