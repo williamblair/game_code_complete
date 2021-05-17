@@ -4,10 +4,14 @@
 #include <ResCacheTypes.h>
 
 // forward declaration
+class Resource;
 class IResourceFile;
 
 class ResCache
 {
+
+    friend class ResHandle;
+
 public:
 
     ResCache( const unsigned int sizeInMb, IResourceFile* pResFile );
@@ -33,7 +37,7 @@ protected:
     unsigned int m_allocated; // total memory allocated
     
     std::shared_ptr<ResHandle> Find( Resource* pResource );
-    const void* Update( std::shared_ptr<ResHandle> pHandle );
+    void Update( std::shared_ptr<ResHandle> pHandle );
     std::shared_ptr<ResHandle> Load( Resource* pResource );
     void Free( std::shared_ptr<ResHandle> pGonner );
     

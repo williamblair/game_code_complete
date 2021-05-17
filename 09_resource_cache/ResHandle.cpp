@@ -1,9 +1,11 @@
 #include <ResHandle.h>
+#include <ResCache.h>
 
 ResHandle::ResHandle( Resource& resource,
                       char* pBuffer,
                       unsigned int size,
-                      ResCache* pResCache )
+                      ResCache* pResCache ) :
+    m_resource( resource )
 {
     m_pBuffer = pBuffer;
     m_size = size;

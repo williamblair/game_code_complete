@@ -1,6 +1,7 @@
 #ifndef RES_HANDLE_H_INCLUDED
 #define RES_HANDLE_H_INCLUDED
 
+#include <memory>
 #include <Resource.h>
 
 // forward declaration

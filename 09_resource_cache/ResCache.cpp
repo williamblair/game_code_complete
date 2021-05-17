@@ -1,5 +1,9 @@
+#include <iostream>
 #include <ResCache.h>
 #include <DefaultResourceLoader.h>
+#include <IResourceFile.h>
+#include <Resource.h>
+#include <WildcardMatch.h>
 
 ResCache::ResCache( const unsigned int sizeInMb, IResourceFile* pResFile )
 {
@@ -15,7 +19,7 @@ ResCache::~ResCache()
         FreeOneResource();
     }
     
-    delete m_file;
+    delete m_pFile;
 }
 
 
@@ -30,6 +34,11 @@ bool ResCache::Init()
     }
     
     return retVal;
+}
+
+void ResCache::RegisterLoader( std::shared_ptr<IResourceLoader> pLoader )
+{
+    m_resourceLoaders.push_front( pLoader );
 }
 
 std::shared_ptr<ResHandle> ResCache::GetHandle( Resource* pResource )
@@ -96,7 +105,6 @@ std::shared_ptr<ResHandle> ResCache::Load( Resource* pResource )
                                                              pBuffer,
                                                              rawSize,
                                                              this ) );
-        ))
     }
     else
     {
@@ -129,9 +137,88 @@ std::shared_ptr<ResHandle> ResCache::Load( Resource* pResource )
     
     if ( !pLoader )
     {
-        std::cout << __file__ << ": pLoader is null" << std::endl;
+        std::cout << __FILE__ << ": pLoader is null" << std::endl;
         return std::shared_ptr<ResHandle>();
     }
     return pHandle;
+}
+
+void ResCache::Free( std::shared_ptr<ResHandle> pGonner )
+{
+    m_lru.remove( pGonner );
+    m_resources.erase( pGonner->m_resource.m_name );
+
+    // resource might still be in use by seomthing, so the cache
+    // can't actually count the memory freed until the ResHandle
+    // pointing to it is destroyed
+}
+
+std::shared_ptr<ResHandle> ResCache::Find( Resource* pResource )
+{
+    ResHandleMap::iterator i = m_resources.find( pResource->m_name );
+    if ( i == m_resources.end() ) {
+        return std::shared_ptr<ResHandle>();
+    }
+
+    return i->second;
+}
+
+void ResCache::Update( std::shared_ptr<ResHandle> pHandle )
+{
+    // make the resource the front of the most recently used list
+    m_lru.remove( pHandle );
+    m_lru.push_front( pHandle );
+}
+
+bool ResCache::MakeRoom( unsigned int size )
+{
+    if ( size > m_cacheSize )
+    {
+        return false;
+    }
+
+    // remove some not-recently used entries from the cache to try and free up
+    // space
+    while ( size > ( m_cacheSize - m_allocated ) )
+    {
+        // the cache is empty and there's still not enough room
+        if ( m_lru.empty() ) {
+            return false;
+        }
+        FreeOneResource();
+    }
+
+    return true;
+}
+
+char* ResCache::Allocate( unsigned int size )
+{
+    if ( !MakeRoom( size ) )
+    {
+        return nullptr;
+    }
+
+    char* mem = new char[size];
+    if ( mem ) {
+        m_allocated += size;
+    }
+
+    return mem;
+}
+
+void ResCache::FreeOneResource()
+{
+    ResHandleList::iterator gonner = m_lru.end();
+    --gonner;
+
+    std::shared_ptr<ResHandle> handle = *gonner;
+
+    m_lru.pop_back();
+    m_resources.erase( handle->m_resource.m_name );
+}
+
+void ResCache::MemoryHasBeenFreed( unsigned int size )
+{
+    m_allocated -= size;
 }
 
