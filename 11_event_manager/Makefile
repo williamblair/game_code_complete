@@ -3,7 +3,7 @@ CFLAGS = -std=c++17 -g
 INCDIRS = -I./
 LIBDIRS = 
 LIBS = 
-SOURCES = main.cpp
+SOURCES = main.cpp EventData.cpp EventManager.cpp
 TARGET = main
 
 all:

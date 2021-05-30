@@ -1,6 +1,13 @@
 #ifndef EVENT_MANAGER_H_INCLUDED
 #define EVENT_MANAGER_H_INCLUDED
 
+#include <list>
+#include <map>
+#include <string>
+
+#include <EventData.h>
+
+
 class IEventManager
 {
 public:
@@ -55,7 +62,7 @@ public:
     virtual bool VTriggerEvent( const IEventDataPtr& pEvent ) const;
     virtual bool VQueueEvent( const IEventDataPtr& pEvent );
     virtual bool VAbortEvent( const EventType& type, bool allOfType = false );
-    virtual bool VTickUpdate( unsigned long maxMillis = kINFINITE ) = 0;
+    virtual bool VTickUpdate( unsigned long maxMillis = kINFINITE );
 private:
 
     typedef std::list<EventListenerDelegate> EventListenerList;
