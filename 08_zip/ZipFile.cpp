@@ -93,7 +93,7 @@ bool ZipFile::Init( const std::string& zipFileName )
     End();
     m_pFile = fopen( zipFileName.c_str(), "rb" );
     if ( !m_pFile ) {
-        printf( "Failed to open zip file: %s\n", zipFileName );
+        printf( "Failed to open zip file: %s\n", zipFileName.c_str() );
         return false;
     }
 
