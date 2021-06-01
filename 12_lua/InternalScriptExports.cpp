@@ -65,3 +65,42 @@ void ScriptExports::Unregister()
     InternalScriptExports::Destroy();
 }
 
+bool InternalScriptExports::QueueEvent( EventType type,
+                                        LuaPlus::LuaObject eventData )
+{
+    std::shared_ptr<ScriptEvent> pEvent( BuildEvent(type, eventData) );
+    if ( pEvent ) {
+        return IEventManager::GetInstance()->VQueueEvent( pEvent );
+        return true;
+    }
+    return false;
+}
+
+bool InternalScriptExports::TriggerEvent( EventType type,
+                                          LuaPlus::LuaObject eventData )
+{
+    std::shared_ptr<ScriptEvent> pEvent( BuildEvent(type, eventData) );
+    if ( pEvent ) {
+        return IEventManager::GetInstance()->VTriggerEvent( pEvent );
+    }
+    return false;
+}
+
+
+std::shared_ptr<ScriptEvent> InternalScriptExports::BuildEvent( EventType type,
+                                                               LuaPlus::LuaObject eventData )
+{
+    std::shared_ptr<ScriptEvent> pEvent( ScriptEvent::CreateEventFromScript(type) );
+    if ( !pEvent ) {
+        return std::shared_ptr<ScriptEvent>();
+    }
+ 
+    // set the data that was passed in
+    if ( !pEvent->SetEventData( eventData ) ) {
+        return std::shared_ptr<ScriptEvent>();
+    }
+
+    return pEvent;
+}
+
+
