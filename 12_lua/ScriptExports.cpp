@@ -2,7 +2,7 @@
 #include <cassert>
 #include <memory>
 #include <LuaPlus/LuaPlus.h>
-#include <InternalScriptExports.h>
+#include <ScriptExports.h>
 #include <Process.h>
 #include <Resource.h>
 #include <ResCache.h>

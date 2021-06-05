@@ -11,27 +11,33 @@ INCDIRS = -I./ \
           -I../11_event_manager
 LIBDIRS = -L$(LUAPLUS_BUILD_DIR)
 LIBS = -llua53-luaplus-static -ldl -lz
-SOURCES = main.cpp \
-          App.cpp \
-          InternalScriptExports.cpp \
-          LuaStateManager.cpp \
-          ScriptProcess.cpp \
-          ScriptEvent.cpp \
-          ScriptEventListener.cpp \
-          ScriptEventListenerMgr.cpp \
-          EvtDataScriptEventTest.cpp \
-          ../09_resource_cache/ResCache.cpp \
-          ../09_resource_cache/ResHandle.cpp \
-          ../09_resource_cache/Resource.cpp \
-          ../09_resource_cache/WildcardMatch.cpp \
-          ../09_resource_cache/ResourceZipFile.cpp \
-          ../08_zip/ZipFile.cpp \
-          ../07_coop_multitasker/ProcessManager.cpp \
-          ../07_coop_multitasker/Process.cpp \
-          ../11_event_manager/EventData.cpp \
-          ../11_event_manager/EventManager.cpp
+OBJS = main.o \
+       App.o \
+       ScriptExports.o \
+       LuaStateManager.o \
+       ScriptProcess.o \
+       ScriptEvent.o \
+       ScriptEventListener.o \
+       ScriptEventListenerMgr.o \
+       EvtDataScriptEventTest.o \
+       ../09_resource_cache/ResCache.o \
+       ../09_resource_cache/ResHandle.o \
+       ../09_resource_cache/Resource.o \
+       ../09_resource_cache/WildcardMatch.o \
+       ../09_resource_cache/ResourceZipFile.o \
+       ../08_zip/ZipFile.o \
+       ../07_coop_multitasker/ProcessManager.o \
+       ../07_coop_multitasker/Process.o \
+       ../11_event_manager/EventData.o \
+       ../11_event_manager/EventManager.o
 TARGET = main
 
-all:
-	$(CC) $(CFLAGS) $(SOURCES) -o $(TARGET) $(INCDIRS) $(LIBDIRS) $(LIBS)
+all: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET) $(LIBDIRS) $(LIBS)
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c -o $@ $< $(INCDIRS)
+
+clean:
+	rm -f $(OBJS)
 

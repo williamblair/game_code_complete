@@ -2,7 +2,7 @@
 #include <App.h>
 #include <LuaStateManager.h>
 #include <EvtDataScriptEventTest.h>
-#include <InternalScriptExports.h>
+#include <ScriptExports.h>
 
 App* g_pApp = nullptr;
 
@@ -66,7 +66,7 @@ bool App::Init()
     // Load the Lua test event handler
     LuaStateManager* pLuaMgr = LuaStateManager::GetInstance();
     assert( pLuaMgr );
-    pLuaMgr->VExecuteFile( "EvtDataScriptEvent.lua" );
+    pLuaMgr->VExecuteFile( "scripts/EvtDataScriptEvent.lua" );
 
     // Event handlers
     IEventManager* pEvtMgr = IEventManager::GetInstance();
@@ -98,7 +98,7 @@ void App::Run()
 }
 
 // Called when EvtDataScriptEventFromLua event happens;
-// event is created by Lua Script EvtDataScriptEvent.lua
+// event is created by Lua Script scripts/EvtDataScriptEvent.lua
 void App::FromLuaTestHandler( IEventDataPtr pEventData )
 {
     std::shared_ptr<EvtDataScriptEventFromLua> pCastEventData(

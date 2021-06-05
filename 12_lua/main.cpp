@@ -1,6 +1,6 @@
 #include <iostream>
 #include <App.h>
-#include <InternalScriptExports.h>
+#include <ScriptExports.h>
 #include <LuaStateManager.h>
 
 int main(void)

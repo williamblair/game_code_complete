@@ -1,5 +1,6 @@
 *.exe
 *main
 *.swp
+*.o
 thirdparty
 gamecode4
