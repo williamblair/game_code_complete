@@ -1,6 +1,7 @@
 #include <EventManager.h>
 #include <cassert>
 #include <chrono>
+#include <iomanip>
 #include <iostream>
 
 #define DBG_ASSERT( cond ) assert( cond )
@@ -105,7 +106,14 @@ bool EventManager::VQueueEvent( const IEventDataPtr& pEvent )
     if ( findIt != m_eventListeners.end() )
     {
         m_queues[m_activeQueue].push_back( pEvent );
+        std::cout << "Added event" << std::endl;
         return true;
+    }
+    else
+    {
+        std::cout << "No listeners for event w type: 0x"
+                  << std::hex << (unsigned long long)pEvent->VGetEventType()
+                  << std::dec << std::endl;
     }
     return false;
 }
@@ -171,6 +179,13 @@ bool EventManager::VTickUpdate( unsigned long maxMillis )
                 EventListenerDelegate listener = *it;
                 (*listener)( pEvent );
             }
+        }
+        else
+        {
+            std::cout << __FILE__ << ":" << __LINE__ << ": "
+                      << "failed to find event listeners for type: 0x"
+                      << std::hex << (unsigned long long)eventType << std::endl
+                      << std::dec;
         }
 
         // check if we ran out of time

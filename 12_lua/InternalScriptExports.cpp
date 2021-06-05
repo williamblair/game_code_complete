@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 #include <memory>
 #include <LuaPlus/LuaPlus.h>
 #include <InternalScriptExports.h>
@@ -7,16 +8,58 @@
 #include <ResCache.h>
 #include <App.h>
 
+ScriptEventListenerMgr* InternalScriptExports::s_pScriptEventListenerMgr = nullptr;
+
 bool InternalScriptExports::Init()
 {
-    // TODO
-    return false;
+    if ( s_pScriptEventListenerMgr == nullptr ) {
+        s_pScriptEventListenerMgr = new ScriptEventListenerMgr;
+        if ( !s_pScriptEventListenerMgr ) { 
+            std::cout << __FILE__ << ":" << __LINE__ << ": "
+                      << "Failed to allocate script event listener manager"
+                      << std::endl;
+            return false;
+        }
+    }
+
+    return true;
 }
 
 bool InternalScriptExports::Destroy()
 {
-    // TODO
-    return false;
+    if ( s_pScriptEventListenerMgr ) {
+        delete s_pScriptEventListenerMgr;
+    }
+    return true;
+}
+
+unsigned long
+InternalScriptExports::RegisterEventListener( EventType eventType,
+                                              LuaPlus::LuaObject callbackFunction )
+{
+    assert( s_pScriptEventListenerMgr );
+
+    if ( callbackFunction.IsFunction() )
+    {
+        ScriptEventListener* pListener =
+            new ScriptEventListener( eventType,
+                                     callbackFunction );
+        // save the data for later use
+        s_pScriptEventListenerMgr->AddListener( pListener );
+        IEventManager::GetInstance()->VAddListener( pListener->GetDelegate(), eventType );
+        
+        std::cout << "CPP added listener delegate" << std::endl;
+
+        // convert the pointer to use as a handle
+        unsigned long handle = reinterpret_cast<unsigned long>( pListener );
+        return handle;
+    }
+
+    std::cout << __FILE__ << ":" << __LINE__ << ": "
+              << "Attempting to register script event listener while manager null"
+              << std::endl;
+
+    return 0;
 }
 
 void InternalScriptExports::AttachScriptProcess( 
@@ -47,22 +90,6 @@ InternalScriptExports::LoadAndExecuteScriptResource(
         return true;
     }
     return false;
-}
-
-void ScriptExports::Register()
-{
-    LuaPlus::LuaObject globals = LuaStateManager::GetInstance()->GetGlobalVars();
-
-    InternalScriptExports::Init();
-
-    globals.RegisterDirect(
-        "LoadAndExecuteScriptResource",
-        InternalScriptExports::LoadAndExecuteScriptResource );
-}
-
-void ScriptExports::Unregister()
-{
-    InternalScriptExports::Destroy();
 }
 
 bool InternalScriptExports::QueueEvent( EventType type,
@@ -102,5 +129,36 @@ std::shared_ptr<ScriptEvent> InternalScriptExports::BuildEvent( EventType type,
 
     return pEvent;
 }
+
+namespace ScriptExports
+{
+
+void Register()
+{
+    assert( LuaStateManager::GetInstance() );
+    LuaPlus::LuaObject globals = LuaStateManager::GetInstance()->GetGlobalVars();
+
+    if ( !InternalScriptExports::Init() ) {
+        std::cout << __FILE__ << ":" << __LINE__ << ": "
+                  << "InternalScriptExports init failed" << std::endl;
+        return;
+    }
+
+    globals.RegisterDirect( "LoadAndExecuteScriptResource", &InternalScriptExports::LoadAndExecuteScriptResource );
+
+    // event system
+    globals.RegisterDirect( "RegisterEventListener", &InternalScriptExports::RegisterEventListener );
+    //globals.RegisterDirect( "RemoveEventListener", &InternalScriptExports::RemoveEventListener );
+    globals.RegisterDirect( "QueueEvent", &InternalScriptExports::QueueEvent );
+    globals.RegisterDirect( "TriggerEvent", &InternalScriptExports::TriggerEvent );
+}
+
+void Unregister()
+{
+    InternalScriptExports::Destroy();
+}
+
+} // end namespace ScriptExports
+
 
 

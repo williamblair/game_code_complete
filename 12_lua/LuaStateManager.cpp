@@ -104,7 +104,8 @@ void LuaStateManager::SetError( int errorNum )
     }
 
     // TODO - not assert; do exit or something
-    assert( false && m_lastError.c_str() );
+    std::cout << "Last error:" << m_lastError << std::endl;
+    assert( false );
 }
 
 void LuaStateManager::ClearStack()

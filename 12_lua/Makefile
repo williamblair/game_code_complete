@@ -17,6 +17,9 @@ SOURCES = main.cpp \
           LuaStateManager.cpp \
           ScriptProcess.cpp \
           ScriptEvent.cpp \
+          ScriptEventListener.cpp \
+          ScriptEventListenerMgr.cpp \
+          EvtDataScriptEventTest.cpp \
           ../09_resource_cache/ResCache.cpp \
           ../09_resource_cache/ResHandle.cpp \
           ../09_resource_cache/Resource.cpp \

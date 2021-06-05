@@ -8,11 +8,13 @@
 #include <EventData.h>
 
 // the # places quotes around the token
+// to be called in app initialization for each script event class
 #define REGISTER_SCRIPT_EVENT( eventClass, eventType ) \
     ScriptEvent::RegisterEventTypeWithScript( #eventClass, eventType ); \
     ScriptEvent::AddCreationFunction( eventType, \
                                       &eventClass::CreateEventForScript )
 
+// To be placed within the script event class declaration
 #define EXPORT_FOR_SCRIPT_EVENT( eventClass ) \
     public: \
         static ScriptEvent* CreateEventForScript() \
