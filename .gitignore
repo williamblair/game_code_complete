@@ -4,3 +4,11 @@
 *.o
 thirdparty
 gamecode4
+*.workspace
+16_3dScenes/*.mk
+16_3dScenes/*.txt
+16_3dScenes/*.project
+16_3dScenes/Debug
+16_3dScenes/Debug/*
+Makefile
+.codelite

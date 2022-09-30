@@ -6,7 +6,7 @@
 #include <Process.h>
 #include <Resource.h>
 #include <ResCache.h>
-#include <App.h>
+//#include <App.h>
 
 ScriptEventListenerMgr* InternalScriptExports::s_pScriptEventListenerMgr = nullptr;
 
