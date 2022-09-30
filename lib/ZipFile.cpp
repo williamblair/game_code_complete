@@ -7,8 +7,15 @@
 // https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=cmd
 #define _MAX_PATH 260 // windows max path equivalent
 
+#ifdef _WIN32
+#define PACKED
+#pragma pack(push,1)
+#else
+#define PACKED __attribute__((packed))
+#endif
+
 // type definitions
-struct __attribute__((packed)) ZipFile::TZipLocalHeader 
+struct PACKED ZipFile::TZipLocalHeader 
 {
     enum
     {
@@ -27,7 +34,7 @@ struct __attribute__((packed)) ZipFile::TZipLocalHeader
     uint16_t xtraLen;   // extra field follows filename
 };
 
-struct __attribute__((packed)) ZipFile::TZipDirHeader
+struct PACKED ZipFile::TZipDirHeader
 {
     enum
     {
@@ -43,7 +50,7 @@ struct __attribute__((packed)) ZipFile::TZipDirHeader
     uint16_t cmntLen;
 };
 
-struct __attribute__((packed)) ZipFile::TZipDirFileHeader
+struct PACKED ZipFile::TZipDirFileHeader
 {
     enum
     {
@@ -71,6 +78,12 @@ struct __attribute__((packed)) ZipFile::TZipDirFileHeader
     char* GetExtra() const   { return GetName() + fnameLen; }
     char* GetComment() const { return GetExtra() + xtraLen; }
 };
+
+#ifdef _WIN32
+#pragma pack(pop)
+#else
+#undef PACKED
+#endif
 
 ZipFile::ZipFile()
 {
