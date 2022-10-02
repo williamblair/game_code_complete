@@ -1,4 +1,5 @@
 #include <SceneNode.h>
+#include <AlphaSceneNode.h>
 
 SceneNode::SceneNode(
         ActorId actorId,
@@ -76,3 +77,57 @@ bool SceneNode::VIsVisible(Scene* pScene) const
     return frustum.Inside(pos, VGet()->Radius());
 }
 
+bool SceneNode::VRenderChildren(Scene* pScene)
+{
+    SceneNodeList::iterator i = m_Children.begin();
+    SceneNodeList::iterator end = m_Children.end();
+    while (i != end)
+    {
+        if ((*i)->VPreRender(pScene))
+        {
+            // you could short circuit rendering if an object fails from VPreRender
+
+            // don't render this node if you can't see it
+            if ((*i)->VIsVisible(pScene))
+            {
+                float alpha = (*i)->VGet()->m_Material.GetAlpha();
+                if (alpha >= 0.99f) {
+                    (*i)->VRender(pScene);
+                } else if (alpha >= 0.01f) {
+                    // The object isn't totally transparent
+                    AlphaSceneNode* asn = new AlphaSceneNode;
+                    assert(asn);
+                    asn->m_pNode = *i;
+                    asn->m_Concat = *pScene->GetTopMatrix();
+
+                    Vec3 worldPos(asn->m_Concat.GetPosition());
+                    Mat4x4 fromWorld = pScene->GetCamera()->VGet()->FromWorld();
+                    Vec4 screenPos = Transform(fromWorld, worldPos);
+                    asn->m_ScreenZ = screenPos.z;
+                    pScene->AddAlphaSceneNode(asn);
+                }
+            }
+
+            (*i)->VRenderChildren(pScene);
+        }
+
+        (*i)->VPostRender(pScene);
+        ++i;
+    }
+    return true;
+}
+
+bool SceneNode::VAddChild(std::shared_ptr<ISceneNode> kid)
+{
+    m_Children.push_back(kid);
+
+    // the radius of the sphere should be fixed right here
+    Vec3 kidPos = kid->VGet()->GetToWorld().GetPosition();
+    Vec3 dir = kidPos - m_Props.GetToWorld().GetPosition();
+
+    float newRadius = Mag(dir) + kid->VGet()->Radius();
+    if (newRadius > m_Props.m_Radius) {
+        m_Props.m_Radius = newRadius;
+    }
+    return true;
+}
