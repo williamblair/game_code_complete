@@ -14,6 +14,8 @@ struct Mat4x4;
 
 // globals
 extern Vec3 g_Forward;
+extern Vec3 g_Right;
+extern Vec3 g_Up;
 
 struct Vec2
 {
@@ -901,6 +903,136 @@ inline Vec2 WorldToScreenCoords(Vec3& pos, Mat4x4& viewMat, Mat4x4& projMat) {
     // 2d screen pos
     return Vec2(ndcPos.x, ndcPos.y);
 }
+
+struct Plane
+{
+    float a,b,c,d;
+
+    Plane() :
+        a(0.0f),
+        b(0.0f),
+        c(0.0f),
+        d(0.0f)
+    {}
+
+    inline void Normalize() {
+        float invMag = 1.0f/sqrtf(a*a + b*b + c*c);
+        a *= invMag;
+        b *= invMag;
+        c *= invMag;
+        d *= invMag;
+    }
+
+    // https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dxplanedotcoord
+    inline float PlaneDotCoord(const Vec3& point) const {
+        return a*point.x + b*point.y + c*point.z + d;
+    }
+
+    // normal faces away from you if you send verts in counterclockwise order
+    // https://keisan.casio.com/exec/system/1223596129
+    //inline void Init(const Vec3& p0, const Vec3& p1, const Vec3& p2) {
+    inline void Init(const Vec3& p2, const Vec3& p1, const Vec3& p0) {
+        Vec3 ab = p1-p0;
+        Vec3 ac = p2-p0;
+        Vec3 abc = Cross(ab,ac);
+        a = abc.x; b = abc.y; c = abc.z;
+        d = -(a*p0.x + b*p0.y + c*p0.z);
+        Normalize();
+    }
+    inline bool Inside(const Vec3& point, const float radius) const {
+        float fDistance; // calculate our distances to each of the planes
+        // find the distance to this plane
+        fDistance = PlaneDotCoord(point);
+        // if this distance is < -radius, we are outside
+        return (fDistance >= -radius);
+    }
+    inline bool Inside(const Vec3& point) const {
+        // Inside the plane is defined as the direction the normal is facing
+        float result = PlaneDotCoord(point);
+        return (result >= 0.0f);
+    }
+};
+
+struct Frustum
+{
+    enum Side { Near, Far, Top, Right, Bottom, Left, NumPlanes };
+
+    Plane planes[NumPlanes]; // planes of the frustum in camera space
+    Vec3 nearClip[4]; // verts of the near clip plane in camera space
+    Vec3 farClip[4]; // verts of the far clip plane in camera space
+
+    float fov; // field of view in radians
+    float aspect; // aspect ratio (width divided by height)
+    float near; // near clipping distance
+    float far; // far clipping distance
+
+    Frustum() :
+        fov(M_PI/4.0f), // default field of view is 90 degrees
+        aspect(1.0f), // default aspect ratio is 1:1
+        near(1.0f), // default near plane is 1m away from camera
+        far(1000.0f) // default far plane is 1000m away from camera
+    {}
+
+    inline bool Inside(const Vec3& point) const {
+        for (int i=0; i<NumPlanes; ++i) {
+            if (!planes[i].Inside(point)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    inline bool Inside(const Vec3& point, const float radius) const {
+        for (int i=0; i<NumPlanes; ++i) {
+            if (!planes[i].Inside(point, radius)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    inline const Plane& Get(Side side) { return planes[side]; }
+
+    inline void SetFOV(float _fov) { fov = _fov; Init(fov, aspect, near, far); }
+    inline void SetAspect(float _aspect) { aspect = _aspect; Init(fov, aspect, near, far); }
+    inline void SetNear(float _nearClip) { near = _nearClip; Init(fov, aspect, near, far); }
+    inline void SetFar(float _farClip) { far = _farClip; Init(fov, aspect, near, far); }
+    inline void Init(const float _fov, const float _aspect, const float _near, const float _far) {
+        fov = _fov;
+        aspect = _aspect;
+        near = _near;
+        far = _far;
+
+        double tanFovOver2 = tan(fov/2.0f);
+        Vec3 nearRight = (near*tanFovOver2) * aspect * g_Right;
+        Vec3 farRight = (far*tanFovOver2) * aspect * g_Right;
+        Vec3 nearUp = (near*tanFovOver2) * g_Up;
+        Vec3 farUp =  (far*tanFovOver2) * g_Up;
+
+        // points start in the upper right and go around counterclockwise
+        nearClip[0] = (near*g_Forward) - nearRight + nearUp;
+        nearClip[1] = (near*g_Forward) + nearRight + nearUp;
+        nearClip[2] = (near*g_Forward) + nearRight - nearUp;
+        nearClip[3] = (near*g_Forward) - nearRight - nearUp;
+
+        farClip[0] = (far*g_Forward) - farRight + farUp;
+        farClip[1] = (far*g_Forward) + farRight + farUp;
+        farClip[2] = (far*g_Forward) + farRight - farUp;
+        farClip[3] = (far*g_Forward) - farRight - farUp;
+
+        // now we have all eight points, time to construct 6 planes.
+        // the normal points away from you if you use counterclockwise verts
+        Vec3 origin(0.0f,0.0f,0.0f);
+        planes[Near].Init(nearClip[2],nearClip[1],nearClip[0]);
+        planes[Far].Init(farClip[0],farClip[1],farClip[2]);
+        planes[Right].Init(farClip[2],farClip[1],origin);
+        planes[Top].Init(farClip[1],farClip[0],origin);
+        planes[Left].Init(farClip[0],farClip[3],origin);
+        planes[Bottom].Init(farClip[3],farClip[2],origin);
+    }
+
+    //TODO?
+    //void Render()
+};
 
 #endif // GCCMATH_CPP_H_INCLUDED
 

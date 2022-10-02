@@ -1,0 +1,78 @@
+#include <SceneNode.h>
+
+SceneNode::SceneNode(
+        ActorId actorId,
+        std::string name,
+        RenderPass renderPass,
+        const Color& diffuseColor,
+        const Mat4x4* to,
+        const Mat4x4* from
+)
+{
+    m_pParent = nullptr;
+    m_Props.m_ActorId = actorId;
+    m_Props.m_Name = name;
+    m_Props.m_RenderPass = renderPass;
+    m_Props.m_AlphaType = AlphaOpaque;
+    VSetTransform(to, from);
+    SetRadius(0);
+    m_Props.m_Material.SetDiffuse(diffuseColor);
+}
+    
+void SceneNode::VSetTransform(const Mat4x4* toWorld, const Mat4x4* fromWorld)
+{
+    m_Props.m_ToWorld = *toWorld;
+    if (!fromWorld) {
+        m_Props.m_FromWorld = Inverse(m_Props.m_ToWorld);
+    } else {
+        m_Props.m_FromWorld = *fromWorld;
+    }
+}
+
+bool SceneNode::VOnRestore(Scene* pScene)
+{
+    SceneNodeList::iterator i = m_Children.begin();
+    SceneNodeList::iterator end = m_Children.end();
+    while (i != end)
+    {
+        (*i)->VOnRestore(pScene);
+        ++i;
+    }
+    return true;
+}
+
+bool SceneNode::VOnUpdate(Scene* pScene, uint32_t const elapsedMs)
+{
+    SceneNodeList::iterator i = m_Children.begin();
+    SceneNodeList::iterator end = m_Children.end();
+    while (i != end)
+    {
+        (*i)->VOnUpdate(pScene, elapsedMs);
+    }
+    return true;
+}
+
+bool SceneNode::VPreRender(Scene* pScene)
+{
+    pScene->PushAndSetMatrix(m_Props.m_ToWorld);
+    return true;
+}
+
+bool SceneNode::VPostRender(Scene* pScene)
+{
+    pScene->PopMatrix();
+    return true;
+}
+
+bool SceneNode::VIsVisible(Scene* pScene) const
+{
+    // transform the location of this node into the camera space
+    // of the camera attached to the scene
+    Mat4x4 toWorld, fromWorld;
+    pScene->GetCamera()->VGet()->Transform(&toWorld, &fromWorld);
+    Vec3 pos = VGet()->GetToWorld().GetPosition();
+    pos = Transform(fromWorld, pos);
+    Frustum const& frustum = pScene->GetCamera()->GetFrustum();
+    return frustum.Inside(pos, VGet()->Radius());
+}
+

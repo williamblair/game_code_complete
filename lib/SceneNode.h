@@ -1,36 +1,33 @@
-#include <memory>
+#ifndef SCENE_NODE_H_INCLUDED
+#define SCENE_NODE_H_INCLUDED
+
 #include <vector>
+#include <memory>
+#include <string>
 
 #include <ISceneNode.h>
+#include <ComponentTypes.h>
+#include <Color.h>
+#include <RenderPass.h>
 #include <SceneNodeProperties.h>
 
 typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodeList;
 
 class SceneNode : public ISceneNode
 {
-
 friend class Scene;
 
 public:
 
     SceneNode(
-            ActorId actorId,
-            std::string name,
-            RenderPass renderPass,
-            const Color& diffuseColor,
-            const Mat4x4* to,
-            const Mat4x4* from = nullptr)
-    {
-        m_pParent = nullptr;
-        m_Props.m_ActorId = actorId;
-        m_Props.m_Name = name;
-        m_Props.m_RenderPass = renderPass;
-        m_Props.m_AlphaType = AlphaOpaque;
-        VSetTransform(to, from);
-        SetRadius(0);
-        m_Props.m_Material.SetDiffuse(diffuseColor);
-    }
-    
+        ActorId actorId,
+        std::string name,
+        RenderPass renderPass,
+        const Color& diffuseColor,
+        const Mat4x4* to,
+        const Mat4x4* from = nullptr
+    );
+
     virtual ~SceneNode();
     virtual const SceneNodeProperties* const VGet() const { return &m_Props; }
     virtual void VSetTransform(
@@ -62,9 +59,9 @@ public:
     void SetMaterial(const Material& mat) { m_Props.m_Material = mat; }
 
 protected:
-
     SceneNodeList m_Children;
     SceneNode* m_pParent;
     SceneNodeProperties m_Props;
-
 };
+
+#endif // SCENE_NODE_H_INCLUDED

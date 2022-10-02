@@ -12,3 +12,5 @@ gamecode4
 16_3dScenes/Debug/*
 Makefile
 .codelite
+*.obj
+.vscode
