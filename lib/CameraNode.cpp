@@ -22,9 +22,11 @@ bool CameraNode::VOnRestore(Scene* pScene)
     //TODO
     //m_Frustum.SetAspect(DXUTGetWindowWidth()) / (float)DXUTGetWindowHeight());
     m_Projection = Perspective(m_Frustum.fov, m_Frustum.aspect, m_Frustum.near, m_Frustum.far);
+    //pScene->GetRenderer()->VSetProjectionTransform(&m_Projection);
+    return true;
 }
 
-bool CameraNode::SetView(Scene* pScene)
+bool CameraNode::SetViewTransform(Scene* pScene)
 {
     // If there is a target, make sure the camera is
     // rigidly attaced right behind the target

@@ -1,4 +1,6 @@
+#include <cassert>
 #include "SceneNode.h"
+#include "CameraNode.h"
 #include "Scene.h"
 #include "AlphaSceneNode.h"
 
@@ -20,6 +22,9 @@ SceneNode::SceneNode(
     SetRadius(0);
     m_Props.m_Material.SetDiffuse(diffuseColor);
 }
+
+SceneNode::~SceneNode()
+{}
     
 void SceneNode::VSetTransform(const Mat4x4* toWorld, const Mat4x4* fromWorld)
 {
@@ -66,7 +71,7 @@ bool SceneNode::VPostRender(Scene* pScene)
     return true;
 }
 
-bool SceneNode::VIsVisible(Scene* pScene) const
+bool SceneNode::VIsVisible(Scene* pScene)
 {
     // transform the location of this node into the camera space
     // of the camera attached to the scene
@@ -102,8 +107,9 @@ bool SceneNode::VRenderChildren(Scene* pScene)
                     asn->m_Concat = *pScene->GetTopMatrix();
 
                     Vec3 worldPos(asn->m_Concat.GetPosition());
-                    Mat4x4 fromWorld = pScene->GetCamera()->VGet()->FromWorld();
-                    Vec4 screenPos = Transform(fromWorld, worldPos);
+                    Vec4 worldPos4(worldPos.x,worldPos.y,worldPos.z,1.0f);
+                    Mat4x4 fromWorld = pScene->GetCamera()->VGet()->GetFromWorld();
+                    Vec4 screenPos = Transform(fromWorld, worldPos4);
                     asn->m_ScreenZ = screenPos.z;
                     pScene->AddAlphaSceneNode(asn);
                 }
@@ -132,3 +138,31 @@ bool SceneNode::VAddChild(std::shared_ptr<ISceneNode> kid)
     }
     return true;
 }
+
+bool SceneNode::VRemoveChild(ActorId id)
+{
+    SceneNodeList::iterator i = m_Children.begin();
+    while (i != m_Children.end())
+    {
+        if ((*i)->VGet()->GetActorId() != INVALID_ACTOR_ID &&
+            (*i)->VGet()->GetActorId() == id)
+        {
+            i = m_Children.erase(i); // this can be expensive for vectors...
+            return true;
+        }
+        ++i;
+    }
+    return false;
+}
+
+bool SceneNode::VOnLostDevice(Scene* pScene)
+{
+    SceneNodeList::iterator i = m_Children.begin();
+    while (i != m_Children.end())
+    {
+        (*i)->VOnLostDevice(pScene);
+        ++i;
+    }
+    return true;
+}
+

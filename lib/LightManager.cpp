@@ -2,6 +2,12 @@
 
 #include "LightManager.h"
 
+LightManager::LightManager()
+{}
+
+LightManager::~LightManager()
+{}
+
 void LightManager::CalcLighting(Scene* pScene)
 {
     //TODO

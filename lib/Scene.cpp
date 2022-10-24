@@ -2,6 +2,8 @@
 #include "SceneNode.h"
 #include "GCCTime.h"
 #include "RootNode.h"
+#include "CameraNode.h"
+#include "LightManager.h"
 
 Scene::Scene()
 {

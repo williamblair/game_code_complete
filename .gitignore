@@ -10,7 +10,7 @@ gamecode4
 16_3dScenes/*.project
 16_3dScenes/Debug
 16_3dScenes/Debug/*
-Makefile
+./Makefile
 .codelite
 *.obj
 .vscode

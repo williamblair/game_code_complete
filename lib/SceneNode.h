@@ -38,13 +38,15 @@ public:
     virtual bool VOnRestore(Scene* pScene);
     virtual bool VOnUpdate(Scene* pScene, uint32_t const elapsedMs);
     virtual bool VPreRender(Scene* pScene);
-    virtual bool VIsVisible(Scene* pScene) const;
+    virtual bool VIsVisible(Scene* pScene);
     virtual bool VRender(Scene* pScene) { return true; }
     virtual bool VRenderChildren(Scene* pScene);
     virtual bool VPostRender(Scene* pScene);
     
     virtual bool VAddChild(std::shared_ptr<ISceneNode> kid);
     virtual bool VRemoveChild(ActorId id);
+
+    virtual bool VOnLostDevice(Scene* pScene);
     
     void SetAlpha(float alpha) { m_Props.SetAlpha(alpha); }
     float GetAlpha() const { return m_Props.Alpha(); }

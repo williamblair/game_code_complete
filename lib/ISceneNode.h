@@ -27,7 +27,7 @@ public:
     virtual bool VOnRestore(Scene* pScene) = 0;
     
     virtual bool VPreRender(Scene* pScene) = 0;
-    virtual bool VIsVisible(Scene* pScene) const = 0;
+    virtual bool VIsVisible(Scene* pScene) = 0;
     virtual bool VRender(Scene* pScene) = 0;
     virtual bool VRenderChildren(Scene* pScene) = 0;
     virtual bool VPostRender(Scene* pScene) = 0;

@@ -18,6 +18,9 @@ class LightManager
     friend class Scene;
 public:
 
+    LightManager();
+    ~LightManager();
+
     int GetLightCount(const SceneNode* pNode) { (void)pNode; return m_Lights.size(); }
     const Vec4* GetLightAmbient(const SceneNode* pNode) { (void)pNode; return &m_vLightAmbient; }
     const Vec4* GetLightDirection(const SceneNode* pNode) { (void)pNode; return m_vLightDir; }

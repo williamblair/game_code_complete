@@ -19,7 +19,6 @@ public:
     void ClearTarget() { m_pTarget = std::shared_ptr<SceneNode>(); }
 
     Mat4x4 GetWorldViewProjection(Scene* pScene);
-    bool SetView(Scene* pScene);
 
     Mat4x4 GetProjection() { return m_Projection; }
     Mat4x4 GetView() { return m_View; }
