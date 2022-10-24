@@ -3,12 +3,13 @@
 
 #include <map>
 #include <memory>
+#include <stack>
 
-#include <ISceneNode.h>
-#include <IRenderer.h>
-#include <ComponentTypes.h>
-#include <MatrixStack.h>
-#include <AlphaSceneNode.h>
+#include "ISceneNode.h"
+#include "IRenderer.h"
+#include "ComponentTypes.h"
+#include "MatrixStack.h"
+#include "AlphaSceneNode.h"
 
 typedef std::map<ActorId,std::shared_ptr<ISceneNode>> SceneActorMap;
 
@@ -39,11 +40,13 @@ public:
 
     void PushAndSetMatrix(const Mat4x4& toWorld);
     void PopMatrix();
-    const Mat4x4* GetTopMatrix();
+    const Mat4x4* GetTopMatrix() { return m_MatrixStack->GetTop(); }
 
     LightManager* GetLightManager() { return m_LightManager; }
 
     void AddAlphaSceneNode(AlphaSceneNode* asn) { m_AlphaSceneNodes.push_back(asn); }
+
+    void RenerAlphaPass();
 
 protected:
     std::shared_ptr<SceneNode> m_Root;

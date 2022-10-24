@@ -29,7 +29,7 @@ public:
     RenderPass GetRenderPass() const { return m_RenderPass; }
     float Radius() const { return m_Radius; }
     
-    const Material& GetMaterial() const { return m_Material; }
+    Material& GetMaterial() { return m_Material; }
 
 protected:
     ActorId m_ActorId;

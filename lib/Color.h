@@ -21,4 +21,7 @@ struct Color
     }
 };
 
+extern Color g_White;
+extern Color g_Black;
+
 #endif // COLOR_H_INCLUDED

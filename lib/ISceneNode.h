@@ -18,7 +18,7 @@ class ISceneNode
 {
 public:
 
-    virtual const SceneNodeProperties* const VGet() = 0;
+    virtual SceneNodeProperties* VGet() = 0;
     virtual void VSetTransform(
         const Mat4x4* toWorld,
         const Mat4x4* fromWorld = nullptr

@@ -19,10 +19,10 @@ public:
     }
     
     void SetAmbient(const Color& color) { m_Ambient = color; }
-    const Color GetAmbient() { return m_Ambient; }
+    Color GetAmbient() { return m_Ambient; }
     
     void SetDiffuse(const Color& color) { m_Diffuse = color; }
-    const Color GetDiffuse() { return m_Diffuse; }
+    Color GetDiffuse() { return m_Diffuse; }
     
     void SetSpecular(const Color& color, const float power) {
         m_Specular = color; m_Power = power;

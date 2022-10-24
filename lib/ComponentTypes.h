@@ -11,6 +11,8 @@ class Actor;
 class ActorComponent;
 
 typedef uint64_t ActorId;
+#define INVALID_ACTOR_ID 0xFFFFFFFFFFFFFFFF
+
 typedef std::string ActorType;
 
 typedef ActorComponent *(*ActorComponentCreator)(void);

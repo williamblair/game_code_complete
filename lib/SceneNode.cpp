@@ -1,5 +1,6 @@
-#include <SceneNode.h>
-#include <AlphaSceneNode.h>
+#include "SceneNode.h"
+#include "Scene.h"
+#include "AlphaSceneNode.h"
 
 SceneNode::SceneNode(
         ActorId actorId,

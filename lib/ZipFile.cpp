@@ -1,6 +1,7 @@
 #include <cstring>
 #include <cstdint>
 #include <algorithm>
+#include <cctype> // std::tolower
 #include <zlib.h>
 #include <ZipFile.h>
 

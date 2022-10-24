@@ -5,11 +5,11 @@
 #include <memory>
 #include <string>
 
-#include <ISceneNode.h>
-#include <ComponentTypes.h>
-#include <Color.h>
-#include <RenderPass.h>
-#include <SceneNodeProperties.h>
+#include "ISceneNode.h"
+#include "ComponentTypes.h"
+#include "Color.h"
+#include "RenderPass.h"
+#include "SceneNodeProperties.h"
 
 typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodeList;
 
@@ -29,7 +29,7 @@ public:
     );
 
     virtual ~SceneNode();
-    virtual const SceneNodeProperties* const VGet() const { return &m_Props; }
+    virtual SceneNodeProperties* VGet() { return &m_Props; }
     virtual void VSetTransform(
         const Mat4x4* toWorld,
         const Mat4x4* fromWorld = nullptr

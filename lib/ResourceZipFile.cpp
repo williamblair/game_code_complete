@@ -1,4 +1,4 @@
-#include <optional>
+//#include <optional>
 #include <memory>
 #include <ResourceZipFile.h>
 
@@ -29,10 +29,11 @@ int ResourceZipFile::VGetRawResourceSize( const Resource& r )
 int ResourceZipFile::VGetRawResource( const Resource& r, char* buffer )
 {
     int size = 0;
-    std::optional<int> resNum = m_pZipFile->Find( r.m_name.c_str() );
-    if ( resNum.has_value() ) {
-        size = m_pZipFile->GetFileLen( *resNum );
-        m_pZipFile->ReadFile( *resNum, buffer );
+    //std::optional<int> resNum = m_pZipFile->Find( r.m_name.c_str() );
+    int resNum = m_pZipFile->Find( r.m_name.c_str() );
+    if ( resNum != -1 ) {
+        size = m_pZipFile->GetFileLen( resNum );
+        m_pZipFile->ReadFile( resNum, buffer );
     }
     return size;
 }
