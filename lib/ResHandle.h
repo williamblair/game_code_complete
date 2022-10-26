@@ -2,10 +2,10 @@
 #define RES_HANDLE_H_INCLUDED
 
 #include <memory>
-#include <Resource.h>
+#include "Resource.h"
+#include "IResourceExtraData.h"
 
 // forward declaration
-class IResourceExtraData;
 class ResCache;
 
 class ResHandle

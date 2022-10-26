@@ -1,0 +1,24 @@
+#ifndef GCC4_OGL_TEXTURE_RESOURCE_EXTRA_DATA_H_INCLUDED
+#define GCC4_OGL_TEXTURE_RESOURCE_EXTRA_DATA_H_INCLUDED
+
+#include "IResourceExtraData.h"
+#include "OGLTextureResourceView.h"
+
+class OGLTextureResourceExtraData : public IResourceExtraData
+{
+    friend class TextureResourceLoader;
+
+public:
+    OGLTextureResourceExtraData();
+    virtual ~OGLTextureResourceExtraData();
+
+    virtual std::string VToString() { return "OGLTextureResourceExtraData"; }
+
+    OGLTextureResourceView* const* GetTexture() { return &m_pTexture; }
+
+protected:
+    OGLTextureResourceView* m_pTexture;
+};
+
+#endif // GCC4_OGL_IRESOURCE_EXTRA_DATA_H_INCLUDED
+
