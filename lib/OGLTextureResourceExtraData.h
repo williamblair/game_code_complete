@@ -9,8 +9,12 @@ class OGLTextureResourceExtraData : public IResourceExtraData
     friend class TextureResourceLoader;
 
 public:
-    OGLTextureResourceExtraData();
-    virtual ~OGLTextureResourceExtraData();
+    OGLTextureResourceExtraData() :
+        m_pTexture(nullptr)
+    {}
+    virtual ~OGLTextureResourceExtraData() {
+        if (m_pTexture) { delete m_pTexture; }
+    }
 
     virtual std::string VToString() { return "OGLTextureResourceExtraData"; }
 
