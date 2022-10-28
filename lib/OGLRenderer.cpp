@@ -58,6 +58,8 @@ bool OGLRenderer::Init(int width, int height)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glFrontFace(GL_CW); // match DirectX winding order
+    //glEnable(GL_CULL_FACE); // TODO
 
     return true;
 }
@@ -66,11 +68,13 @@ void OGLRenderer::VSetBackgroundColor(uint8_t bgA, uint8_t bgR, uint8_t bgG, uin
 {
     glClearColor(float(bgR)/255.0f, float(bgG)/255.0f, float(bgB)/255.0f, float(bgA)/255.0f);
 }
+
 bool OGLRenderer::VOnRestore()
 {
     //TODO?
     return true;
 }
+
 void OGLRenderer::VShutdown()
 {
     if (mWindow) {
@@ -80,11 +84,13 @@ void OGLRenderer::VShutdown()
         SDL_Quit();
     }
 }
+
 bool OGLRenderer::VPreRender()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     return true;
 }
+
 bool OGLRenderer::VPostRender()
 {
     //TODO - calc delay time
@@ -92,23 +98,17 @@ bool OGLRenderer::VPostRender()
     SDL_GL_SwapWindow(mWindow);
     return true;
 }
+
 bool OGLRenderer::VCalcLighting(Lights* lights, int maximumLights)
 {
     //TODO
     return true;
 }
-void OGLRenderer::VSetWorldTransform(const Mat4x4* m)
-{
-    //TODO
-}
-void OGLRenderer::VSetViewTransform(const Mat4x4* m)
-{
-    //TODO
-}
-void OGLRenderer::VSetProjectionTransform(const Mat4x4* m)
-{
-    //TODO
-}
+
+void OGLRenderer::VSetWorldTransform(const Mat4x4* m) { mModelMat = *m; }
+void OGLRenderer::VSetViewTransform(const Mat4x4* m) { mViewMat = *m; }
+void OGLRenderer::VSetProjectionTransform(const Mat4x4* m) { mProjMat = *m; }
+
 std::shared_ptr<IRenderState> OGLRenderer::VPrepareAlphaPass()
 {
     //TODO
@@ -123,3 +123,27 @@ void OGLRenderer::VDrawLine(const Vec3& from, const Vec3& to, const Color& color
 {
     //TODO
 }
+
+void OGLRenderer::SetShader(OGLShader& shdr)
+{
+    Mat4x4 mvpMat = mProjMat * mViewMat * mModelMat;
+
+    // Bind the shader
+    shdr.Use();
+
+    // Set uniforms
+    // TODO - texturing?
+    shdr.SetMat4("uMvpMatrix", mvpMat);
+}
+void OGLRenderer::DrawVertexBuffer(const OGLVertexBuffer& vb)
+{
+    glBindVertexArray(vb.mVAO);
+    if (vb.mNumIndices > 0) {
+        // TODO - configurable drawing mode
+        glDrawElements(GL_TRIANGLES, vb.mNumIndices, GL_UNSIGNED_INT, 0);
+    } else {
+        glDrawArrays(GL_TRIANGLES, 0, vb.mNumVerts);
+    }
+}
+
+

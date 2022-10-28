@@ -6,16 +6,9 @@
 #include <GCCMath.h>
 #include <IRenderer.h>
 #include <OGLRenderer.h>
+#include <OGLVertexBuffer.h>
 
-void testPlane()
-{
-    Plane plane;
-    plane.Init(Vec3(1,2,-2), Vec3(3,-2,1), Vec3(5,1,-4));
-    //plane.Init(Vec3(5,1,-4), Vec3(3,-2,1), Vec3(1,2,2));
-    printf("Plane abcd: %f,%f,%f,%f\n", plane.a, plane.b, plane.c, plane.d);
-}
-
-std::unique_ptr<IRenderer>
+std::unique_ptr<OGLRenderer>
 createRenderer()
 {
     std::unique_ptr<OGLRenderer> rndr =
@@ -24,6 +17,36 @@ createRenderer()
         throw std::runtime_error("Failed to init renderer");
     }
     return rndr;
+}
+
+std::unique_ptr<OGLVertexBuffer>
+createVertBuf()
+{
+    OGLVertexBuffer::VertexColored testVerts[3] = {
+        // xyz                  nxnynz              rgb
+        { -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f, 0.0f },
+        { 0.0f, 0.5f, 0.0f,     0.0f, 0.0f, 1.0f,   0.0f, 1.0f, 0.0f },
+        { 0.5f, -0.5f, 0.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f, 1.0f }
+    };
+    std::unique_ptr<OGLVertexBuffer> pVertBuf = std::make_unique<OGLVertexBuffer>();
+    if (!pVertBuf->Init(
+            OGLVertexBuffer::POS_COLOR,
+            testVerts, 3,
+            nullptr, 0,
+            OGLVertexBuffer::USAGE_STATIC)) {
+        throw std::runtime_error("Failed to init vert buf\n");
+    }
+    return pVertBuf;
+}
+
+std::unique_ptr<OGLShader>
+createShader()
+{
+    std::unique_ptr<OGLShader> pShdr = std::make_unique<OGLShader>();
+    if (!pShdr->LoadFromFile("../shaders/coloredVertex.glsl", "../shaders/coloredFragment.glsl")) {
+        throw std::runtime_error("Failed to init colored shader");
+    }
+    return pShdr;
 }
 
 bool updateInput()
@@ -45,21 +68,30 @@ bool updateInput()
 
 int main(int argc, char **argv)
 {
-    printf("hello world\n");
-    testPlane();
+    Mat4x4 modelMat = Translate(0.0f,0.0f,-5.0f);
+    Mat4x4 viewMat = Mat4x4::g_Identity;
+    Mat4x4 projMat = Perspective(Deg2Rad(60.0f), 640.0f/480.0f, 0.1f, 1000.0f);
 
     try
     {
-        std::unique_ptr<IRenderer> rndr = createRenderer();
-        rndr->VSetBackgroundColor(255,0,127,127);
+        std::unique_ptr<OGLRenderer> pRndr = createRenderer();
+        std::unique_ptr<OGLVertexBuffer> pVertBuf = createVertBuf();
+        std::unique_ptr<OGLShader> pShdr = createShader();
+
+        pRndr->VSetBackgroundColor(255,0,127,127);
+        pRndr->VSetProjectionTransform(&projMat);
+        pRndr->VSetViewTransform(&viewMat);
+        pRndr->VSetWorldTransform(&modelMat);
 
         bool quit = false;
         while (!quit)
         {
             quit = updateInput();
 
-            rndr->VPreRender();
-            rndr->VPostRender();
+            pRndr->VPreRender();
+            pRndr->SetShader(*pShdr);
+            pRndr->DrawVertexBuffer(*pVertBuf);
+            pRndr->VPostRender();
         }
     }
     catch (std::exception& e)

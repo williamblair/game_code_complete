@@ -6,6 +6,8 @@
 
 #include "IRenderer.h"
 #include "GCCMath.h"
+#include "OGLVertexBuffer.h"
+#include "OGLShader.h"
 
 class OGLRenderer : public IRenderer
 {
@@ -15,6 +17,7 @@ public:
 
     bool Init(int width, int height);
 
+    // IRenderer functions
     virtual void VSetBackgroundColor(uint8_t bgA, uint8_t bgR, uint8_t bgG, uint8_t bgB);
     virtual bool VOnRestore();
     virtual void VShutdown();
@@ -27,6 +30,11 @@ public:
     virtual std::shared_ptr<IRenderState> VPrepareAlphaPass();
     virtual std::shared_ptr<IRenderState> VPrepareSkyboxPass();
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color);
+
+    // Additional functions
+    void SetShader(OGLShader& shdr);
+    void DrawVertexBuffer(const OGLVertexBuffer& vb);
+
 private:
     SDL_Window* mWindow;
     SDL_GLContext mContext;
@@ -38,3 +46,4 @@ private:
 };
 
 #endif // GCC4_OGL_RENDERER_H_INCLUDED
+

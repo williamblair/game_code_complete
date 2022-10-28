@@ -171,6 +171,7 @@
     <ClCompile Include="..\lib\OGLRenderer.cpp" />
     <ClCompile Include="..\lib\OGLShader.cpp" />
     <ClCompile Include="..\lib\OGLTextureResourceView.cpp" />
+    <ClCompile Include="..\lib\OGLVertexBuffer.cpp" />
     <ClCompile Include="..\lib\Process.cpp" />
     <ClCompile Include="..\lib\ProcessManager.cpp" />
     <ClCompile Include="..\lib\ResCache.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="..\lib\OGLShader.h" />
     <ClInclude Include="..\lib\OGLTextureResourceExtraData.h" />
     <ClInclude Include="..\lib\OGLTextureResourceView.h" />
+    <ClInclude Include="..\lib\OGLVertexBuffer.h" />
     <ClInclude Include="..\lib\Process.h" />
     <ClInclude Include="..\lib\ProcessManager.h" />
     <ClInclude Include="..\lib\ProcessTypes.h" />

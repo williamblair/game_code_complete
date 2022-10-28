@@ -19,6 +19,11 @@ bool OGLShader::LoadFromFile(const char* vertexFile, const char* fragmentFile)
     std::string vFileStr = getShaderStr(vertexFile);
     std::string fFileStr = getShaderStr(fragmentFile);
 
+    // verify the shader files were opened correctly
+    if (vFileStr.empty() || fFileStr.empty()) {
+        return false;
+    }
+
     // initialze each shader
     GLuint vertexShaderID   = glCreateShader(GL_VERTEX_SHADER);
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
