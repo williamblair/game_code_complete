@@ -57,9 +57,9 @@ bool Scene::OnUpdate(const int deltaMilliseconds)
 {
     (void)deltaMilliseconds;
     if (!m_Root) { return true; }
-    static uint32_t lastTime = timeGetTime();
+    static uint32_t lastTime = GCC4Time::timeGetTime();
     uint32_t elapsedTime = 0;
-    uint32_t now = timeGetTime();
+    uint32_t now = GCC4Time::timeGetTime();
     elapsedTime = now - lastTime;
     lastTime = now;
 

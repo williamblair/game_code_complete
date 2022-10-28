@@ -1,8 +1,8 @@
-#ifndef GCCMATH_CPP_H_INCLUDED
-#define GCCMATH_CPP_H_INCLUDED
+#ifndef GCC4MATH_CPP_H_INCLUDED
+#define GCC4MATH_CPP_H_INCLUDED
 
-#include <cmath>
-#include <cstring>
+#include <math.h>
+#include <string.h>
 
 #ifndef M_PI
 #define M_PI 3.141592653589793f
@@ -1044,5 +1044,5 @@ struct Frustum
     //void Render()
 };
 
-#endif // GCCMATH_CPP_H_INCLUDED
+#endif // GCC4MATH_CPP_H_INCLUDED
 
