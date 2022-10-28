@@ -1,11 +1,11 @@
 CC = g++
-CFLAGS = -g -Wall -std=c++11
+CFLAGS = -g -Wall -std=c++17
 INCDIRS = -I. -I../lib
 LIBDIRS = 
 LIBS = -lSDL2 -lSDL2main -lGLEW -lGLU -lGL -lstdc++ -ldl -pthread -lz
 SOURCES = $(wildcard ./*.cpp) $(wildcard ../lib/*.cpp)
 OBJS = $(SOURCES:.cpp=.o)
-TARGET = 16_3dScenes
+TARGET = main
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c -o $@ $< $(INCDIRS)
