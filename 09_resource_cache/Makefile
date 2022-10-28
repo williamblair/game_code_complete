@@ -1,17 +1,17 @@
 CC = g++
-CFLAGS = -std=c++17 -g
-INCDIRS = -I./ -I../08_zip
+CFLAGS = -g -Wall -std=c++17
+INCDIRS = -I. -I../lib
 LIBDIRS = 
-LIBS = -lz
-SOURCES = main.cpp               \
-          Resource.cpp           \
-          ResHandle.cpp          \
-          ResCache.cpp           \
-          WildcardMatch.cpp      \
-          ../08_zip/ZipFile.cpp  \
-          ResourceZipFile.cpp
+LIBS = -lSDL2 -lSDL2main -lGLEW -lGLU -lGL -lstdc++ -ldl -pthread -lz
+SOURCES = $(wildcard ./*.cpp) $(wildcard ../lib/*.cpp)
+OBJS = $(SOURCES:.cpp=.o)
 TARGET = main
 
-all:
-	$(CC) $(CFLAGS) $(SOURCES) -o $(TARGET) $(INCDIRS) $(LIBDIRS) $(LIBS)
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c -o $@ $< $(INCDIRS)
 
+all: $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LIBDIRS) $(LIBS)
+
+clean:
+	rm -f $(OBJS) $(TARGET)

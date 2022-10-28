@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <memory>
 #include <stdexcept>
 
 #include <SDL2/SDL.h>
@@ -43,7 +44,7 @@ std::unique_ptr<OGLShader>
 createShader()
 {
     std::unique_ptr<OGLShader> pShdr = std::make_unique<OGLShader>();
-    if (!pShdr->LoadFromFile("../shaders/coloredVertex.glsl", "../shaders/coloredFragment.glsl")) {
+    if (!pShdr->LoadFromFile("shaders/coloredVertex.glsl", "shaders/coloredFragment.glsl")) {
         throw std::runtime_error("Failed to init colored shader");
     }
     return pShdr;

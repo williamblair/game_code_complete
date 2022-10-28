@@ -1,25 +1,17 @@
 CC = g++
-CFLAGS = -std=c++17 -g
-INCDIRS = -I./ -I../09_resource_cache -I../08_zip
+CFLAGS = -g -Wall -std=c++17
+INCDIRS = -I. -I../lib
 LIBDIRS = 
-LIBS = -lz
-OBJS = main.o                                    \
-       WaveResourceLoader.o                      \
-       SoundResourceExtraData.o                  \
-       ../09_resource_cache/Resource.o           \
-       ../09_resource_cache/ResHandle.o          \
-       ../09_resource_cache/ResCache.o           \
-       ../09_resource_cache/WildcardMatch.o      \
-       ../08_zip/ZipFile.o                       \
-       ../09_resource_cache/ResourceZipFile.o
+LIBS = -lSDL2 -lSDL2main -lGLEW -lGLU -lGL -lstdc++ -ldl -pthread -lz
+SOURCES = $(wildcard ./*.cpp) $(wildcard ../lib/*.cpp)
+OBJS = $(SOURCES:.cpp=.o)
 TARGET = main
-
-all: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET) $(LIBDIRS) $(LIBS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c -o $@ $< $(INCDIRS)
 
+all: $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LIBDIRS) $(LIBS)
+
 clean:
 	rm -f $(OBJS) $(TARGET)
-
