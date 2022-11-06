@@ -24,11 +24,16 @@ bool OGLShader::LoadFromFile(const char* vertexFile, const char* fragmentFile)
         return false;
     }
 
-    // initialze each shader
+    return LoadFromString(vFileStr.c_str(), fFileStr.c_str());
+}
+
+bool OGLShader::LoadFromString(const char* vertexStr, const char* fragmentStr)
+{
+        // initialze each shader
     GLuint vertexShaderID   = glCreateShader(GL_VERTEX_SHADER);
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
-    const char* shaderSrc = vFileStr.c_str();
+    const char* shaderSrc = vertexStr;
 
     // send and compile the vertex shader
     glShaderSource(vertexShaderID, 1, &shaderSrc, NULL);
@@ -44,7 +49,7 @@ bool OGLShader::LoadFromFile(const char* vertexFile, const char* fragmentFile)
         return false;
     }
 
-    shaderSrc = fFileStr.c_str();
+    shaderSrc = fragmentStr;
     
     // send and compile the fragment shader
     glShaderSource(fragmentShaderID, 1, &shaderSrc, NULL);

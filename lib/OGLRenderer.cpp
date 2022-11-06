@@ -1,4 +1,6 @@
 #include "OGLRenderer.h"
+#include "OGLAlphaPassRenderState.h"
+#include "OGLSkyBoxPassRenderState.h"
 
 OGLRenderer::OGLRenderer() :
     mWindow(nullptr),
@@ -109,16 +111,9 @@ void OGLRenderer::VSetWorldTransform(const Mat4x4* m) { mModelMat = *m; }
 void OGLRenderer::VSetViewTransform(const Mat4x4* m) { mViewMat = *m; }
 void OGLRenderer::VSetProjectionTransform(const Mat4x4* m) { mProjMat = *m; }
 
-std::shared_ptr<IRenderState> OGLRenderer::VPrepareAlphaPass()
-{
-    //TODO
-    return std::shared_ptr<IRenderState>();
-}
-std::shared_ptr<IRenderState> OGLRenderer::VPrepareSkyboxPass()
-{
-    //TODO
-    return std::shared_ptr<IRenderState>();
-}
+std::shared_ptr<IRenderState> OGLRenderer::VPrepareAlphaPass() { return std::make_shared<OGLAlphaPassRenderState>(); }
+std::shared_ptr<IRenderState> OGLRenderer::VPrepareSkyboxPass() { return std::make_shared<OGLSkyBoxPassRenderState>(); }
+
 void OGLRenderer::VDrawLine(const Vec3& from, const Vec3& to, const Color& color)
 {
     //TODO

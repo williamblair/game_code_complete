@@ -13,6 +13,7 @@ public:
     ~OGLShader();
 
     bool LoadFromFile(const char* vertexFile, const char* shaderFile);
+    bool LoadFromString(const char* vertexStr, const char* fragmentStr);
 
     void Use() { glUseProgram(mProgId); }
 

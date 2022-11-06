@@ -37,6 +37,7 @@ bool OGLVertexBuffer::Init(
 
     switch (type)
     {
+    case POS: mVertStride = sizeof(VertexPos); break;
     case POS_COLOR: mVertStride = sizeof(VertexColored); break;
     case POS_TEXCOORD: mVertStride = sizeof(VertexTextured); break;
     default:
@@ -73,6 +74,23 @@ bool OGLVertexBuffer::Init(
     mNumIndices = numIndices;
     switch (type)
     {
+    case POS:
+        // position
+        attribLocation = 0; // aPos, where we set location = 0
+        dataType = GL_FLOAT;
+        shouldNormalize = GL_FALSE;
+        floatsPerVertex = 3; // xyz
+        beginOffset = (void*)0;
+        glVertexAttribPointer(
+            attribLocation,
+            floatsPerVertex,
+            dataType,
+            shouldNormalize,
+            mVertStride,
+            beginOffset
+        );
+        glEnableVertexAttribArray(attribLocation);
+        break;
     case POS_COLOR:
         // position
         attribLocation = 0; // aPos, where we set location = 0

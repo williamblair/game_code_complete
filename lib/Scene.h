@@ -23,7 +23,7 @@ class LightManager;
 class Scene
 {
 public:
-    Scene();
+    Scene(std::shared_ptr<IRenderer> pRenderer);
     virtual ~Scene();
 
     bool OnRender();
@@ -43,6 +43,7 @@ public:
     const Mat4x4* GetTopMatrix() { return m_MatrixStack->GetTop(); }
 
     LightManager* GetLightManager() { return m_LightManager; }
+    IRenderer* GetRenderer() { return m_Renderer.get(); }
 
     void AddAlphaSceneNode(AlphaSceneNode* asn) { m_AlphaSceneNodes.push_back(asn); }
 

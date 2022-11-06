@@ -168,8 +168,11 @@
     <ClCompile Include="..\lib\LightNode.cpp" />
     <ClCompile Include="..\lib\MatrixStack.cpp" />
     <ClCompile Include="..\lib\MemoryPool.cpp" />
+    <ClCompile Include="..\lib\OGLAlphaPassRenderState.cpp" />
     <ClCompile Include="..\lib\OGLRenderer.cpp" />
     <ClCompile Include="..\lib\OGLShader.cpp" />
+    <ClCompile Include="..\lib\OGLSkyBoxPassRenderState.cpp" />
+    <ClCompile Include="..\lib\OGLSkyNode.cpp" />
     <ClCompile Include="..\lib\OGLTextureResourceView.cpp" />
     <ClCompile Include="..\lib\OGLVertexBuffer.cpp" />
     <ClCompile Include="..\lib\Process.cpp" />
@@ -205,6 +208,7 @@
     <ClInclude Include="..\lib\GCCRandom.h" />
     <ClInclude Include="..\lib\GCCTime.h" />
     <ClInclude Include="..\lib\IRenderer.h" />
+    <ClInclude Include="..\lib\IRenderState.h" />
     <ClInclude Include="..\lib\IResourceExtraData.h" />
     <ClInclude Include="..\lib\IResourceFile.h" />
     <ClInclude Include="..\lib\IResourceLoader.h" />
@@ -215,8 +219,11 @@
     <ClInclude Include="..\lib\Material.h" />
     <ClInclude Include="..\lib\MatrixStack.h" />
     <ClInclude Include="..\lib\MemoryPool.h" />
+    <ClInclude Include="..\lib\OGLAlphaPassRenderState.h" />
     <ClInclude Include="..\lib\OGLRenderer.h" />
     <ClInclude Include="..\lib\OGLShader.h" />
+    <ClInclude Include="..\lib\OGLSkyBoxPassRenderState.h" />
+    <ClInclude Include="..\lib\OGLSkyNode.h" />
     <ClInclude Include="..\lib\OGLTextureResourceExtraData.h" />
     <ClInclude Include="..\lib\OGLTextureResourceView.h" />
     <ClInclude Include="..\lib\OGLVertexBuffer.h" />

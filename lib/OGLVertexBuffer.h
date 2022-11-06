@@ -14,6 +14,7 @@ public:
     /** @brief The format of the vertex data, corresponding to one of the Vertex* structs */
     enum Type
     {
+        POS,
         POS_COLOR,
         POS_TEXCOORD,
         UNINITIALIZED
@@ -26,6 +27,10 @@ public:
         USAGE_DYNAMIC
     };
 
+    struct VertexPos
+    {
+        float x,y,z;
+    };
     struct VertexColored
     {
         float x,y,z;

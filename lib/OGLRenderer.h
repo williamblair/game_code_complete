@@ -30,6 +30,8 @@ public:
     virtual std::shared_ptr<IRenderState> VPrepareAlphaPass();
     virtual std::shared_ptr<IRenderState> VPrepareSkyboxPass();
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color);
+    virtual int VGetWidth() { return mWidth; }
+    virtual int VGetHeight() { return mHeight; }
 
     // Additional functions
     void SetShader(OGLShader& shdr);

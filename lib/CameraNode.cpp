@@ -1,4 +1,5 @@
 #include "CameraNode.h"
+#include "Scene.h"
 
 CameraNode::CameraNode(Mat4x4 const* t, Frustum const& frustum) :
     SceneNode(INVALID_ACTOR_ID, "Camera", RenderPass_0, g_Black, t),
@@ -19,10 +20,11 @@ bool CameraNode::VRender(Scene* pScene)
 
 bool CameraNode::VOnRestore(Scene* pScene)
 {
-    //TODO
-    //m_Frustum.SetAspect(DXUTGetWindowWidth()) / (float)DXUTGetWindowHeight());
+    m_Frustum.SetAspect(
+        (float)pScene->GetRenderer()->VGetWidth() /
+        (float)pScene->GetRenderer()->VGetHeight());
     m_Projection = Perspective(m_Frustum.fov, m_Frustum.aspect, m_Frustum.near, m_Frustum.far);
-    //pScene->GetRenderer()->VSetProjectionTransform(&m_Projection);
+    pScene->GetRenderer()->VSetProjectionTransform(&m_Projection);
     return true;
 }
 
