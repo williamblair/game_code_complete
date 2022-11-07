@@ -20,7 +20,13 @@ public:
     void MultMatrixLocal(const Mat4x4* pMat);
 
     /** @brief retrieves the current matrix at the top of the stack */
-    Mat4x4* GetTop() { return &m_Stack.top(); }
+    Mat4x4* GetTop() {
+        if (m_Stack.size() > 0) {
+            return &m_Stack.top();
+        } else {
+            return &Mat4x4::g_Identity;
+        }
+    }
 
 private:
     std::stack<Mat4x4> m_Stack;

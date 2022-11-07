@@ -1,5 +1,7 @@
 #include <stdexcept>
 #include "OGLSkyNode.h"
+#include "OGLRenderer.h"
+#include "Scene.h"
 #include "stb_image.h"
 
 // https://learnopengl.com/Advanced-OpenGL/Cubemaps
@@ -66,12 +68,12 @@ OGLSkyNode::OGLSkyNode(const char* textureFile, std::shared_ptr<CameraNode> came
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_CubeTexId);
     int width, height, bytesPerPixel;
     std::string faces[6] = {
-        m_TextureBaseName + "_r.png", // right
-        m_TextureBaseName + "_l.png", // left
-        m_TextureBaseName + "_t.png", // top
-        m_TextureBaseName + "_b.png", // bottom
-        m_TextureBaseName + "_f.png", // front
-        m_TextureBaseName + "_b.png" // back
+        m_TextureBaseName + "_right.jpg", // right
+        m_TextureBaseName + "_left.jpg", // left
+        m_TextureBaseName + "_top.jpg", // top
+        m_TextureBaseName + "_bottom.jpg", // bottom
+        m_TextureBaseName + "_front.jpg", // front
+        m_TextureBaseName + "_back.jpg" // back
     };
     for (int i=0; i<6; ++i) {
         uint8_t* data = stbi_load(faces[i].c_str(), &width,&height,&bytesPerPixel, 0);
@@ -109,7 +111,7 @@ OGLSkyNode::OGLSkyNode(const char* textureFile, std::shared_ptr<CameraNode> came
         "                                                           \n"
         "in vec3 TexCoords;                                         \n"
         "                                                           \n"
-        "uniform samplerCube uSkybox                                \n"
+        "uniform samplerCube uSkybox;                               \n"
         "                                                           \n"
         "void main()                                                \n"
         "{                                                          \n"
@@ -121,6 +123,10 @@ OGLSkyNode::OGLSkyNode(const char* textureFile, std::shared_ptr<CameraNode> came
 }
 OGLSkyNode::~OGLSkyNode()
 {
+    if (m_CubeTexId) {
+        glDeleteTextures(1, &m_CubeTexId);
+        m_CubeTexId = 0;
+    }
 }
 
 bool OGLSkyNode::VOnRestore(Scene* pScene)
@@ -131,13 +137,18 @@ bool OGLSkyNode::VOnRestore(Scene* pScene)
 
 bool OGLSkyNode::VRender(Scene* pScene)
 {
-    //TODO
+    OGLRenderer* rndr = static_cast<OGLRenderer*>(pScene->GetRenderer());
+    rndr->DrawVertexBuffer(m_VertBuf);
     return true;
 }
 
 bool OGLSkyNode::VPreRender(Scene* pScene)
 {
-    //TODO
-    return true;
+    const Mat4x4& viewMat = m_Camera->VGet()->GetToWorld();
+    OGLRenderer* rndr = static_cast<OGLRenderer*>(pScene->GetRenderer());
+    rndr->SetShader(m_Shader);
+    rndr->VSetViewTransform(&viewMat);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_CubeTexId);
+    return SceneNode::VPreRender(pScene);
 }
 
