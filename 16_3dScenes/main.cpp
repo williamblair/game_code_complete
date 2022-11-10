@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     {
         std::shared_ptr<IRenderer> pRndr = createRenderer();
         std::shared_ptr<CameraNode> pCam = std::make_shared<CameraNode>(&modelMat, camFrustum);
-        std::shared_ptr<OGLSkyNode> pSky = std::make_shared<OGLSkyNode>("../skybox/skybox", pCam);
+        std::shared_ptr<OGLSkyNode> pSky = std::make_shared<OGLSkyNode>("./skybox/skybox", pCam);
         std::shared_ptr<Scene> pScene = std::make_shared<Scene>(pRndr);
 
         pRndr->VSetBackgroundColor(255,0,127,127);

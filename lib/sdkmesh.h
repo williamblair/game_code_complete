@@ -9,8 +9,10 @@
 #ifndef _SKDMESH_H
 #define _SDKMESH_H
 
-#include "math.h"
+#include "sdkmeshmath.h"
+#include <stdexcept>
 #include <fstream>
+#include <cstring>
 
 class Sdkmesh
 {
@@ -164,22 +166,39 @@ private:
 	std::vector<std::vector<PosNormalTexTan>> vertex_buffers;
 	std::vector<std::vector<int>> index_buffers;
 
-private:
-	void LoadSdkmeshHeader(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkmeshVertexBufferHeader(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkemshIndexBufferHeader(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkmeshMesh(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkmeshSubset(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkmeshFrame(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkmeshMaterial(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkmeshSubsetIndexBuffer(std::ifstream& inputStream, std::streampos fileSize);
+    size_t bufIndex;
+    uint8_t* fileBuf;
+    size_t fileSize;
+    inline void inputStreamRead(char* outData, size_t outSize)
+    {
+        memcpy(outData, &fileBuf[bufIndex], outSize);
+        bufIndex += outSize;
+    }
+    inline size_t inputStreamTellg()
+    {
+        return bufIndex;
+    }
+    inline void inputStreamSeekg(size_t offset)
+    {
+        bufIndex = offset;
+    }
 
-	void LoadSdkmeshVertexBuffer(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkmeshVertexBuffer_9(std::ifstream& inputStream, std::streampos fileSize);
-	void LoadSdkmeshIndexBuffer(std::ifstream& inputStream, std::streampos fileSize);
+private:
+	void LoadSdkmeshHeader(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkmeshVertexBufferHeader(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkemshIndexBufferHeader(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkmeshMesh(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkmeshSubset(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkmeshFrame(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkmeshMaterial(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkmeshSubsetIndexBuffer(uint8_t* inputBuf, size_t fileSize);
+
+	void LoadSdkmeshVertexBuffer(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkmeshVertexBuffer_9(uint8_t* inputBuf, size_t fileSize);
+	void LoadSdkmeshIndexBuffer(uint8_t* inputBuf, size_t fileSize);
 
 public:
-	Sdkmesh() { DoCheck(); }
+	Sdkmesh() { bufIndex = 0; fileBuf = nullptr; DoCheck(); }
 	//Sdkmesh(std::ifstream& inputStream, std::streampos fileSize);
     Sdkmesh(uint8_t* inputBuf, size_t bufSize);
 
@@ -190,6 +209,7 @@ public:
 	//void CreateFromFile(std::ifstream& inputStream, std::streampos fileSize);
 	//void CreateFromFile_9(std::ifstream& inputStream, std::streampos fileSize);
     void CreateFromBuffer(uint8_t* inputBuf, size_t bufSize);
+    void CreateFromBuffer_9(uint8_t* inputBuf, size_t bufSize);
 
 	const SdkmeshHeader& GetSdkmeshHeader() { return sdkmesh_header; }
 	const std::vector<SdkmeshVertexBufferHeader>& GetSdkmeshVertexBufferHeader() { return sdkmesh_vertex_buffer_headers; }
@@ -205,3 +225,4 @@ public:
 };
 
 #endif 
+

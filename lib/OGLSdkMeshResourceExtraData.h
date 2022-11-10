@@ -14,9 +14,9 @@ public:
     virtual ~OGLSdkMeshResourceExtraData() {}
     virtual std::string VToString() { return "OGLSdkMeshResourceExtraData"; }
     
-    SdkMesh& GetMesh() { return m_Mesh; }
+    Sdkmesh& GetMesh() { return m_Mesh; }
 private:
-    SdkMesh m_Mesh;
+    Sdkmesh m_Mesh;
 };
 
 #endif // OGL_SDKMESH_RESOURCE_EXTRADATA_H_INCLUDED
