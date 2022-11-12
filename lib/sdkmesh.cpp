@@ -2,6 +2,8 @@
 #include <cassert>
 #include <iostream>
 
+using namespace SdkmeshMath;
+
 void Sdkmesh::DoCheck()
 {
 	// cpp lacks binary standard in class and struct padding

@@ -7,9 +7,13 @@
 #include <GCCMath.h>
 #include <IRenderer.h>
 #include <Scene.h>
+#include <ResCache.h>
+#include <ResourceZipFile.h>
+#include <SdkMeshResourceLoader.h>
 #include <OGLRenderer.h>
 #include <OGLVertexBuffer.h>
 #include <OGLSkyNode.h>
+#include <OGLShaderMeshNode.h>
 
 //std::shared_ptr<OGLRenderer>
 std::shared_ptr<IRenderer>
@@ -40,6 +44,8 @@ bool updateInput()
     return false;
 }
 
+ResCache* g_ResCache = nullptr;
+
 int main(int argc, char **argv)
 {
     Mat4x4 modelMat = Translate(0.0f,0.0f,0.0f);
@@ -53,8 +59,18 @@ int main(int argc, char **argv)
     try
     {
         std::shared_ptr<IRenderer> pRndr = createRenderer();
+        std::shared_ptr<SdkMeshResourceLoader> pSdkMeshLoader = std::make_shared<SdkMeshResourceLoader>();
+        ResourceZipFile* pZip = new ResourceZipFile("../../16_3dScenes/resources.zip");
+        std::shared_ptr<ResCache> pResCache = std::make_shared<ResCache>(50, pZip); // 50 MB of cache
+        g_ResCache = pResCache.get();
+        if (!g_ResCache->Init()) {
+            throw std::runtime_error("g_ResCache init failed");
+        }
+        pResCache->RegisterLoader(pSdkMeshLoader);
         std::shared_ptr<CameraNode> pCam = std::make_shared<CameraNode>(&modelMat, camFrustum);
-        std::shared_ptr<OGLSkyNode> pSky = std::make_shared<OGLSkyNode>("./skybox/skybox", pCam);
+        std::shared_ptr<OGLSkyNode> pSky = std::make_shared<OGLSkyNode>("../../16_3dScenes/skybox/skybox", pCam);
+        std::shared_ptr<OGLShaderMeshNode> pMesh = std::make_shared<OGLShaderMeshNode>(
+            ActorId(1), "My Mesh", "Teapot.sdkmesh", RenderPass_Static, g_White, &modelMat);
         std::shared_ptr<Scene> pScene = std::make_shared<Scene>(pRndr);
 
         pRndr->VSetBackgroundColor(255,0,127,127);
@@ -64,6 +80,8 @@ int main(int argc, char **argv)
 
         pScene->SetCamera(pCam);
         pScene->AddChild(ActorId(42), pSky);
+
+        pMesh->VOnRestore(pScene.get());
 
         bool quit = false;
         while (!quit)

@@ -14,6 +14,9 @@
 
 #include "umHalf.h"
 
+namespace SdkmeshMath
+{
+
 typedef unsigned char byte;
 const uint32_t SDKMESH_FILE_VERSION = 101;
 const uint32_t MAX_VERTEX_ELEMENTS = 32;
@@ -191,5 +194,7 @@ public:
 		: pos(position), norm(normal), tex(texture), tan(tangent) {}
 };
 
+} // end namespace SdkmeshMath
 
 #endif
+

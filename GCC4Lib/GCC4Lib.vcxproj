@@ -171,6 +171,7 @@
     <ClCompile Include="..\lib\OGLAlphaPassRenderState.cpp" />
     <ClCompile Include="..\lib\OGLRenderer.cpp" />
     <ClCompile Include="..\lib\OGLShader.cpp" />
+    <ClCompile Include="..\lib\OGLShaderMeshNode.cpp" />
     <ClCompile Include="..\lib\OGLSkyBoxPassRenderState.cpp" />
     <ClCompile Include="..\lib\OGLSkyNode.cpp" />
     <ClCompile Include="..\lib\OGLTextureResourceView.cpp" />
@@ -185,6 +186,8 @@
     <ClCompile Include="..\lib\Scene.cpp" />
     <ClCompile Include="..\lib\SceneNode.cpp" />
     <ClCompile Include="..\lib\SceneNodeProperties.cpp" />
+    <ClCompile Include="..\lib\sdkmesh.cpp" />
+    <ClCompile Include="..\lib\SdkMeshResourceLoader.cpp" />
     <ClCompile Include="..\lib\stb_image_impl.cpp" />
     <ClCompile Include="..\lib\TextureResourceLoader.cpp" />
     <ClCompile Include="..\lib\tinyxml2.cpp" />
@@ -221,7 +224,9 @@
     <ClInclude Include="..\lib\MemoryPool.h" />
     <ClInclude Include="..\lib\OGLAlphaPassRenderState.h" />
     <ClInclude Include="..\lib\OGLRenderer.h" />
+    <ClInclude Include="..\lib\OGLSdkMeshResourceExtraData.h" />
     <ClInclude Include="..\lib\OGLShader.h" />
+    <ClInclude Include="..\lib\OGLShaderMeshNode.h" />
     <ClInclude Include="..\lib\OGLSkyBoxPassRenderState.h" />
     <ClInclude Include="..\lib\OGLSkyNode.h" />
     <ClInclude Include="..\lib\OGLTextureResourceExtraData.h" />
@@ -240,9 +245,13 @@
     <ClInclude Include="..\lib\Scene.h" />
     <ClInclude Include="..\lib\SceneNode.h" />
     <ClInclude Include="..\lib\SceneNodeProperties.h" />
+    <ClInclude Include="..\lib\sdkmesh.h" />
+    <ClInclude Include="..\lib\sdkmeshmath.h" />
+    <ClInclude Include="..\lib\SdkMeshResourceLoader.h" />
     <ClInclude Include="..\lib\stb_image.h" />
     <ClInclude Include="..\lib\TextureResourceLoader.h" />
     <ClInclude Include="..\lib\tinyxml2.h" />
+    <ClInclude Include="..\lib\umHalf.h" />
     <ClInclude Include="..\lib\WildcardMatch.h" />
     <ClInclude Include="..\lib\xml.h" />
     <ClInclude Include="..\lib\ZipFile.h" />

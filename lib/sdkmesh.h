@@ -21,7 +21,7 @@ public:
 	{
 		//basic information
 		uint32_t version;
-		byte IsBigEndian;
+		SdkmeshMath::byte IsBigEndian;
 		uint64_t HeaderSize;
 		uint64_t NonBufferDataSize;
 		uint64_t BufferDataSize;
@@ -48,7 +48,7 @@ public:
 		uint64_t NumVertices;
 		uint64_t SizeBytes;
 		uint64_t StrideBytes;
-		VertexElement Decl[MAX_VERTEX_ELEMENTS];
+		SdkmeshMath::VertexElement Decl[SdkmeshMath::MAX_VERTEX_ELEMENTS];
 		uint64_t DataOffset;
 	};
 
@@ -66,14 +66,14 @@ public:
 
 	struct SdkmeshMesh
 	{
-		char Name[MAX_MESH_NAME];
+		char Name[SdkmeshMath::MAX_MESH_NAME];
 		uint8_t NumVertexBuffers;
-		uint32_t VertexBuffers[MAX_VERTEX_STREAMS];
+		uint32_t VertexBuffers[SdkmeshMath::MAX_VERTEX_STREAMS];
 		uint32_t IndexBuffer;
 		uint32_t NumSubsets;
 		uint32_t NumFrameInfluences; //aka bones
-		Vec3 BoundingBoxCenter;
-		Vec3 BoundingBoxExtents;
+		SdkmeshMath::Vec3 BoundingBoxCenter;
+		SdkmeshMath::Vec3 BoundingBoxExtents;
 
 		union
 		{
@@ -89,7 +89,7 @@ public:
 
 	struct SdkmeshSubset
 	{
-		char Name[MAX_SUBSET_NAME];
+		char Name[SdkmeshMath::MAX_SUBSET_NAME];
 		uint32_t MaterialID;
 		uint32_t PrimitiveType;
 		uint64_t IndexStart;
@@ -100,29 +100,29 @@ public:
 
 	struct SdkmeshFrame
 	{
-		char Name[MAX_FRAME_NAME];
+		char Name[SdkmeshMath::MAX_FRAME_NAME];
 		uint32_t Mesh;
 		uint32_t ParentFrame;
 		uint32_t ChildFrame;
 		uint32_t SiblingFrame;
-		Mat4 Matrix;
+		SdkmeshMath::Mat4 Matrix;
 		uint32_t AnimationDataIndex;		//Used to index which set of keyframes transforms this frame
 	};
 
 	struct SdkmeshMaterial
 	{
-		char    Name[MAX_MATERIAL_NAME];
+		char    Name[SdkmeshMath::MAX_MATERIAL_NAME];
 		// Use MaterialInstancePath
-		char    MaterialInstancePath[MAX_MATERIAL_PATH];
+		char    MaterialInstancePath[SdkmeshMath::MAX_MATERIAL_PATH];
 		// Or fall back to d3d8-type materials
-		char    DiffuseTexture[MAX_TEXTURE_NAME];
-		char    NormalTexture[MAX_TEXTURE_NAME];
-		char    SpecularTexture[MAX_TEXTURE_NAME];
+		char    DiffuseTexture[SdkmeshMath::MAX_TEXTURE_NAME];
+		char    NormalTexture[SdkmeshMath::MAX_TEXTURE_NAME];
+		char    SpecularTexture[SdkmeshMath::MAX_TEXTURE_NAME];
 
-		Color4 Diffuse;
-		Color4 Ambient;
-		Color4 Specular;
-		Color4 Emissive;
+		SdkmeshMath::Color4 Diffuse;
+		SdkmeshMath::Color4 Ambient;
+		SdkmeshMath::Color4 Specular;
+		SdkmeshMath::Color4 Emissive;
 		float Power;
 
 		// force padding
@@ -162,8 +162,8 @@ private:
 	std::vector<SdkmeshMaterial> sdkmesh_materials;
 
 	std::vector<std::vector<int>> subset_index_buffers;
-	std::vector<std::vector<PosNormalTexTan_9>> vertex_buffers_9;
-	std::vector<std::vector<PosNormalTexTan>> vertex_buffers;
+	std::vector<std::vector<SdkmeshMath::PosNormalTexTan_9>> vertex_buffers_9;
+	std::vector<std::vector<SdkmeshMath::PosNormalTexTan>> vertex_buffers;
 	std::vector<std::vector<int>> index_buffers;
 
     size_t bufIndex;
@@ -219,8 +219,8 @@ public:
 	const std::vector<SdkmeshFrame>& GetSdkmeshFrame() { return sdkmesh_frames; }
 	const std::vector<SdkmeshMaterial>& GetSdkmeshMaterial() { return sdkmesh_materials; }
 	const std::vector<std::vector<int>>& GetSdkmeshSubsetIndexBuffer() { return subset_index_buffers; }
-	const std::vector<std::vector<PosNormalTexTan_9>>& GetSdkmeshVertexBuffer_9() { return vertex_buffers_9; }
-	const std::vector<std::vector<PosNormalTexTan>>& GetSdkmeshVertexBuffer() { return vertex_buffers; }
+	const std::vector<std::vector<SdkmeshMath::PosNormalTexTan_9>>& GetSdkmeshVertexBuffer_9() { return vertex_buffers_9; }
+	const std::vector<std::vector<SdkmeshMath::PosNormalTexTan>>& GetSdkmeshVertexBuffer() { return vertex_buffers; }
 	const std::vector<std::vector<int>>& GetSdkmeshIndexBuffer() { return index_buffers; }
 };
 
