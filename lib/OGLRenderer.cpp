@@ -62,7 +62,7 @@ bool OGLRenderer::Init(int width, int height)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glFrontFace(GL_CW); // match DirectX winding order
+    //glFrontFace(GL_CW); // match DirectX winding order
     //glEnable(GL_CULL_FACE); // TODO
 
     return true;
@@ -148,6 +148,7 @@ void OGLRenderer::SetShader(OGLShader& shdr)
 
     // Set uniforms
     shdr.SetMat4("uMvpMatrix", mvpMat);
+    shdr.SetMat4("uModelMat", mModelMat);
     shdr.SetMat4("uViewMat", mViewMat);
     shdr.SetMat4("uProjMat", mProjMat);
 

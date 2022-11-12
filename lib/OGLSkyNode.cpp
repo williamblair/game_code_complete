@@ -147,7 +147,7 @@ bool OGLSkyNode::VPreRender(Scene* pScene)
     const Mat4x4& viewMat = m_Camera->VGet()->GetToWorld();
     OGLRenderer* rndr = static_cast<OGLRenderer*>(pScene->GetRenderer());
     rndr->SetShader(m_Shader);
-    rndr->VSetViewTransform(&viewMat);
+    //rndr->VSetViewTransform(&viewMat);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_CubeTexId);
     return SceneNode::VPreRender(pScene);
 }

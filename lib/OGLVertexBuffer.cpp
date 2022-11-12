@@ -204,5 +204,5 @@ bool OGLVertexBuffer::Init(
     }
     
     return true;
-}
+ }
 

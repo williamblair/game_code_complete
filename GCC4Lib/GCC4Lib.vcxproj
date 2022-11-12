@@ -102,7 +102,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlibd.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,7 +123,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlibd.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -156,6 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\Actor.cpp" />
+    <ClCompile Include="..\lib\AssimpMeshNode.cpp" />
+    <ClCompile Include="..\lib\AssimpMeshResourceLoader.cpp" />
     <ClCompile Include="..\lib\CameraNode.cpp" />
     <ClCompile Include="..\lib\Color.cpp" />
     <ClCompile Include="..\lib\ConstantBuffer_Lighting.cpp" />
@@ -171,7 +173,6 @@
     <ClCompile Include="..\lib\OGLAlphaPassRenderState.cpp" />
     <ClCompile Include="..\lib\OGLRenderer.cpp" />
     <ClCompile Include="..\lib\OGLShader.cpp" />
-    <ClCompile Include="..\lib\OGLShaderMeshNode.cpp" />
     <ClCompile Include="..\lib\OGLSkyBoxPassRenderState.cpp" />
     <ClCompile Include="..\lib\OGLSkyNode.cpp" />
     <ClCompile Include="..\lib\OGLTextureResourceView.cpp" />
@@ -186,8 +187,6 @@
     <ClCompile Include="..\lib\Scene.cpp" />
     <ClCompile Include="..\lib\SceneNode.cpp" />
     <ClCompile Include="..\lib\SceneNodeProperties.cpp" />
-    <ClCompile Include="..\lib\sdkmesh.cpp" />
-    <ClCompile Include="..\lib\SdkMeshResourceLoader.cpp" />
     <ClCompile Include="..\lib\stb_image_impl.cpp" />
     <ClCompile Include="..\lib\TextureResourceLoader.cpp" />
     <ClCompile Include="..\lib\tinyxml2.cpp" />
@@ -200,6 +199,9 @@
     <ClInclude Include="..\lib\ActorComponent.h" />
     <ClInclude Include="..\lib\AlphaSceneNode.h" />
     <ClInclude Include="..\lib\AlphaType.h" />
+    <ClInclude Include="..\lib\AssimpMeshNode.h" />
+    <ClInclude Include="..\lib\AssimpMeshResourceExtraData.h" />
+    <ClInclude Include="..\lib\AssimpMeshResourceLoader.h" />
     <ClInclude Include="..\lib\CameraNode.h" />
     <ClInclude Include="..\lib\Color.h" />
     <ClInclude Include="..\lib\ComponentTypes.h" />
@@ -224,7 +226,6 @@
     <ClInclude Include="..\lib\MemoryPool.h" />
     <ClInclude Include="..\lib\OGLAlphaPassRenderState.h" />
     <ClInclude Include="..\lib\OGLRenderer.h" />
-    <ClInclude Include="..\lib\OGLSdkMeshResourceExtraData.h" />
     <ClInclude Include="..\lib\OGLShader.h" />
     <ClInclude Include="..\lib\OGLShaderMeshNode.h" />
     <ClInclude Include="..\lib\OGLSkyBoxPassRenderState.h" />
@@ -245,13 +246,9 @@
     <ClInclude Include="..\lib\Scene.h" />
     <ClInclude Include="..\lib\SceneNode.h" />
     <ClInclude Include="..\lib\SceneNodeProperties.h" />
-    <ClInclude Include="..\lib\sdkmesh.h" />
-    <ClInclude Include="..\lib\sdkmeshmath.h" />
-    <ClInclude Include="..\lib\SdkMeshResourceLoader.h" />
     <ClInclude Include="..\lib\stb_image.h" />
     <ClInclude Include="..\lib\TextureResourceLoader.h" />
     <ClInclude Include="..\lib\tinyxml2.h" />
-    <ClInclude Include="..\lib\umHalf.h" />
     <ClInclude Include="..\lib\WildcardMatch.h" />
     <ClInclude Include="..\lib\xml.h" />
     <ClInclude Include="..\lib\ZipFile.h" />
