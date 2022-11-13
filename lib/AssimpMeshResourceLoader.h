@@ -16,8 +16,7 @@ public:
     virtual bool VLoadResource(
         char* rawBuffer, unsigned int rawSize,
         std::shared_ptr<ResHandle> handle);
-    // TODO - multiple model formats
-    virtual std::string VGetPattern() { return "*.obj"; }
+    virtual std::string VGetPattern() { return ".*\\.(obj|fbx|dae|ply)"; }
 };
 
 #endif // GCC4_SDK_MESH_RESOURCE_LOADER_H_INCLUDED

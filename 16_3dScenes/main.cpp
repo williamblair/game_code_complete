@@ -46,6 +46,10 @@ bool updateInput()
 
 ResCache* g_ResCache = nullptr;
 
+#ifdef _WIN32
+#undef main
+#endif
+
 int main(int argc, char **argv)
 {
     Mat4x4 modelMat = Translate(0.0f,0.0f,-5.0f)*Scale(0.01f,0.01f,0.01f);
@@ -61,7 +65,7 @@ int main(int argc, char **argv)
         std::shared_ptr<IRenderer> pRndr = createRenderer();
         std::shared_ptr<AssimpMeshResourceLoader> pMeshLoader = std::make_shared<AssimpMeshResourceLoader>();
         std::shared_ptr<TextureResourceLoader> pTexLoader = std::make_shared<TextureResourceLoader>();
-        ResourceZipFile* pZip = new ResourceZipFile("../../16_3dScenes/resources.zip");
+        ResourceZipFile* pZip = new ResourceZipFile("./resources.zip");
         std::shared_ptr<ResCache> pResCache = std::make_shared<ResCache>(50, pZip); // 50 MB of cache
         g_ResCache = pResCache.get();
         if (!g_ResCache->Init()) {

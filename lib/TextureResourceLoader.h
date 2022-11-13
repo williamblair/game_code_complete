@@ -22,7 +22,7 @@ public:
     );
 
     // TODO - handle multiple types
-    virtual std::string VGetPattern() { return "*.jpg"; }
+    virtual std::string VGetPattern() { return ".*\\.(jpg|png|tga|bmp)"; }
 };
 
 #endif // GCC4_TEXTURE_RESOURCE_LOADER_H_INCLUDED
