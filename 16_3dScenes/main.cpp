@@ -10,6 +10,7 @@
 #include <ResCache.h>
 #include <ResourceZipFile.h>
 #include <AssimpMeshResourceLoader.h>
+#include <TextureResourceLoader.h>
 #include <AssimpMeshNode.h>
 #include <OGLRenderer.h>
 #include <OGLVertexBuffer.h>
@@ -59,6 +60,7 @@ int main(int argc, char **argv)
     {
         std::shared_ptr<IRenderer> pRndr = createRenderer();
         std::shared_ptr<AssimpMeshResourceLoader> pMeshLoader = std::make_shared<AssimpMeshResourceLoader>();
+        std::shared_ptr<TextureResourceLoader> pTexLoader = std::make_shared<TextureResourceLoader>();
         ResourceZipFile* pZip = new ResourceZipFile("../../16_3dScenes/resources.zip");
         std::shared_ptr<ResCache> pResCache = std::make_shared<ResCache>(50, pZip); // 50 MB of cache
         g_ResCache = pResCache.get();
@@ -66,8 +68,9 @@ int main(int argc, char **argv)
             throw std::runtime_error("g_ResCache init failed");
         }
         pResCache->RegisterLoader(pMeshLoader);
+        pResCache->RegisterLoader(pTexLoader);
         std::shared_ptr<CameraNode> pCam = std::make_shared<CameraNode>(&Mat4x4::g_Identity, camFrustum);
-        std::shared_ptr<OGLSkyNode> pSky = std::make_shared<OGLSkyNode>("../../16_3dScenes/skybox/Sky2", pCam);
+        std::shared_ptr<OGLSkyNode> pSky = std::make_shared<OGLSkyNode>("skybox\\Sky2", pCam);
         std::shared_ptr<AssimpMeshNode> pMesh = std::make_shared<AssimpMeshNode>(
             ActorId(1), "My Mesh", "teapot.obj", RenderPass_Static, g_White, &modelMat);
         std::shared_ptr<Scene> pScene = std::make_shared<Scene>(pRndr);

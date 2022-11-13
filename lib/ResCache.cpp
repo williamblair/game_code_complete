@@ -84,7 +84,11 @@ std::shared_ptr<ResHandle> ResCache::Load( Resource* pResource )
         return pHandle; // resource not loaded
     }
     
-    unsigned int rawSize = m_pFile->VGetRawResourceSize( *pResource );
+    int rawSize = m_pFile->VGetRawResourceSize( *pResource );
+    if (rawSize <= 0) {
+        std::cout << __func__ << ": get raw resource size returned <= 0" << std::endl;
+        return pHandle;
+    }
     char* pRawBuffer = pLoader->VUseRawFile() ? 
                        Allocate( rawSize ) : 
                        new char[rawSize];

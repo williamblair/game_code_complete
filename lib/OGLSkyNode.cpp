@@ -2,7 +2,10 @@
 #include "OGLSkyNode.h"
 #include "OGLRenderer.h"
 #include "Scene.h"
-#include "stb_image.h"
+#include "OGLTextureResourceExtraData.h"
+#include "OGLTextureResourceView.h"
+#include "ResHandle.h"
+#include "ResCache.h"
 
 // https://learnopengl.com/Advanced-OpenGL/Cubemaps
 
@@ -76,10 +79,14 @@ OGLSkyNode::OGLSkyNode(const char* textureFile, std::shared_ptr<CameraNode> came
         m_TextureBaseName + "_back.jpg" // back
     };
     for (int i=0; i<6; ++i) {
-        uint8_t* data = stbi_load(faces[i].c_str(), &width,&height,&bytesPerPixel, 0);
-        if (data) {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-            stbi_image_free(data);
+        Resource resource(faces[i]);
+        std::shared_ptr<ResHandle> pResHandle = g_ResCache->GetHandle(&resource);
+        if (!pResHandle) { throw std::runtime_error("Failed to load " + faces[i]); }
+        auto extraData = std::static_pointer_cast<OGLTextureResourceExtraData>(pResHandle->GetExtra());
+        OGLTextureResourceView* pTex = extraData->GetTexture();
+        uint8_t* pData = pTex->GetData();
+        if (pData) {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, pTex->GetWidth(), pTex->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
         } else {
             throw std::runtime_error("Failed to load sky box texture: " + faces[i]);
         }

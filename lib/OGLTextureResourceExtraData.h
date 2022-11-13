@@ -18,7 +18,7 @@ public:
 
     virtual std::string VToString() { return "OGLTextureResourceExtraData"; }
 
-    OGLTextureResourceView* const* GetTexture() { return &m_pTexture; }
+    OGLTextureResourceView* GetTexture() { return m_pTexture; }
 
 protected:
     OGLTextureResourceView* m_pTexture;

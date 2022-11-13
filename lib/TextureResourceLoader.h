@@ -20,6 +20,9 @@ public:
         unsigned int rawSize,
         std::shared_ptr<ResHandle> handle
     );
+
+    // TODO - handle multiple types
+    virtual std::string VGetPattern() { return "*.jpg"; }
 };
 
 #endif // GCC4_TEXTURE_RESOURCE_LOADER_H_INCLUDED
