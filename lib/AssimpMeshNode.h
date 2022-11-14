@@ -27,7 +27,7 @@ private:
     std::string m_MeshFileName;
     OGLShader m_Shader;
     std::vector<std::shared_ptr<OGLVertexBuffer>> m_VertBufs;
-    OGLVertexBuffer::VertexColored m_TestVertColored;
+    unsigned int m_TexId;
 
     bool ProcessNode(aiNode* pNode, const aiScene* pScene);
 };

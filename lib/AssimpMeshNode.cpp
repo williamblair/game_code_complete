@@ -1,5 +1,7 @@
 #include "AssimpMeshNode.h"
 #include "AssimpMeshResourceExtraData.h"
+#include "OGLTextureResourceExtraData.h"
+#include "OGLCreateTexture.h"
 #include "OGLRenderer.h"
 #include "Resource.h"
 #include "ResHandle.h"
@@ -16,25 +18,46 @@ AssimpMeshNode::AssimpMeshNode(
     SceneNode(actorId, name, renderPass, color, t)
 {
     m_MeshFileName = meshFileName;
+    m_TexId = 0;
 }
 AssimpMeshNode::~AssimpMeshNode()
-{}
+{
+    if (m_TexId) { glDeleteTextures(1, &m_TexId); }
+}
 
 bool AssimpMeshNode::VOnRestore(Scene* pScene)
 {
     SceneNode::VOnRestore(pScene);
 
-    // Load mesh/vertex buffer
-    Resource resource(m_MeshFileName);
-    std::shared_ptr<ResHandle> pResourceHandle =
-        g_ResCache->GetHandle(&resource);
-    std::shared_ptr<AssimpMeshResourceExtraData> extra =
-        std::static_pointer_cast<AssimpMeshResourceExtraData>(pResourceHandle->GetExtra());
-    if (!extra) {
-        printf("AssimpMeshNode on restore get extra is null\n");
+    {
+        // Load mesh/vertex buffer
+        Resource resource(m_MeshFileName);
+        std::shared_ptr<ResHandle> pResourceHandle =
+            g_ResCache->GetHandle(&resource);
+        std::shared_ptr<AssimpMeshResourceExtraData> extra =
+            std::static_pointer_cast<AssimpMeshResourceExtraData>(pResourceHandle->GetExtra());
+        if (!extra) {
+            printf("AssimpMeshNode on restore get extra is null\n");
+            return false;
+        }
+        if (!ProcessNode(extra->GetScene()->mRootNode, extra->GetScene())) {
+            return false;
+        }
     }
-    if (!ProcessNode(extra->GetScene()->mRootNode, extra->GetScene())) {
-        return false;
+    {
+        // Load texture - TESTING
+        Resource resource("teapot.png");
+        std::shared_ptr<ResHandle> pResHandle = g_ResCache->GetHandle(&resource);
+        auto pExtra = std::static_pointer_cast<OGLTextureResourceExtraData>(pResHandle->GetExtra());
+        if (!pExtra) {
+            printf("AssimpMeshNode load texture extra is null\n");
+            return false;
+        }
+        m_TexId = OGLCreateTexture(
+            pExtra->GetTexture()->GetData(),
+            pExtra->GetTexture()->GetWidth(), pExtra->GetTexture()->GetHeight(),
+            pExtra->GetTexture()->GetBytesPerPixel()
+        );
     }
 
     // Shader
@@ -43,9 +66,10 @@ bool AssimpMeshNode::VOnRestore(Scene* pScene)
         "                                               \n"
         "layout (location = 0) in vec3 aPos;            \n"
         "layout (location = 1) in vec3 aNorm;           \n"
-        "layout (location = 2) in vec3 aColor;          \n"
+        "layout (location = 2) in vec2 aTexCoord;       \n"
         "                                               \n"
-        "out vec3 fragColor;                            \n"
+        "out vec2 fragTexCoord;                         \n"
+        "out vec3 fragNormal;                           \n"
         "                                               \n"
         "uniform mat4 uModelMat;                        \n"
         "uniform mat4 uViewMat;                         \n"
@@ -54,18 +78,57 @@ bool AssimpMeshNode::VOnRestore(Scene* pScene)
         "void main()                                    \n"
         "{                                              \n"
         "   gl_Position = uProjMat * uViewMat * uModelMat * vec4(aPos,1.0);     \n"
-        "   fragColor = aColor;                                                 \n"
+        "   fragTexCoord = aTexCoord;                                           \n"
+        "                                                                       \n"
+        "   mat4 normalMat = transpose(inverse(uModelMat));                     \n"
+        "   fragNormal = normalize(vec3(normalMat*vec4(aNorm,1.0)));            \n"
         "}                                                                      \n";
     const char* fragStr =
         "#version 330 core                      \n"
         "                                       \n"
         "out vec4 FragColor;                    \n"
-        "in vec3 fragColor;                     \n"
         "                                       \n"
-        "void main()                            \n"
-        "{                                      \n"
-        "   FragColor = vec4(fragColor,1.0);    \n"
-        "}                                      \n";
+        "in vec3 fragNormal;                    \n"
+        "in vec2 fragTexCoord;                  \n"
+        "                                       \n"
+        "uniform sampler2D uDiffuseTex;         \n"
+        "                                       \n"
+        "uniform vec3 uLightDiffuse[8];                 \n"
+        "uniform vec3 uLightDir[8];                     \n"
+        "uniform vec3 uAmbient;                         \n"
+        "uniform int uNumLights;                        \n"
+        "                                               \n"
+        "uniform vec4 uDiffuseObjectColor;              \n"
+        "uniform vec4 uAmbientObjectColor;              \n"
+        "                                               \n"
+        "vec3 calcAmbLight()                            \n"
+        "{                                              \n"
+        "   return uAmbient *                           \n"
+        "       uAmbientObjectColor.rgb;                \n"
+        "}                                              \n"
+        "                                                       \n"
+        "vec3 calcDirLight(int i)                               \n"
+        "{                                                      \n"
+        "   vec3 norm = normalize(fragNormal);                  \n"
+        "   vec3 lightDir = normalize(uLightDir[i]);            \n"
+        "   float nDotL = max(dot(lightDir,norm),0);            \n"
+        "   vec3 diffuse = uLightDiffuse[i] *                   \n"
+        "        uDiffuseObjectColor.rgb *                      \n"
+        "        nDotL;                                         \n"
+        "   return diffuse;                                     \n"
+        "}                                                      \n"
+        "                                                       \n"
+        "void main()                                            \n"
+        "{                                                      \n"
+        "   FragColor = vec4(calcAmbLight(),0.0);               \n"
+        "   for (int i=0; i<uNumLights; ++i) {                  \n"
+        "       FragColor += vec4(calcDirLight(i),0.0);         \n"
+        "   }                                                   \n"
+        "   FragColor.rgb =                                     \n"
+        "        texture(uDiffuseTex,fragTexCoord).rgb *        \n"
+        "        FragColor.rgb;                                 \n"
+        "   FragColor.a = texture(uDiffuseTex,fragTexCoord).a;  \n"
+        "}                                                      \n";
     if (!m_Shader.LoadFromString(vertStr, fragStr)) {
         throw std::runtime_error("OGLShaderMeshNode shader load from string failed\n");
     }
@@ -79,19 +142,15 @@ bool AssimpMeshNode::VRender(Scene* pScene)
 
     OGLRenderer* rndr = static_cast<OGLRenderer*>(pScene->GetRenderer());
     rndr->SetShader(m_Shader);
-    //Mat4x4 testProj = Perspective(Deg2Rad(60.0f), 640.0f/480.0f, 0.1f, 1000.0f);
-    //Mat4x4 testView = Mat4x4::g_Identity;
-    //Mat4x4 testModel = Translate(0.0f,0.0f,-5.0f) * Scale(0.01f,0.01f,0.01f);
-    //m_Shader.Use();
-    //m_Shader.SetMat4("uModelMat", testModel);
-    //m_Shader.SetMat4("uViewMat", testView);
-    //m_Shader.SetMat4("uProjMat", testProj);
-    //Mat4x4 testMvp = testProj * testView * testModel;
-    //Vec3 testVec(m_TestVertColored.x,m_TestVertColored.y,m_TestVertColored.z);
-    //Vec3 testTform = Transform(testMvp, testVec);
-    //if (!m_Shader.SetMat4("uMvpMat", testMvp)) {
-    //    throw std::runtime_error("Failed to set mvp mat");
-    //}
+    // TESTING //////////////////////////////////////////////////////////
+    m_Shader.SetInt("uNumLights", 1);
+    m_Shader.SetVec3("uLightDiffuse[0]", Vec3(1.0f,1.0f,1.0f));
+    m_Shader.SetVec3("uLightDir[0]", Vec3(0.0f,1.0f,0.0f));
+    m_Shader.SetVec3("uAmbient", Vec3(0.1f,0.1f,0.1f));
+    m_Shader.SetVec4("uDiffuseObjectColor", Vec4(1.0f,1.0f,1.0f,1.0f));
+    m_Shader.SetVec4("uAmbientObjectColor", Vec4(0.1f,0.1f,0.1f,1.0f));
+    glBindTexture(GL_TEXTURE_2D, m_TexId);
+    ////////////////////////////////////////////////////////////////////
     for (std::shared_ptr<OGLVertexBuffer>& vb : m_VertBufs) {
         rndr->DrawVertexBuffer(*vb);
     }
@@ -104,12 +163,11 @@ bool AssimpMeshNode::ProcessNode(aiNode* pNode, const aiScene* pScene)
     for (size_t i=0; i<pNode->mNumMeshes; ++i)
     {
         aiMesh* pMesh = pScene->mMeshes[pNode->mMeshes[i]];
-        std::vector<OGLVertexBuffer::VertexColored> verts(pMesh->mNumVertices);
+        std::vector<OGLVertexBuffer::VertexTextured> verts(pMesh->mNumVertices);
         std::vector<uint32_t> indices;
-        // TODO - textures
         for (size_t j=0; j<pMesh->mNumVertices; ++j)
         {
-            OGLVertexBuffer::VertexColored& vert = verts[j];
+            OGLVertexBuffer::VertexTextured& vert = verts[j];
             vert.x = pMesh->mVertices[j].x;
             vert.y = pMesh->mVertices[j].y;
             vert.z = pMesh->mVertices[j].z;
@@ -118,14 +176,13 @@ bool AssimpMeshNode::ProcessNode(aiNode* pNode, const aiScene* pScene)
                 vert.ny = pMesh->mNormals[j].y;
                 vert.nz = pMesh->mNormals[j].z;
             }
-            vert.r = 1.0f;
-            vert.g = 0;
-            vert.b = 0;
-            // TODO
-            // if (pMesh->mTextureCoords[0]) {
-            // vert.u = pMesh->mTextureCoords[0][j].x;
-            // vert.v = pMesh->mTextureCoords[0][j].y;
-            //}
+            //vert.r = 1.0f;
+            //vert.g = 0;
+            //vert.b = 0;
+            if (pMesh->mTextureCoords[0]) {
+                vert.u = pMesh->mTextureCoords[0][j].x;
+                vert.v = pMesh->mTextureCoords[0][j].y;
+            }
             // TODO - tangent/bitangent
         }
         for (size_t j=0; j<pMesh->mNumFaces; ++j)
@@ -138,14 +195,13 @@ bool AssimpMeshNode::ProcessNode(aiNode* pNode, const aiScene* pScene)
         m_VertBufs.push_back(std::make_shared<OGLVertexBuffer>());
         OGLVertexBuffer& vb = *m_VertBufs[m_VertBufs.size()-1];
         if (!vb.Init(
-            OGLVertexBuffer::POS_COLOR,
+            OGLVertexBuffer::POS_TEXCOORD,
             verts.data(), verts.size(),
             indices.size() > 0 ? indices.data() : nullptr, indices.size()))
         {
             printf("Assimp mesh vert buf init failed\n");
             return false;
         }
-        m_TestVertColored = verts[0];
     }
 
     // after we've processed all of the meshes (if any),

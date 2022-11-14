@@ -52,7 +52,7 @@ ResCache* g_ResCache = nullptr;
 
 int main(int argc, char **argv)
 {
-    Mat4x4 modelMat = Translate(0.0f,0.0f,-5.0f)*Scale(0.01f,0.01f,0.01f);
+    Mat4x4 modelMat = Translate(0.0f,-2.0f,-9.0f)*Scale(0.05f,0.05f,0.05f);
     Mat4x4 viewMat = Mat4x4::g_Identity;
     Mat4x4 projMat = Perspective(Deg2Rad(60.0f), 640.0f/480.0f, 0.1f, 1000.0f);
 
@@ -84,7 +84,6 @@ int main(int argc, char **argv)
         pRndr->VSetViewTransform(&viewMat);
         pRndr->VSetWorldTransform(&modelMat);
 
-        pMesh->SetPosition(Vec3(0.0f,0.0f,-20.0f));
         pMesh->VSetTransform(&modelMat);
 
         pCam->SetTarget(pMesh);
@@ -96,9 +95,18 @@ int main(int argc, char **argv)
         pMesh->VOnRestore(pScene.get());
 
         bool quit = false;
+        float teapotRot = 0.0f;
+        const float dt = 1.0f/60.0f;
         while (!quit)
         {
             quit = updateInput();
+            Mat4x4 teapotXform =
+                Translate(0.0f,-2.0f,-9.0f) *
+                Rotate(teapotRot,Vec3(0.0f,1.0f,0.0f)) *
+                Rotate(teapotRot*0.3f,Vec3(0.0f,0.0f,1.0f)) *
+                Scale(0.05f,0.05f,0.05f);
+            pMesh->VSetTransform(&teapotXform);
+            teapotRot += M_PI * dt;
 
             pRndr->VPreRender();
             pScene->OnRender();

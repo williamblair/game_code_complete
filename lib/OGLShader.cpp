@@ -95,6 +95,17 @@ bool OGLShader::SetMat4(const char* name, const Mat4x4& mat)
     glUniformMatrix4fv(pos, 1, GL_FALSE, (float*)&mat);
     return true;
 }
+bool OGLShader::SetVec4(const char* name, const Vec4& vec)
+{
+    GLint pos = glGetUniformLocation(this->mProgId, name);
+    if (pos < 0) {
+        //printf("Failed to find mat4 uniform: %s\n", name);
+        return false;
+    }
+        
+    glUniform4fv(pos, 1, (float*)&vec);
+    return true;
+}
 bool OGLShader::SetVec3(const char* name, const Vec3& vec)
 {
     GLint pos = glGetUniformLocation(this->mProgId, name);
