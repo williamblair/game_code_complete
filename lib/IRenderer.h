@@ -7,12 +7,7 @@
 
 #include "LightManager.h"
 #include "GCCMath.h"
-
-class IRenderState
-{
-public:
-    virtual std::string VToString() = 0;
-};
+#include "IRenderState.h"
 
 class IRenderer
 {
@@ -29,6 +24,8 @@ public:
     virtual std::shared_ptr<IRenderState> VPrepareAlphaPass() = 0;
     virtual std::shared_ptr<IRenderState> VPrepareSkyboxPass() = 0;
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color) = 0;
+    virtual int VGetWidth() = 0;
+    virtual int VGetHeight() = 0;
 };
 
 #endif // IRENDERER_H_INCLUDED

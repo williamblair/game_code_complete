@@ -1,9 +1,9 @@
 #include <iostream>
+#include <regex>
 #include <ResCache.h>
 #include <DefaultResourceLoader.h>
 #include <IResourceFile.h>
 #include <Resource.h>
-#include <WildcardMatch.h>
 
 ResCache::ResCache( const unsigned int sizeInMb, IResourceFile* pResFile )
 {
@@ -59,6 +59,13 @@ std::shared_ptr<ResHandle> ResCache::GetHandle( Resource* pResource )
     return pHandle;
 }
 
+static bool RegexMatch(const char* pattern, const char* expression)
+{
+    std::regex reg(pattern);
+    std::string str(expression);
+    return std::regex_match(str, reg);
+}
+
 std::shared_ptr<ResHandle> ResCache::Load( Resource* pResource )
 {
     std::shared_ptr<IResourceLoader> pLoader;
@@ -69,8 +76,7 @@ std::shared_ptr<ResHandle> ResCache::Load( Resource* pResource )
           ++it )
     {
         std::shared_ptr<IResourceLoader> testLoader = *it;
-        if ( WildcardMatch( testLoader->VGetPattern().c_str(),
-             pResource->m_name.c_str() ) )
+        if (RegexMatch(testLoader->VGetPattern().c_str(), pResource->m_name.c_str()))
         {
             pLoader = testLoader;
             break;
@@ -84,7 +90,11 @@ std::shared_ptr<ResHandle> ResCache::Load( Resource* pResource )
         return pHandle; // resource not loaded
     }
     
-    unsigned int rawSize = m_pFile->VGetRawResourceSize( *pResource );
+    int rawSize = m_pFile->VGetRawResourceSize( *pResource );
+    if (rawSize <= 0) {
+        std::cout << __func__ << ": get raw resource size returned <= 0" << std::endl;
+        return pHandle;
+    }
     char* pRawBuffer = pLoader->VUseRawFile() ? 
                        Allocate( rawSize ) : 
                        new char[rawSize];

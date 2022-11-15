@@ -17,7 +17,7 @@ public:
                                 std::shared_ptr<ResHandle> handle ) {
         return true;
     }
-    virtual std::string VGetPattern() { return "*"; }
+    virtual std::string VGetPattern() { return ".*"; }
 };
 
 #endif // DEFAULT_RESOURCE_LOADER_H_INCLUDED

@@ -1,10 +1,14 @@
 #include "OGLRenderer.h"
+#include "OGLAlphaPassRenderState.h"
+#include "OGLSkyBoxPassRenderState.h"
 
 OGLRenderer::OGLRenderer() :
     mWindow(nullptr),
     mWidth(0),
     mHeight(0)
-{}
+{
+    m_pCurShader = nullptr;
+}
 
 OGLRenderer::~OGLRenderer()
 {
@@ -58,7 +62,7 @@ bool OGLRenderer::Init(int width, int height)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glFrontFace(GL_CW); // match DirectX winding order
+    //glFrontFace(GL_CW); // match DirectX winding order
     //glEnable(GL_CULL_FACE); // TODO
 
     return true;
@@ -101,24 +105,32 @@ bool OGLRenderer::VPostRender()
 
 bool OGLRenderer::VCalcLighting(Lights* lights, int maximumLights)
 {
-    //TODO
+    
     return true;
 }
 
-void OGLRenderer::VSetWorldTransform(const Mat4x4* m) { mModelMat = *m; }
-void OGLRenderer::VSetViewTransform(const Mat4x4* m) { mViewMat = *m; }
-void OGLRenderer::VSetProjectionTransform(const Mat4x4* m) { mProjMat = *m; }
+void OGLRenderer::VSetWorldTransform(const Mat4x4* m) {
+    mModelMat = *m;
+    if (m_pCurShader) {
+        m_pCurShader->SetMat4("uModelMat", mModelMat);
+    }
+}
+void OGLRenderer::VSetViewTransform(const Mat4x4* m) {
+    mViewMat = *m;
+    if (m_pCurShader) {
+        m_pCurShader->SetMat4("uViewMat", mViewMat);
+    }
+}
+void OGLRenderer::VSetProjectionTransform(const Mat4x4* m) {
+    mProjMat = *m;
+    if (m_pCurShader) {
+        m_pCurShader->SetMat4("uProjMat", mProjMat);
+    }
+}
 
-std::shared_ptr<IRenderState> OGLRenderer::VPrepareAlphaPass()
-{
-    //TODO
-    return std::shared_ptr<IRenderState>();
-}
-std::shared_ptr<IRenderState> OGLRenderer::VPrepareSkyboxPass()
-{
-    //TODO
-    return std::shared_ptr<IRenderState>();
-}
+std::shared_ptr<IRenderState> OGLRenderer::VPrepareAlphaPass() { return std::make_shared<OGLAlphaPassRenderState>(); }
+std::shared_ptr<IRenderState> OGLRenderer::VPrepareSkyboxPass() { return std::make_shared<OGLSkyBoxPassRenderState>(); }
+
 void OGLRenderer::VDrawLine(const Vec3& from, const Vec3& to, const Color& color)
 {
     //TODO
@@ -126,14 +138,21 @@ void OGLRenderer::VDrawLine(const Vec3& from, const Vec3& to, const Color& color
 
 void OGLRenderer::SetShader(OGLShader& shdr)
 {
+    if (&shdr == m_pCurShader) {
+        return;
+    }
     Mat4x4 mvpMat = mProjMat * mViewMat * mModelMat;
 
     // Bind the shader
     shdr.Use();
 
     // Set uniforms
-    // TODO - texturing?
     shdr.SetMat4("uMvpMatrix", mvpMat);
+    shdr.SetMat4("uModelMat", mModelMat);
+    shdr.SetMat4("uViewMat", mViewMat);
+    shdr.SetMat4("uProjMat", mProjMat);
+
+    m_pCurShader = &shdr;
 }
 void OGLRenderer::DrawVertexBuffer(const OGLVertexBuffer& vb)
 {

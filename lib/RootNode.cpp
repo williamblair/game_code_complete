@@ -1,4 +1,5 @@
 #include "RootNode.h"
+#include "Scene.h"
 #include <cstdio>
 
 RootNode::RootNode() :
@@ -76,13 +77,11 @@ bool RootNode::VRenderChildren(Scene* pScene)
 
         case RenderPass_Sky:
         {
-            //TODO
-            //D3DRendererSkyboxPass11 skyBoxPass;
+            std::shared_ptr<IRenderState> skyPass = pScene->GetRenderer()->VPrepareSkyboxPass();
             m_Children[pass]->VRenderChildren(pScene);
             break;
         }
         default:
-            printf("Error - unhandled RenderPass\n");
             break;
         }
     }

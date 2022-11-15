@@ -94,7 +94,8 @@ bool SceneNode::VRenderChildren(Scene* pScene)
             // you could short circuit rendering if an object fails from VPreRender
 
             // don't render this node if you can't see it
-            if ((*i)->VIsVisible(pScene))
+            //if ((*i)->VIsVisible(pScene)) // TODO - fix OGLSkyNode so this passes
+            if (true)
             {
                 float alpha = (*i)->VGet()->m_Material.GetAlpha();
                 if (alpha >= 0.99f) {

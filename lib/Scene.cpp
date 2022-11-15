@@ -5,11 +5,12 @@
 #include "CameraNode.h"
 #include "LightManager.h"
 
-Scene::Scene()
+Scene::Scene(std::shared_ptr<IRenderer> pRenderer)
 {
     m_Root.reset(new RootNode());
     m_LightManager = new LightManager();
     m_MatrixStack = new MatrixStack();
+    m_Renderer = pRenderer;
 }
 
 Scene::~Scene()
@@ -103,28 +104,26 @@ void Scene::PushAndSetMatrix(const Mat4x4& toWorld)
 {
     m_MatrixStack->Push();
     m_MatrixStack->MultMatrixLocal(&toWorld);
-    //TODO
-    //SetTransform(D3DTS_WORLD, m_MatrixStack->GetTop());
+    m_Renderer->VSetWorldTransform(m_MatrixStack->GetTop());
 }
 
 void Scene::PopMatrix()
 {
     m_MatrixStack->Pop();
-    //TODO
-    //SetTransform(D3DTS_WORLD, m_MatrixStack->GetTop());
+    m_Renderer->VSetWorldTransform(m_MatrixStack->GetTop());
 }
 
 void Scene::RenderAlphaPass()
 {
-    // D3DRendererAlphaPass11 alphaPass;
+    std::shared_ptr<IRenderState> alphaPass = m_Renderer->VPrepareAlphaPass();
     m_AlphaSceneNodes.sort();
     while (!m_AlphaSceneNodes.empty())
     {
         AlphaSceneNodes::reverse_iterator i = m_AlphaSceneNodes.rbegin();
-        //TODO
-        //DXUTGetD3DDevice()->SetTransform(D3DTS_WORLD, &((*i)->m_Concat))
+        PushAndSetMatrix((*i)->m_Concat);
         (*i)->m_pNode->VRender(this);
         delete (*i);
+        PopMatrix();
         m_AlphaSceneNodes.pop_back();
     }
 }

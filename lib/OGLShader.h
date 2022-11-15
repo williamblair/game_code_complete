@@ -13,10 +13,12 @@ public:
     ~OGLShader();
 
     bool LoadFromFile(const char* vertexFile, const char* shaderFile);
+    bool LoadFromString(const char* vertexStr, const char* fragmentStr);
 
     void Use() { glUseProgram(mProgId); }
 
     bool SetMat4(const char* name, const Mat4x4& mat);
+    bool SetVec4(const char* name, const Vec4& vec);
     bool SetVec3(const char* name, const Vec3& vec);
     bool SetVec2(const char* name, const Vec2& vec);
     bool SetInt(const char* name, int val);

@@ -19,8 +19,8 @@ public:
     /** @brief determines the product of the given matrix and the current matrix */
     void MultMatrixLocal(const Mat4x4* pMat);
 
-    /** @brief retrieves the current matrix at the top of the stack */
-    Mat4x4* GetTop() { return &m_Stack.top(); }
+    /** @brief retrieves the current matrix */
+    Mat4x4* GetTop() { return &m_CurMatrix; }
 
 private:
     std::stack<Mat4x4> m_Stack;
