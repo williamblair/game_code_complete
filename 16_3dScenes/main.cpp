@@ -12,6 +12,7 @@
 #include <AssimpMeshResourceLoader.h>
 #include <TextureResourceLoader.h>
 #include <AssimpMeshNode.h>
+#include <LightNode.h>
 #include <OGLRenderer.h>
 #include <OGLVertexBuffer.h>
 #include <OGLSkyNode.h>
@@ -25,6 +26,19 @@ createRenderer()
         throw std::runtime_error("Failed to init renderer");
     }
     return rndr;
+}
+
+std::shared_ptr<LightNode>
+createLight()
+{
+    LightNode::LightProperties props;
+    Color diffuseCol;
+    Mat4x4 tform;
+    memset(&props, 0, sizeof(props));
+    diffuseCol.Set(1.0f,0.0f,1.0f,1.0f);
+    tform = Translate(0.0f,1.0f,0.0f) * Rotate(Deg2Rad(90.0f),Vec3(0.0f,1.0f,0.0f));
+    std::shared_ptr<LightNode> node = std::make_shared<LightNode>(ActorId(2), "Test Light", props, diffuseCol, &tform);
+    return node;
 }
 
 bool updateInput()
@@ -78,6 +92,7 @@ int main(int argc, char **argv)
         std::shared_ptr<AssimpMeshNode> pMesh = std::make_shared<AssimpMeshNode>(
             ActorId(1), "My Mesh", "teapot.obj", RenderPass_Static, g_White, &modelMat);
         std::shared_ptr<Scene> pScene = std::make_shared<Scene>(pRndr);
+        std::shared_ptr<LightNode> pLight = createLight();
 
         pRndr->VSetBackgroundColor(255,0,127,127);
         pRndr->VSetProjectionTransform(&projMat);
@@ -90,6 +105,7 @@ int main(int argc, char **argv)
         pScene->SetCamera(pCam);
         pScene->AddChild(ActorId(42), pSky);
         pScene->AddChild(ActorId(1), pMesh);
+        pScene->AddChild(ActorId(2), pLight);
         
         pCam->SetViewTransform(pScene.get());
         pMesh->VOnRestore(pScene.get());

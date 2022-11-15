@@ -105,7 +105,7 @@ bool OGLRenderer::VPostRender()
 
 bool OGLRenderer::VCalcLighting(Lights* lights, int maximumLights)
 {
-    //TODO
+    
     return true;
 }
 

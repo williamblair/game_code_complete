@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "LightManager.h"
+#include "Scene.h"
 
 LightManager::LightManager()
 {}
@@ -10,8 +11,7 @@ LightManager::~LightManager()
 
 void LightManager::CalcLighting(Scene* pScene)
 {
-    //TODO
-    //pScene->GetRenderer()->VCalcLighting(&m_Lights, MAXIMUM_LIGHTS_SUPPORTED);
+    pScene->GetRenderer()->VCalcLighting(&m_Lights, MAXIMUM_LIGHTS_SUPPORTED);
 
     int count = 0;
     assert(m_Lights.size() < MAXIMUM_LIGHTS_SUPPORTED);
@@ -34,16 +34,23 @@ void LightManager::CalcLighting(Scene* pScene)
 
 void LightManager::CalcLighting(ConstantBuffer_Lighting* pLighting, SceneNode* pNode)
 {
-    // TODO
-#if 0
     int count = GetLightCount(pNode);
     if (count)
     {
-        pLighting->m_vLightAmbient = *GetLightAmbient(pNode);
-        memcpy(pLighting->m_vLightDir, GetLightDirection(pNode), sizeof(Vec4)*count);
-        memcpy(pLighting->m_vLightDiffuse, GetLightDiffuse(pNode), sizeof(Vec4)*count);
-        pLighting->m_nNumLights = count;
+        pLighting->m_vLightAmbient.x = GetLightAmbient(pNode)->x;
+        pLighting->m_vLightAmbient.y = GetLightAmbient(pNode)->y;
+        pLighting->m_vLightAmbient.z = GetLightAmbient(pNode)->z;
+        //memcpy(pLighting->m_vLightDir, GetLightDirection(pNode), sizeof(Vec4)*count);
+        //memcpy(pLighting->m_vLightDiffuse, GetLightDiffuse(pNode), sizeof(Vec4)*count);
+        for (int i=0; i<count; ++i) {
+            pLighting->m_vLightDir[i].x = GetLightDirection(pNode)[i].x;
+            pLighting->m_vLightDir[i].y = GetLightDirection(pNode)[i].y;
+            pLighting->m_vLightDir[i].z = GetLightDirection(pNode)[i].z;
+            pLighting->m_vLightDiffuse[i].x = GetLightDiffuse(pNode)[i].r;
+            pLighting->m_vLightDiffuse[i].y = GetLightDiffuse(pNode)[i].g;
+            pLighting->m_vLightDiffuse[i].z = GetLightDiffuse(pNode)[i].b;
+        }
+        pLighting->m_NumLights = count;
     }
-#endif
 }
 

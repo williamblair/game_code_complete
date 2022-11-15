@@ -4,14 +4,9 @@
 #include <list>
 
 #include "LightNode.h"
+#include "ConstantBuffer_Lighting.h"
 
 typedef std::list<std::shared_ptr<LightNode>> Lights;
-
-#define MAXIMUM_LIGHTS_SUPPORTED 4
-
-// forward declaration
-// TODO - define
-class ConstantBuffer_Lighting;
 
 class LightManager
 {
