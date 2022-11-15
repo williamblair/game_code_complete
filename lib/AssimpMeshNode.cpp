@@ -139,14 +139,28 @@ bool AssimpMeshNode::VOnRestore(Scene* pScene)
 bool AssimpMeshNode::VRender(Scene* pScene)
 {
     SceneNode::VRender(pScene);
-
+    int lightCount = pScene->GetLightManager()->GetLightCount(this);
     OGLRenderer* rndr = static_cast<OGLRenderer*>(pScene->GetRenderer());
     rndr->SetShader(m_Shader);
+    m_Shader.SetInt("uNumLights", lightCount);
+    if (lightCount > 0) {
+        char uniformName[128];
+        const Vec4* lightAmbient = pScene->GetLightManager()->GetLightAmbient(this);
+        const Color* lightCols = pScene->GetLightManager()->GetLightDiffuse(this);
+        const Vec4* lightDirs = pScene->GetLightManager()->GetLightDirection(this);
+        m_Shader.SetVec3("uAmbient", Vec3(lightAmbient->x, lightAmbient->y, lightAmbient->z));
+        for (int i=0; i<lightCount; ++i) {
+            sprintf(uniformName, "uLightDiffuse[%d]", i);
+            m_Shader.SetVec3(uniformName, Vec3(lightCols[i].r,lightCols[i].g,lightCols[i].b));
+            sprintf(uniformName, "uLightDir[%d]", i);
+            m_Shader.SetVec3(uniformName, Vec3(lightDirs[i].x,lightDirs[i].y,lightDirs[i].z));
+        }
+    }
     // TESTING //////////////////////////////////////////////////////////
-    m_Shader.SetInt("uNumLights", 1);
-    m_Shader.SetVec3("uLightDiffuse[0]", Vec3(1.0f,1.0f,1.0f));
-    m_Shader.SetVec3("uLightDir[0]", Vec3(0.0f,1.0f,0.0f));
-    m_Shader.SetVec3("uAmbient", Vec3(0.1f,0.1f,0.1f));
+    //m_Shader.SetInt("uNumLights", 1);
+    //m_Shader.SetVec3("uLightDiffuse[0]", Vec3(1.0f,1.0f,1.0f));
+    //m_Shader.SetVec3("uLightDir[0]", Vec3(0.0f,1.0f,0.0f));
+    //m_Shader.SetVec3("uAmbient", Vec3(0.1f,0.1f,0.1f));
     m_Shader.SetVec4("uDiffuseObjectColor", Vec4(1.0f,1.0f,1.0f,1.0f));
     m_Shader.SetVec4("uAmbientObjectColor", Vec4(0.1f,0.1f,0.1f,1.0f));
     glBindTexture(GL_TEXTURE_2D, m_TexId);
