@@ -77,7 +77,7 @@ public:
     virtual void VDestroyActor(const ActorId actorId);
     virtual WeakActorPtr VGetActor(const ActorId actorId);
     virtual void VModifyActor(const ActorId actorId, XMLElement* overrides);
-    virtual void VMoveActor(const ActorId id, Mat4x4& const mat) {}
+    virtual void VMoveActor(const ActorId id, const Mat4x4& const mat) {}
 
     // editor functions
     std::string GetActorXml(const ActorId id);
@@ -141,6 +141,8 @@ protected:
 
     void MoveActorDelegate(IEventDataPtr pEventData);
     void RequestNewActorDelegate(IEventDataPtr pEventData);
+    EventListenerDelegate m_MoveActorDelgate;
+    EventListenerDelegate m_RequestNewActorDelegate;
 };
 
 #endif // GCC4_BASE_GAME_LOGIC_H_INCLUDED
