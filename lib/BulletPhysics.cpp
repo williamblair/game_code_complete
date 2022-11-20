@@ -10,6 +10,7 @@
 #include "MakeStrongPtr.h"
 #include "Actor.h"
 #include "EventManager.h"
+#include "GameCodeApp.h"
 
 BulletPhysics::~BulletPhysics()
 {
