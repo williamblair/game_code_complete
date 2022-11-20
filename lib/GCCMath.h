@@ -566,7 +566,77 @@ struct Mat4x4
         Vec3 forward = Transform(justRot, g_Forward);
         return forward;
     }
+    
+    inline Vec3 GetYawPitchRoll() const {
+        float yaw, pitch, roll;
+        pitch = asinf(-r2c1);
+        
+        double threshold = 0.001;
+        double test = cos(pitch);
+        
+        if (test > threshold) {
+            roll = atan2f(r0c1, r1c1);
+            yaw = atan2f(r2c0, r2c2);
+        } else {
+            roll = atan2f(-r1c0, r0c0);
+            yaw = 0.0f;
+        }
+        
+        return Vec3(yaw, pitch, roll);
+    }
+    
+    inline Vec3 GetScale() const {
+        return Vec3(r0c0, r1c1, r2c2);
+    }
+    // https://www.flipcode.com/documents/matrfaq.html#Q36
+    inline void FromYawPitchRoll(float yaw, float pitch, float roll) {
+        const float A = cosf(yaw);
+        const float B = sinf(yaw);
+        const float C = cosf(pitch);
+        const float D = sinf(pitch);
+        const float E = cosf(roll);
+        const float F = sinf(roll);
+        const float AD = A*D;
+        const float BD = B*D;
+        float* V = (float*)v;
+        V[0] = C*E;
+        V[1] = -C*F;
+        V[2] = -D;
+        V[4] = -BD*E + A*F;
+        V[5] = BD*F + A*E;
+        V[6] = -B*C;
+        V[8] = AD*E + B*F;
+        V[9] = -AD*F + B*E;
+        V[10] = A*C;
+        V[3] = V[7] = V[11] = V[12] = V[13] = V[14] = 0;
+        V[15] = 1;
+    }
 };
+
+inline bool operator==(const Mat4x4& lhs, const Mat4x4& rhs) {
+    for (int row=0; row<4; ++row) {
+        for (int col=0; col<4; ++col) {
+            if (((lhs.v[row][col]-rhs.v[row][col]) > 0.0001f) ||
+                ((lhs.v[row][col]-rhs.v[row][col]) < -0.0001f))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+inline bool operator!=(const Mat4x4& lhs, const Mat4x4& rhs) {
+    for (int row=0; row<4; ++row) {
+        for (int col=0; col<4; ++col) {
+            if (((lhs.v[row][col]-rhs.v[row][col]) > 0.0001f) ||
+                ((lhs.v[row][col]-rhs.v[row][col]) < -0.0001f))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 inline Mat4x4 operator*(const Mat4x4& lhs, const Mat4x4& rhs) {
     Vec4 row0(

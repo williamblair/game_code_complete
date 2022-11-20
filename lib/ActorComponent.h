@@ -1,9 +1,9 @@
 #ifndef ACTOR_COMPONENT_H_INCLUDED
 #define ACTOR_COMPONENT_H_INCLUDED
 
-#include <xml.h>
-#include <ComponentTypes.h>
 #include <string>
+#include "xml.h"
+#include "ComponentTypes.h"
 
 // forward declaration
 class ActorFactory;

@@ -6,11 +6,13 @@
 #include <memory>
 #include <functional>
 
+#include "ComponentTypes.h"
+
 // forward declaration
 class IEventData;
 
 typedef unsigned long EventType;
-typedef unsigned long ActorId;
+//typedef unsigned long ActorId;
 typedef std::shared_ptr<IEventData> IEventDataPtr;
 typedef std::shared_ptr<std::function<void(IEventDataPtr)>> EventListenerDelegate;
 

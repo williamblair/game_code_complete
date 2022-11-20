@@ -8,6 +8,7 @@
 #include <bullet/btBulletDynamicsCommon.h>
 #include "MaterialData.h"
 #include "IGamePhysics.h"
+#include "TransformComponent.h"
 
 // TODO
 class BulletDebugDrawer;
@@ -28,7 +29,7 @@ public:
     virtual void VAddSphere(
         float radius,
         WeakActorPtr pGameActor,
-        const Mat4x4& initialTransform,
+        //const Mat4x4& initialTransform,
         const std::string& densityStr,
         const std::string& physicsMaterial
     ) override;
