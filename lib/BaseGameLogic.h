@@ -10,23 +10,12 @@
 #include "EventData.h"
 #include "ProcessManager.h"
 #include "GCCRandom.h"
+#include "BaseGameState.h"
 
 // Forward declarations
 class PathingGraph;
 class ActorFactory;
 class LevelManager;
-
-enum BaseGamestate
-{
-    BGS_Invalid,
-    BGS_Initializing,
-    BGS_MainMenu,
-    BGS_WaitingForPlayers,
-    BGS_LoadingGameEnvironment,
-    BGS_WaitingForPlayersToLoadEnvironment,
-    BGS_SpawnPlayersActors,
-    BGS_Running
-};
 
 typedef std::map<ActorId, StrongActorPtr> ActorMap;
 typedef std::string Level;
@@ -77,7 +66,7 @@ public:
     virtual void VDestroyActor(const ActorId actorId);
     virtual WeakActorPtr VGetActor(const ActorId actorId);
     virtual void VModifyActor(const ActorId actorId, XMLElement* overrides);
-    virtual void VMoveActor(const ActorId id, const Mat4x4& const mat) {}
+    virtual void VMoveActor(const ActorId id, const Mat4x4& mat) {}
 
     // editor functions
     std::string GetActorXml(const ActorId id);

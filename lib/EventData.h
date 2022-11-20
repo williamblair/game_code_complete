@@ -7,6 +7,7 @@
 #include <functional>
 
 #include "ComponentTypes.h"
+#include "GCCMath.h"
 
 // forward declaration
 class IEventData;

@@ -4,6 +4,7 @@
 #include "ComponentTypes.h"
 #include "xml.h"
 #include "GCCMath.h"
+#include "BaseGameState.h"
 
 // forward declaration
 class IGamePhysics;
@@ -22,7 +23,7 @@ public:
     virtual bool VLoadGame(const char* levelResource) = 0;
     virtual void VSetProxy() = 0;
     virtual void VOnUpdate(float time, float elapsedTime) = 0;
-    virtual void VChangeState(enum BaseGameState newState) = 0;
+    virtual void VChangeState(BaseGameState newState) = 0;
     virtual void VMoveActor(const ActorId id, Mat4x4 const& mat) = 0;
     virtual std::shared_ptr<IGamePhysics> VGetGamePhysics() = 0;
 };
