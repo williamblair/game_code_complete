@@ -5,6 +5,7 @@
 #include "Actor.h"
 #include "Resource.h"
 #include "MakeStrongPtr.h"
+#include "ActorFactory.h"
 
 bool LevelManager::Initialize(std::vector<std::string>& levels)
 {

@@ -59,7 +59,7 @@ void Actor::AddComponent( StrongActorComponentPtr pComponent )
     std::pair<std::map<ComponentId, StrongActorComponentPtr>::iterator,
               bool> 
         success = m_components.insert(
-            std::make_pair( pComponent->VGetComponentId(), pComponent ));
-    assert( success.second );
+            std::make_pair(pComponent->VGetId(), pComponent));
+    assert(success.second);
 }
 

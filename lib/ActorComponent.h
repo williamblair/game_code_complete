@@ -4,6 +4,7 @@
 #include <string>
 #include "xml.h"
 #include "ComponentTypes.h"
+#include "HashedString.h"
 
 // forward declaration
 class ActorFactory;
@@ -15,15 +16,28 @@ friend class ActorFactory;
 
 public:
 
-    virtual ~ActorComponent() {}
+    virtual ~ActorComponent() { m_pOwner.reset(); }
 
     /**
      * to be overridden by component implementations
      */
     virtual bool VInit( XMLElement* pData ) = 0;
     virtual void VPostInit() {}
-    virtual void VUpdate( int deltaMs ) {}
-    virtual ComponentId VGetComponentId() const = 0;
+    virtual void VUpdate(int deltaMs) {}
+    virtual void VOnChanged() {}
+
+    // For the editor
+    //TODO
+    //virtual XMLElement* VGenerateXml() = 0;
+
+    // To be overridden by the interface class
+    virtual ComponentId VGetId() const { return GetIdFromName(VGetName()); }
+    
+    virtual const char* VGetName() const = 0;
+    static ComponentId GetIdFromName(const char* componentStr) {
+        void* rawId = HashedString::hash_name(componentStr);
+        return reinterpret_cast<ComponentId>(rawId);
+    }
 
     /**
      * to print debug info
@@ -36,7 +50,7 @@ protected:
 
 private:
 
-    void SetOwner( StrongActorPtr owner ) { m_pOwner = owner; }
+    void SetOwner(StrongActorPtr owner) { m_pOwner = owner; }
 
 };
 
