@@ -125,11 +125,12 @@ void BulletPhysics::VSyncVisibleScene()
             pTransformComp->SetTransform(
                 actorMotionState->m_worldToPositionTransform
             );
-            IEventManager::GetInstance()->VQueueEvent(
-                new EvtData_Move_Actor(
+            std::shared_ptr<EvtDataMoveActor> pMoveEvent(
+                new EvtDataMoveActor(
                     id, actorMotionState->m_worldToPositionTransform
                 )
             );
+            IEventManager::GetInstance()->VQueueEvent(pMoveEvent);
         }
     }
 }

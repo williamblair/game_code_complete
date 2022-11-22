@@ -27,8 +27,7 @@ public:
     virtual void VOnChanged() {}
 
     // For the editor
-    //TODO
-    //virtual XMLElement* VGenerateXml() = 0;
+    virtual XMLElement* VGenerateXml() = 0;
 
     // To be overridden by the interface class
     virtual ComponentId VGetId() const { return GetIdFromName(VGetName()); }

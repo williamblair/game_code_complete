@@ -6,6 +6,13 @@
 #include "EventManager.h"
 #include "ResCache.h"
 #include "IRenderer.h"
+#include "BaseGameLogic.h"
+#include "GameOptions.h"
+
+#ifndef _MAX_PATH
+// arbitrarily chosen
+#define _MAX_PATH 1024
+#endif
 
 class GameCodeApp
 {
@@ -32,10 +39,9 @@ public:
 
     static void OnUpdateGame(double fTime, float fElapsedTime, void* pUserContext);
 
-    //TODO
-    //BaseGameLogic* m_pGame;
-    //struct GameOptions m_Options;
-    //BaseGameLogic* GetGameLogic() { return m_pGame; }
+    BaseGameLogic* m_pGame;
+    GameOptions m_Options;
+    BaseGameLogic* GetGameLogic() { return m_pGame; }
 
     // You must define these functions to initialize your game.
     // Look in TeapotWars.h and TeapotWars.cpp

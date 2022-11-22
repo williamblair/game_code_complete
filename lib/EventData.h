@@ -281,6 +281,7 @@ public:
             return true;
         }
         return false;*/
+        return false;
     }
 
     EXPORT_FOR_SCRIPT_EVENT(EvtDataRequestDestroyActor);

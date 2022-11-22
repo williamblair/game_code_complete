@@ -1,3 +1,4 @@
+#include <cstring>
 #include "HashedString.h"
 
 void* HashedString::hash_name(char const* pIdentStr)

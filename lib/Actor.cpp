@@ -45,6 +45,29 @@ void Actor::Update( int deltaMs )
     }
 }
 
+std::string Actor::ToXml()
+{
+    XMLDocument outDoc;
+
+    // Actor element
+    XMLElement* pActorElem = outDoc.NewElement("Actor");
+    pActorElem->SetAttribute("type", m_type.c_str());
+    pActorElem->SetAttribute("resource", m_resource.c_str());
+
+    // components
+    for (auto it=m_components.begin(); it != m_components.end(); ++it)
+    {
+        StrongActorComponentPtr pComp = it->second;
+        XMLElement* pCompElem = pComp->VGenerateXml();
+        pActorElem->LinkEndChild(pCompElem);
+    }
+
+    outDoc.LinkEndChild(pActorElem);
+    XMLPrinter printer;
+    outDoc.Accept(&printer);
+    return std::string(printer.CStr());
+}
+
 void Actor::PrintComponents()
 {
     std::cout << "Actor components:" << std::endl;

@@ -7,9 +7,9 @@
 #include "MakeStrongPtr.h"
 #include "ActorFactory.h"
 
-bool LevelManager::Initialize(std::vector<std::string>& levels)
+bool LevelManager::Initialize(const std::vector<std::string>& levels)
 {
-    std::vector<std::string>::iterator i = levels.begin();
+    std::vector<std::string>::const_iterator i = levels.begin();
     while (i != levels.end())
     {
         m_Levels.push_back(*i);
@@ -368,17 +368,18 @@ void BaseGameLogic::VChangeState(BaseGameState newState)
         //m_ExpectedRemotePlayers = g_pApp->m_Options.m_expectedPlayers - 1;
         //m_ExpectedAi = g_pApp->m_Options.m_NumAis;
 
-        if (!g_pApp->m_Options.m_gameHost.empty())
+        if (!g_pApp->m_Options.m_GameHost.empty())
         {
             VSetProxy();
             m_ExpectedAi = 0; // the server will create these
             m_ExpectedRemotePlayers = 0;
 
-            if (!g_pApp->AttachAsClient()) {
+            //TODO
+            /*if (!g_pApp->AttachAsClient()) {
                 // throw up a main menu
                 VChangeState(BGS_MainMenu);
                 return;
-            }
+            }*/
         } else if (m_ExpectedRemotePlayers > 0) {
             //TODO
             /*BaseSockerManager* pServer = new BaseSocketManger();

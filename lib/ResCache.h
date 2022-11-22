@@ -1,7 +1,9 @@
 #ifndef RES_CACHE_H_INCLUDED
 #define RES_CACHE_H_INCLUDED
 
-#include <ResCacheTypes.h>
+#include <vector>
+#include <string>
+#include "ResCacheTypes.h"
 
 // forward declaration
 class Resource;
@@ -23,6 +25,7 @@ public:
     std::shared_ptr<ResHandle> GetHandle( Resource* pResource );
     int Preload( const std::string pattern, 
                  void (*progressCallback)(int, bool&) );
+    std::vector<std::string> Match(const std::string& pattern);
     void Flush();
 
 protected:

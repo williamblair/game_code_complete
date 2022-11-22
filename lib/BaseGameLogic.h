@@ -25,7 +25,7 @@ class LevelManager
 public:
     const std::vector<Level>& GetLevels() const { return m_Levels; }
     const int GetCurrentLevel() const { return m_CurrentLevel; }
-    bool Initialize(std::vector<std::string>& levels);
+    bool Initialize(const std::vector<std::string>& levels);
 private:
     std::vector<Level> m_Levels;
     int m_CurrentLevel;

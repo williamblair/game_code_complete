@@ -66,6 +66,22 @@ static bool RegexMatch(const char* pattern, const char* expression)
     return std::regex_match(str, reg);
 }
 
+std::vector<std::string> ResCache::Match(const std::string& pattern)
+{
+    std::vector<std::string> matchingNames;
+    if (m_pFile == nullptr) { return matchingNames; }
+
+    int numFiles = m_pFile->VGetNumResources();
+    for (int i=0; i<numFiles; ++i) {
+        std::string name = m_pFile->VGetResourceName(i);
+        std::transform(name.begin(),name.end(),name.begin(), (int(*)(int))std::tolower);
+        if (RegexMatch(pattern.c_str(), name.c_str())) {
+            matchingNames.push_back(name);
+        }
+    }
+    return matchingNames;
+}
+
 std::shared_ptr<ResHandle> ResCache::Load( Resource* pResource )
 {
     std::shared_ptr<IResourceLoader> pLoader;

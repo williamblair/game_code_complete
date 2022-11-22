@@ -17,7 +17,7 @@ class ActorFactory
 public:
 
     ActorFactory();
-    ~ActorFactory();
+    virtual ~ActorFactory();
 
     /**
      * parses the XML file indicated by actorResourceXML

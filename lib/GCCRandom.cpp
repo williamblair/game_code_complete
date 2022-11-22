@@ -19,7 +19,7 @@ uint32_t GCCRandom::Random( uint32_t n )
 
     // Generate N words at one time
     uint64_t* mt = m_stateArray;
-    if ( m_mti >= CMATH_N )
+    if ( m_mti >= int(CMATH_N) )
     {
         int kk;
 
@@ -27,7 +27,7 @@ uint32_t GCCRandom::Random( uint32_t n )
             SetRandomSeed( 4357 ); // default initial seed
         }
 
-        for ( kk = 0; kk < CMATH_N - CMATH_M; ++kk )
+        for ( kk = 0; kk < int(CMATH_N-CMATH_M); ++kk )
         {
             y = (mt[kk] & CMATH_UPPER_MASK) | 
                 (mt[kk+1] & CMATH_LOWER_MASK);
@@ -37,7 +37,7 @@ uint32_t GCCRandom::Random( uint32_t n )
                      mag01[y & 0x1];
         }
 
-        for ( ; kk < CMATH_N - 1; ++kk )
+        for ( ; kk < int(CMATH_N-1); ++kk )
         {
             y = (mt[kk] & CMATH_UPPER_MASK) | 
                 (mt[kk+1] & CMATH_LOWER_MASK);
@@ -79,7 +79,7 @@ void GCCRandom::SetRandomSeed( uint32_t n )
     // of Table 1 in [KNUTH 1981, The Art of Computer Programming
     //      Vol. 2 (2nd Ed), pp102]
     m_stateArray[0] = n & 0xffffffff;
-    for ( m_mti = 1; m_mti < CMATH_N; ++m_mti )
+    for ( m_mti = 1; m_mti < int(CMATH_N); ++m_mti )
     {
         m_stateArray[m_mti] = (69069 * m_stateArray[m_mti - 1]) & 0xffffffff;
     }

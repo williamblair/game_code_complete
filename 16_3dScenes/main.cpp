@@ -16,6 +16,7 @@
 #include <OGLRenderer.h>
 #include <OGLVertexBuffer.h>
 #include <OGLSkyNode.h>
+#include <GameCodeApp.h>
 
 std::shared_ptr<IRenderer>
 createRenderer()
@@ -58,7 +59,18 @@ bool updateInput()
     return false;
 }
 
+class TestGCCApp : public GameCodeApp
+{
+public:
+    virtual const char* VGetGameTitle() { return "TestGCCApp"; }
+    virtual const char* VGetGameAppDirectory() { return "./"; }
+};
+TestGCCApp g_TestGCCApp;
+
+// Required globals - TODO move
 ResCache* g_ResCache = nullptr;
+
+GameCodeApp* g_pApp = &g_TestGCCApp;
 
 #ifdef _WIN32
 #undef main
