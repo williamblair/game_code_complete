@@ -167,16 +167,37 @@ void BulletPhysics::VAddSphere(
 void BulletPhysics::VAddBox(
     const Vec3& dimensions,
     WeakActorPtr pGameActor,
-    const Mat4x4& initialTransform,
+    /*const Mat4x4& initialTransform,*/
     const std::string& densityStr,
     const std::string& physicsMaterial)
 {
-    //TODO
+    StrongActorPtr pStrongActor = MakeStrongPtr(pGameActor);
+    if (!pStrongActor) {
+        // TODO - error log
+        return;
+    }
+
+    // create the collision body, which specifies the shape of the object
+    btBoxShape* const boxShape = new btBoxShape(Vec3ToBtVector3(dimensions));
+
+    // calculate abosulte mass from specificGravity
+    float specificGravity = LookupSpecificGravity(densityStr);
+    float const volume = dimensions.x * dimensions.y * dimensions.z;
+    btScalar mass = volume * specificGravity;
+
+    AddShape(pStrongActor, boxShape, mass, physicsMaterial);
 }
 
 void BulletPhysics::VRemoveActor(ActorId id)
 {
-    //TODO
+    btRigidBody* const body = FindBulletRigidBody(id);
+    if (body)
+    {
+        // destroy the body and all its components
+        RemoveCollisionObject(body);
+        m_actorIdToRigidBody.erase(id);
+        m_rigidBodyToActorId.erase(body);
+    }
 }
 
 // Debugging
@@ -249,35 +270,100 @@ void BulletPhysics::VApplyTorque(const Vec3& dir, float newtons, ActorId id)
 }
 bool BulletPhysics::VKinematicMove(const Mat4x4& mat, ActorId id)
 {
-    //TODO
-    return true;
+    btRigidBody* const body = FindBulletRigidBody(id);
+    if (body)
+    {
+        // warp the body to the new position
+        body->setActivationState(DISABLE_DEACTIVATION);
+        body->setWorldTransform(Mat4x4ToBtTransform(mat));
+
+        return true;
+    }
+    return false;
 }
 
 
 void BulletPhysics::LoadXml()
 {
-    //TODO
+    // Load the physics config file and grab the root XML node
+    XMLElement* pRoot = XmlResourceLoader::LoadAndReturnRootXmlElement("config\\Physics.xml");
+    if (!pRoot) {
+        throw std::runtime_error("BulletPhysics LoadXml failed to load Physics.xml");
+    }
+
+    // Load all materials
+    XMLElement* pParentNode = pRoot->FirstChildElement("PhysicsMaterials");
+    if (!pParentNode) {
+        throw std::runtime_error("BulletPhysics LoadXml failed to find PhysicsMaterials");
+    }
+    for (XMLElement* pNode = pParentNode->FirstChildElement();
+        pNode;
+        pNode = pNode->NextSiblingElement())
+    {
+        double restitution = 0.0;
+        double friction = 0.0;
+        restitution = pNode->DoubleAttribute("restitution");
+        friction = pNode->DoubleAttribute("friction");
+        m_materialTable.insert(
+            std::make_pair(
+                pNode->Value(),
+                MaterialData((float)restitution,(float)friction)
+            )
+        );
+    }
+
+    // load all densities
+    pParentNode = pRoot->FirstChildElement("DensityTable");
+    if (!pParentNode) {
+        throw std::runtime_error("BulletPhysics LoadXml failed to find DensityTable");
+    }
+    for (XMLElement* pNode = pParentNode->FirstChildElement();
+        pNode;
+        pNode = pNode->NextSiblingElement())
+    {
+        float density = (float)atof(pNode->FirstChild()->Value());
+        m_densityTable.insert(
+            std::make_pair(pNode->Value(), density)
+        );
+    }
 }
 float BulletPhysics::LookupSpecificGravity(const std::string& densityStr)
 {
-    //TODO
-    return 0.0f;
+    float density = 0.0f;
+    auto densityIt = m_densityTable.find(densityStr);
+    if (densityIt != m_densityTable.end()) {
+        density = densityIt->second;
+    }/* else {
+        // TODO - error
+    }*/
+    return density;
 }
 MaterialData BulletPhysics::LookupMaterialData(const std::string& materialStr)
 {
-    //TODO
+    auto materialIt = m_materialTable.find(materialStr);
+    if (materialIt != m_materialTable.end()) {
+        return materialIt->second;
+    }
     return MaterialData(0.0f,0.0f);
 }
 
 btRigidBody* BulletPhysics::FindBulletRigidBody(ActorId id) const
 {
-    //TODO
+    ActorIDToBulletRigidBodyMap::const_iterator found =
+        m_actorIdToRigidBody.find(id);
+    if (found != m_actorIdToRigidBody.end()) {
+        return found->second;
+    }
     return nullptr;
 }
 
-ActorId BulletPhysics::FindActorId(btRigidBody const*) const
+ActorId BulletPhysics::FindActorId(btRigidBody const* body) const
 {
-    //TODO
+    BulletRigidBodyToActorIdMap::const_iterator found =
+        m_rigidBodyToActorId.find(body);
+    if (found != m_rigidBodyToActorId.end()) {
+        return found->second;
+    }
     return INVALID_ACTOR_ID;
 }
 
@@ -287,12 +373,101 @@ void BulletPhysics::SendCollisionPairAddEvent(
     btPersistentManifold const* manifold,
     btRigidBody const* body0, btRigidBody const* body1)
 {
-    //TODO
+    if (body0->getUserPointer() || body1->getUserPointer())
+    {
+        // only triggers have non-null user pointers
+
+        // figure out which actor is the trigger
+        btRigidBody const* triggerBody;
+        btRigidBody const* otherBody;
+        if (body0->getUserPointer()) {
+            triggerBody = body0;
+            otherBody = body1;
+        } else {
+            triggerBody = body0;
+            otherBody = body1;
+        }
+
+        // send the trigger event
+        int const triggerId = *static_cast<int*>(triggerBody->getUserPointer());
+        std::shared_ptr<EvtDataPhysTriggerEnter> pEvent(
+            new EvtDataPhysTriggerEnter(triggerId, FindActorId(otherBody))
+        );
+        IEventManager::GetInstance()->VQueueEvent(pEvent);
+    }
+    else
+    {
+        ActorId const id0 = FindActorId(body0);
+        ActorId const id1 = FindActorId(body1);
+        if (id0 == INVALID_ACTOR_ID || id1 == INVALID_ACTOR_ID) {
+            // something is colliding with a non-actor. we currently don't send events for that.
+            return;
+        }
+
+        // This pair of colliding objects is new. send a collision-begin event
+        Vec3List collisionPoints;
+        Vec3 sumNormalForce;
+        Vec3 sumFrictionForce;
+        for (int pointIdx = 0; pointIdx < manifold->getNumContacts(); ++pointIdx)
+        {
+            btManifoldPoint const& point = manifold->getContactPoint(pointIdx);
+            collisionPoints.push_back(BtVector3ToVec3(point.getPositionWorldOnB()));
+            sumNormalForce += BtVector3ToVec3(point.m_combinedRestitution * point.m_normalWorldOnB);
+            sumFrictionForce += BtVector3ToVec3(point.m_combinedFriction * point.m_lateralFrictionDir1);
+        }
+
+        // send the event for the game
+        std::shared_ptr<EvtDataPhysCollision> pEvent(
+            new EvtDataPhysCollision(
+                id0,
+                id1,
+                sumNormalForce,
+                sumFrictionForce,
+                collisionPoints
+            )
+        );
+        IEventManager::GetInstance()->VQueueEvent(pEvent);
+    }
 }
 void BulletPhysics::SendCollisionPairRemoveEvent(
     btRigidBody const* body0, btRigidBody const* body1)
 {
-    //TODO
+    if (body0->getUserPointer() || body1->getUserPointer())
+    {
+        // figure out which actor is the trigger
+        btRigidBody const* triggerBody;
+        btRigidBody const* otherBody;
+        if (body0->getUserPointer()) {
+            triggerBody = body0;
+            otherBody = body1;
+        } else {
+            triggerBody = body1;
+            otherBody = body0;
+        }
+
+        // send the trigger event
+        int const triggerId = *static_cast<int*>(triggerBody->getUserPointer());
+        std::shared_ptr<EvtDataPhysTriggerLeave> pEvent(
+            new EvtDataPhysTriggerLeave(triggerId, FindActorId(otherBody))
+        );
+        IEventManager::GetInstance()->VQueueEvent(pEvent);
+    }
+    else
+    {
+        ActorId const id0 = FindActorId(body0);
+        ActorId const id1 = FindActorId(body1);
+
+        if (id0 == INVALID_ACTOR_ID || id1 == INVALID_ACTOR_ID) {
+            // collision is ending between some objects that don't have actors.
+            // we don't send events for that.
+            return;
+        }
+
+        std::shared_ptr<EvtDataPhysSeparation> pEvent(
+            new EvtDataPhysSeparation(id0, id1)
+        );
+        IEventManager::GetInstance()->VQueueEvent(pEvent);
+    }
 }
 
 // common functionality used by VAddSphere, VAddBox, etc.
@@ -359,7 +534,41 @@ void BulletPhysics::AddShape(
 // helper for cleaning up objects
 void BulletPhysics::RemoveCollisionObject(btCollisionObject* removeMe)
 {
-    //TODO
+    // first remove the object from the physics sim
+    m_pDynamicsWorld->removeCollisionObject(removeMe);
+
+    // then remove the pointer from the ongoing contacts list
+    for (CollisionPairs::iterator it = m_previousTickCollisionPairs.begin();
+        it != m_previousTickCollisionPairs.end();
+        )
+    {
+        CollisionPairs::iterator next = it;
+        ++next;
+
+        if (it->first == removeMe || it->second == removeMe) {
+            SendCollisionPairRemoveEvent(it->first, it->second);
+            m_previousTickCollisionPairs.erase(it);
+        }
+        it = next;
+    }
+
+    // if the object is a RigidBody (all we support, but good practice to check)
+    if (btRigidBody* const body = btRigidBody::upcast(removeMe))
+    {
+        // delete the components of the object
+        delete body->getMotionState();
+        delete body->getCollisionShape();
+        delete body->getUserPointer();
+
+        for (int ii = body->getNumConstraintRefs()-1; ii >= 0; --ii)
+        {
+            btTypedConstraint* const pConstraint = body->getConstraintRef(ii);
+            m_pDynamicsWorld->removeConstraint(pConstraint);
+            delete pConstraint;
+        }
+    }
+
+    delete removeMe;
 }
 
 // callback from bullet for each physics time step. set in VInitialize

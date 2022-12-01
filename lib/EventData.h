@@ -421,5 +421,152 @@ private:
     Mat4x4 m_Matrix;
 };
 
+class EvtDataPhysCollision : public ScriptEvent
+{
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+
+    EvtDataPhysCollision() :
+        m_ActorA(INVALID_ACTOR_ID),
+        m_ActorB(INVALID_ACTOR_ID),
+        m_SumNormalForce(0.0f,0.0f,0.0f),
+        m_SumFrictionForce(0.0f,0.0f,0.0f)
+    {
+    }
+
+    explicit EvtDataPhysCollision(
+            ActorId actorA,
+            ActorId actorB,
+            Vec3 sumNormalForce,
+            Vec3 sumFrictionForce,
+            Vec3List collisionPoints) :
+        m_ActorA(actorA),
+        m_ActorB(actorB),
+        m_SumNormalForce(sumNormalForce),
+        m_SumFrictionForce(sumFrictionForce),
+        m_CollisionPoints(collisionPoints)
+    {}
+
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataPhysCollision(
+                m_ActorA,
+                m_ActorB,
+                m_SumNormalForce,
+                m_SumFrictionForce,
+                m_CollisionPoints
+            )
+        );
+    }
+
+    virtual const char* GetName() const { return "EvtDataPhysCollision"; }
+
+    ActorId GetActorA() const { return m_ActorA; }
+    ActorId GetActorB() const { return m_ActorB; }
+    const Vec3& GetSumNormalForce() const { return m_SumNormalForce; }
+    const Vec3& GetSumFrictionForce() const { return m_SumFrictionForce; }
+    const Vec3List& GetCollisionPoints() const { return m_CollisionPoints; }
+
+    virtual void VBuildEventData();
+
+    EXPORT_FOR_SCRIPT_EVENT(EvtDataPhysCollision);
+
+private:
+    ActorId m_ActorA;
+    ActorId m_ActorB;
+    Vec3 m_SumNormalForce;
+    Vec3 m_SumFrictionForce;
+    Vec3List m_CollisionPoints;
+};
+
+class EvtDataPhysTriggerEnter : public BaseEventData
+{
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+    
+    EvtDataPhysTriggerEnter() :
+        m_TriggerId(-1),
+        m_Other(INVALID_ACTOR_ID)
+    {}
+    explicit EvtDataPhysTriggerEnter(int triggerId, ActorId other) :
+        m_TriggerId(triggerId),
+        m_Other(other)
+    {}
+    IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataPhysTriggerEnter(m_TriggerId, m_Other)
+        );
+    }
+    virtual const char* GetName() const { return "EvtDataPhysTriggerEnter"; }
+
+    int GetTriggerId() const { return m_TriggerId; }
+    ActorId GetOtherActor() const { return m_Other; }
+
+private:
+    int m_TriggerId;
+    ActorId m_Other;
+};
+
+class EvtDataPhysTriggerLeave : public BaseEventData
+{
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+
+    EvtDataPhysTriggerLeave() :
+        m_TriggerId(-1),
+        m_Other(INVALID_ACTOR_ID)
+    {}
+    explicit EvtDataPhysTriggerLeave(int triggerId, ActorId other) :
+        m_TriggerId(triggerId),
+        m_Other(other)
+    {}
+
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataPhysTriggerLeave(m_TriggerId, m_Other)
+        );
+    }
+    virtual const char* GetName() const { return "EvtDataPhysTriggerLeave"; }
+
+    int GetTriggerId() const { return m_TriggerId; }
+    ActorId GetOtherActor() const { return m_Other; }
+
+private:
+    int m_TriggerId;
+    ActorId m_Other;
+};
+
+class EvtDataPhysSeparation : public BaseEventData
+{
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+
+    EvtDataPhysSeparation() :
+        m_ActorA(INVALID_ACTOR_ID),
+        m_ActorB(INVALID_ACTOR_ID)
+    {}
+    explicit EvtDataPhysSeparation(ActorId actorA, ActorId actorB) :
+        m_ActorA(actorA),
+        m_ActorB(actorB)
+    {}
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataPhysSeparation(m_ActorA, m_ActorB)
+        );
+    }
+    virtual const char* GetName() const { return "EvtDataPhysSeparation"; }
+
+    ActorId GetActorA() const { return m_ActorA; }
+    ActorId GetActorB() const { return m_ActorB; }
+
+private:
+    ActorId m_ActorA;
+    ActorId m_ActorB;
+};
+
 #endif // EVENT_DATA_H_INCLUDED
 

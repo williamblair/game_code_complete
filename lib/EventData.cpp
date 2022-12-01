@@ -8,4 +8,21 @@ const EventType EvtDataDestroyActor::sk_EventType(0x77DD2B33);
 const EventType EvtDataRequestDestroyActor::sk_EventType(0x77DD2B34);
 const EventType EvtDataRequestNewActor::sk_EventType(0x77DD2B35);
 const EventType EvtDataMoveActor::sk_EventType(0x77DD2B36);
+const EventType EvtDataPhysCollision::sk_EventType(0x77DD2B37);
+const EventType EvtDataPhysSeparation::sk_EventType(0x77DD2B38);
+const EventType EvtDataPhysTriggerEnter::sk_EventType(0x77DD2B39);
+const EventType EvtDataPhysTriggerLeave::sk_EventType(0x77DD2B3A);
 
+void ScriptEvent::VBuildEventData()
+{
+    //TODO
+    //m_eventData.AssignNil(LuaStateManager::Get()->GetLuaState());
+}
+
+void EvtDataPhysCollision::VBuildEventData()
+{
+    //TODO
+    /*m_eventData.AssignNewTable(LuaStateManager::Get()->GetLuaState());
+    m_eventData.SetInteger("actorA", m_ActorA);
+    m_eventData.SetInteger("actorB", m_ActorB);*/
+}

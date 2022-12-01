@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <string.h>
+#include <list>
 
 #ifndef M_PI
 #define M_PI 3.141592653589793f
@@ -146,6 +147,7 @@ struct Vec3
         return *this;
     }
 };
+typedef std::list<Vec3> Vec3List;
 
 struct Vec4
 {

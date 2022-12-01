@@ -27,7 +27,7 @@ public:
     virtual void VAddBox(
         const Vec3& dimensions,
         WeakActorPtr pGameActor,
-        const Mat4x4& initialTransform,
+        //const Mat4x4& initialTransform,
         const std::string& densityStr,
         const std::string& physicsMaterial
     ) = 0;
