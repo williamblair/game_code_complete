@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "AssimpMeshNode.h"
 #include "AssimpMeshResourceExtraData.h"
 #include "OGLTextureResourceExtraData.h"
