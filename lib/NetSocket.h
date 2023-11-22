@@ -56,5 +56,56 @@ protected:
     bool m_binaryProtocol; // using binary or not?
 };
 
+class NetListenSocket : public NetSocket
+{
+public:
+    NetListenSocket() {}
+    NetListenSocket(int portnum) { port = 0; Init(portnum); }
+
+    void Init(int portnum);
+    SOCKET AcceptConnection(unsigned int* pAddr);
+
+    unsigned short port;
+};
+
+class GameServerListenSocket : public NetListenSocket
+{
+public:
+    GameServerListenSocket(int portnum) { Init(portnum); }
+    void VHandleInput();
+};
+
+class RemoteEventSocket : public NetSocket
+{
+public:
+    enum
+    {
+        NetMsg_Event,
+        NetMsg_PlayerLoginOk
+    };
+
+    // server accepting a client
+    RemoteEventSocket(SOCKET newSock, unsigned int hostIp) :
+        NetSocket(newSock, hostIp)
+    {}
+
+    // client attach to server
+    RemoteEventSocket() {}
+
+    virtual void VHandleInput();
+
+protected:
+    void CreateEvent(std::istrstream& in);
+};
+
+class NetworkEventForwarder
+{
+public:
+    NetworkEventForwarder(int sockId) { m_sockId = sockId; }
+    void ForwardEvent(IEventDataPtr pEventData);
+protected:
+    int m_sockId;
+};
+
 #endif // GCC4_NET_SOCKET_H_INCLUDED
 

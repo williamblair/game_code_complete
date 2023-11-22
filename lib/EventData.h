@@ -568,5 +568,50 @@ private:
     ActorId m_ActorB;
 };
 
+// Networking stuff
+class EvtDataRemoteClient : public BaseEventData
+{
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+
+    explicit EvtDataRemoteClient(
+        int socketId,
+        int ipAddress)
+    {
+        m_socketId = socketId;
+        m_ipAddress = ipAddress;
+    }
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataRemoteClient(
+                m_socketId,
+                m_ipAddress
+            )
+        );
+    }
+
+    virtual void VSerialize(std::ostringstream& out) const {
+        out << m_socketId << " ";
+        out << m_ipAddress;
+    }
+    // TODO
+    /*virtual void VDeserialize(std::istrstream& in) {
+        in >> m_socketId;
+        in >> m_ipAddress;
+    }*/
+    virtual const char* GetName() const { return "EvtDataRemoteClient"; }
+
+private:
+    int m_socketId;
+    int m_ipAddress;
+};
+
+// TODO
+class EvtDataNetworkPlayerActorAssignment : public BaseEventData
+{
+};
+
 #endif // EVENT_DATA_H_INCLUDED
+
 

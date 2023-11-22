@@ -13,6 +13,9 @@
 #include <assert.h>
 #include <string.h> // memcpy
 #include <arpa/inet.h> // htonl
+typedef int SOCKET;
+#define INVALID_SOCKET (-1)
+#define SOCKET_ERROR (-1)
 #endif
 
 #ifdef GCC4_USE_WIN_SOCKET

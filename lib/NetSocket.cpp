@@ -1,5 +1,17 @@
 #include "NetSocket.h"
 
+#ifdef GCC4_USE_POSIX_SOCKET
+#define GCC4_CLOSE_SOCKET close
+#define GCC4_SELECT_SUCCESS(ret) (((ret) != -1) && ((ret) != 0))
+#define GCC4_SELECT_ERROR(ret) ((ret) < 0)
+#endif
+
+#ifdef GCC4_USE_WIN_SOCKET
+#define GCC4_CLOSE_SOCKET closesocket
+#define GCC4_SELECT_SUCCESS(ret) (((ret) != SOCKET_ERROR) && ((ret) > 0))
+#define GCC4_SELECT_ERROR(ret) ((ret) == SOCKET_ERROR)
+#endif
+
 NetSocket::NetSocket()
 {
     m_sock = INVALID_SOCKET;
@@ -29,13 +41,16 @@ NetSocket::NetSocket(SOCKET newSock, unsigned int hostIp)
     // ask the socket manager if the socket is in our internal network
     m_internal = g_pSocketManager->IsInternal(m_ipaddr);
 
+#ifdef GCC4_USE_WIN_SOCKET
     setsockopt(m_sock, SOL_SOCKET, SO_DONTLINGER, nullptr, 0);
+#endif
 }
 
 NetSocket::~NetSocket()
 {
     if (m_sock != INVALID_SOCKET) {
-        closesocket(m_sock);
+        //closesocket(m_sock);
+        GCC4_CLOSE_SOCKET(m_sock);
         m_socket = INVALID_SOCKET;
     }
 }
@@ -64,7 +79,8 @@ bool NetSocket::Connect(
     sa.sin_port = htons(port);
 
     if (connect(m_sock, (struct sockaddr*)&sa, sizeof(sa)) {
-        closesocket(m_sock);
+        //closesocket(m_sock);
+        GCC4_CLOSE_SOCKET(m_sock);
         m_sock = INVALID_SOCKET;
         return false;
     }
@@ -74,7 +90,18 @@ bool NetSocket::Connect(
 void NetSocket::SetBlocking(bool blocking)
 {
     unsigned long val = blocking ? 0 : 1;
+#ifdef GCC4_USE_WIN_SOCKET
     ioctlsocket(m_sock, FIONBIO, &val);
+#endif
+#ifdef GCC4_USE_POSIX_SOCKET
+    int curFlags = fcntl(m_sock, F_GETFL);
+    if (blocking) {
+        curFlags |= O_NONBLOCK;
+    } else {
+        curFlags &= ~O_NONBLOCK;
+    }
+    fcntl(m_sock, F_SETFL, curFlags);
+#endif
 }
 
 void NetSocket::Send(IPacketPtr pPkt, bool clearTimeout)
@@ -100,10 +127,20 @@ void NetSocket::VHandleOutput()
             g_pSocketManager->AddToOutbound(rc);
             m_sendOfs += rc;
             fSent = 1;
-        } else if (WSAGetLastError() != WSAEWOULDBLOCK) {
+        }
+#ifdef GCC4_USE_WIN_SOCKET
+        else if (WSAGetLastError() != WSAEWOULDBLOCK) {
             HandleException();
             fSent = 0;
-        } else {
+        }
+#endif
+#ifdef GCC4_USE_POSIX_SOCKET
+        else if (errno == EWOULDBLOCK) {
+            HandleException();
+            fSent = 0;
+        }
+#endif
+        else {
             fSent = 0;
         }
 
@@ -187,4 +224,162 @@ void NetSocket::VHandleInput()
     }
 }
 
+void NetListenSocket::Init(int portnum)
+{
+    struct sockaddr_in sa;
+    int value = 1;
+
+    // create socket handle
+    if ((m_sock = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
+        printf("NetListenSocketError: Init failed to create socket handle\n");
+        return;
+    }
+
+    // set socket options to reuse server socket addresses even if they are
+    // busy - this is important if your server restarts and you don't want
+    // to wait for your sockets to time out.
+    if (setsockopt(
+            m_sock,
+            SOL_SOCKET,
+            SO_REUSEADDR,
+            (char*)&value,
+            sizeof(value)) == SOCKET_ERROR) {
+        GCC4_CLOSE_SOCKET(m_sock);
+        m_sock = INVALID_SOCKET;
+        printf("NetListenSocket error: init failed to set socket options\n");
+        return;
+    }
+
+    memset(&sa, 0, sizeof(sa));
+    sa.sin_family = AF_INET;
+    sa.sin_addr.s_addr = ADDR_ANY;
+    sa.sin_port = htons(portnum);
+
+    // bind to port
+    if (bind(m_sock, (strict sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR) {
+        GCC4_CLOSE_SOCKET(m_sock);
+        m_sock = INVALID_SOCKET;
+        printf("NetListenSocket error: init failed to bind\n");
+    }
+
+    // set nonblocking -
+    // accept() blocks under some odd circumstances otherwise
+    SetBlocking(false);
+
+    // start listening
+    if (listen(m_sock, 256) == SOCKET_ERROR) {
+        GCC4_CLOSE_SOCKET(m_sock);
+        m_sock = INVALID_SOCKET;
+        printf("NetListenSocket error: init failed to listen\n");
+        return;
+    }
+
+    port = portnum;
+}
+
+SOCKET NetListenSocket::AcceptConnection(unsigned int* pAddr)
+{
+    SOCKET newSock;
+    struct sockaddr_in sock;
+    int size = sizeof(sock);
+
+    if ((newSock = accept(m_sock, (struct sockaddr*)&sock, &size)) == INVALID_SOCKET) {
+        return INVALID_SOCKET;
+    }
+
+    if (getpeername(newSock, (struct sockaddr*)&sock, &size) == SOCKET_ERROR) {
+        GCC4_CLOSE_SOCKET(newSock);
+        return INVALID_SOCKET;
+    }
+    *pAddr = ntohl(sock.sin_addr.s_addr);
+    return newSock;
+}
+
+
+
+
+void GameServerListenSocket::VHandleInput()
+{
+    unsigned int theipaddr;
+    SOCKET newSock = AcceptConnection(&theipaddr);
+
+    int value = 1;
+    setsockopt(newSock, SOL_SOCKET, SO_DONTLINGER, (char*)&value, sizeof(value));
+
+    if (newSock != INVALID_SOCKET) {
+        RemoteEventSocket* pSock = new RemoteEventSocket(newSock, theipaddr);
+        int sockid = g_pSocketManager->AddSocket(pSock);
+        int ipAddress = g_pSocketManager->GetIpAddress(sockid);
+        std::shared_ptr<EvtDataRemoteClient> pEvent(
+            new EvtDataRemoteClient(sockid, ipAddress)
+        );
+        IEventManager::Get()->VQueueEvent(pEvent);
+    }
+}
+
+void RemoteEventSocket::VHandleInput()
+{
+    NetSocket::VHandleInput();
+
+    // traverse the list of m_InList packets and do something with them
+    while (!m_InList.empty())
+    {
+        IPacketPtr pPacket = *m_InList.begin();
+        m_InList.pop_front();
+        const char* pBuf = pPacket->VGetData();
+        int size = static_cast<int>(pPacket->VGetSize());
+
+        std::istrstream in(buf+sizeof(unsigned long), (size - sizeof(unsigned long)));
+
+        int type;
+        in >> type;
+        switch (type)
+        {
+        case NetMsg_Event:
+            CreateEvent(in);
+            break;
+        case NetMsg_PlayerLoginOk:
+            int serverSockId, actorId;
+            in >> serverSockId;
+            in >> actorId;
+            std::shared_ptr<EvtDataNetworkPlayerActorAssignment> pEvent(
+                new EvtDataNetworkPlayerActorAssignment(
+                    actorId, serverSockId
+                )
+            );
+            IEventManager::Get()->VQueueEvent(pEvent);
+            break;
+        default:
+            printf("Unknown message type!\n");
+            break;
+        }
+    }
+}
+
+void RemoteEventSocket::CreateEvent(std::istrstream& in)
+{
+    EventType eventType;
+    in >> eventType;
+    IEventDataPtr pEvent(CREATE_EVENT(eventType));
+    if (pEvent) {
+        pEvent->VDeserialize(in);
+        IEventManager::Get()->VQueueEvent(pEvent);
+    } else {
+        printf("ERROR unknown event type from remote: 0x %s\n",
+            ToStr(eventType, 16));
+    }
+}
+
+void NetworkEventForwarder::ForwardEvent(IEventDataPtr pEventData)
+{
+    std::ostrstream out;
+    out << static_cast<int>(RemoteEventSocket::NetMsg_Event) << " ";
+    out << pEventData->VGetEventType() << " ";
+    pEventData->VSerialize(out);
+    out << "\r\n";
+    IPacketPtr eventMsg(
+        new BinaryPacket(out.rdbuf()->str(), out.pcount())
+    );
+    g_pSocketManager->Send(m_sockId, eventMsg);
+}
 
