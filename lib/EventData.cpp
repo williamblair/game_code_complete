@@ -13,6 +13,7 @@ const EventType EvtDataPhysSeparation::sk_EventType(0x77DD2B38);
 const EventType EvtDataPhysTriggerEnter::sk_EventType(0x77DD2B39);
 const EventType EvtDataPhysTriggerLeave::sk_EventType(0x77DD2B3A);
 const EventType EvtDataRemoteClient::sk_EventType(0x77DD2B3B);
+const EventType EvtDataNetworkPlayerActorAssignment::sk_EventType(0x77DD2B3C);
 
 void ScriptEvent::VBuildEventData()
 {

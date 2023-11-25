@@ -1,5 +1,7 @@
 #include "NetworkGameView.h"
 
+// TODO
+#if 0
 NetworkGameView::NetworkGameView()
 {
     m_SockId = -1;
@@ -24,4 +26,4 @@ void NetworkGameView::AttachRemotePlayer(int sockId)
     );
     g_pSocketManager->Send(m_SockId, gvidMsg);
 }
-
+#endif

@@ -22,9 +22,9 @@ public:
     TransformComponent() :
         m_Transform(Mat4x4::g_Identity)
     {}
-    virtual bool VInit(XMLElement* pData) override;
+    virtual bool VInit(tinyxml2::XMLElement* pData) override;
     // TODO - update ActorComponent class
-    virtual XMLElement* VGenerateXml(XMLDocument* pDoc)/* override*/;
+    virtual tinyxml2::XMLElement* VGenerateXml(tinyxml2::XMLDocument* pDoc)/* override*/;
     
     // transform functions
     Mat4x4 GetTransform() const { return m_Transform; }

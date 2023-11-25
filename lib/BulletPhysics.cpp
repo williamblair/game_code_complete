@@ -12,6 +12,8 @@
 #include "EventManager.h"
 #include "GameCodeApp.h"
 
+using namespace tinyxml2;
+
 BulletPhysics::~BulletPhysics()
 {
     // delete any physics objects still in the world

@@ -22,7 +22,7 @@ public:
     explicit Actor( ActorId id );
     ~Actor();
 
-    bool Init( XMLElement* pData );
+    bool Init( tinyxml2::XMLElement* pData );
     void PostInit();
     void Destroy();
     void Update( int deltaMs );

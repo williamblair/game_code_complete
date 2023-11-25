@@ -1,6 +1,8 @@
 #include <stdexcept>
 #include "GameOptions.h"
 
+using namespace tinyxml2;
+
 GameOptions::GameOptions()
 {
     m_Level = "";

@@ -921,13 +921,13 @@ inline Mat4x4 LookAt(const Vec3& eye, const Vec3& at, const Vec3& up) {
 }
 
 // https://github.com/ps3dev/PSL1GHT/blob/master/common/vectormath/ppu/cpp/mat_aos.h
-inline Mat4x4 Perspective(const float fovRad, const float aspect, const float near, const float far) {
+inline Mat4x4 Perspective(const float fovRad, const float aspect, const float fNear, const float fFar) {
     Mat4x4 result;
     float f, rangeInv;
     Vec4 zero, col0, col1, col2, col3;
     Vec4 tmp;
     f = tanf((M_PI/2.0f) - fovRad * 0.5f);
-    rangeInv = 1.0f / (near - far);
+    rangeInv = 1.0f / (fNear - fFar);
     zero = Vec4(0.0f, 0.0f, 0.0f, 0.0f);
     tmp = zero;
     tmp.v[0] = f / aspect;
@@ -936,11 +936,11 @@ inline Mat4x4 Perspective(const float fovRad, const float aspect, const float ne
     tmp.v[1] = f;
     col1 = tmp;
     tmp = zero;
-    tmp.v[2] = (near + far) * rangeInv;
+    tmp.v[2] = (fNear + fFar) * rangeInv;
     tmp.v[3] = -1.0f;
     col2 = tmp;
     tmp = zero;
-    tmp.v[2] = near * far * rangeInv * 2.0f;
+    tmp.v[2] = fNear * fFar * rangeInv * 2.0f;
     col3 = tmp;
     //result.col0 = col0;
     //result.col1 = col1;
@@ -1045,14 +1045,14 @@ struct Frustum
 
     float fov; // field of view in radians
     float aspect; // aspect ratio (width divided by height)
-    float near; // near clipping distance
-    float far; // far clipping distance
+    float fNear; // near clipping distance
+    float fFar; // far clipping distance
 
     Frustum() :
         fov(M_PI/4.0f), // default field of view is 90 degrees
         aspect(1.0f), // default aspect ratio is 1:1
-        near(1.0f), // default near plane is 1m away from camera
-        far(1000.0f) // default far plane is 1000m away from camera
+        fNear(1.0f), // default near plane is 1m away from camera
+        fFar(1000.0f) // default far plane is 1000m away from camera
     {}
 
     inline bool Inside(const Vec3& point) const {
@@ -1074,32 +1074,32 @@ struct Frustum
     
     inline const Plane& Get(Side side) { return planes[side]; }
 
-    inline void SetFOV(float _fov) { fov = _fov; Init(fov, aspect, near, far); }
-    inline void SetAspect(float _aspect) { aspect = _aspect; Init(fov, aspect, near, far); }
-    inline void SetNear(float _nearClip) { near = _nearClip; Init(fov, aspect, near, far); }
-    inline void SetFar(float _farClip) { far = _farClip; Init(fov, aspect, near, far); }
+    inline void SetFOV(float _fov) { fov = _fov; Init(fov, aspect, fNear, fFar); }
+    inline void SetAspect(float _aspect) { aspect = _aspect; Init(fov, aspect, fNear, fFar); }
+    inline void SetNear(float _nearClip) { fNear = _nearClip; Init(fov, aspect, fNear, fFar); }
+    inline void SetFar(float _farClip) { fFar = _farClip; Init(fov, aspect, fNear, fFar); }
     inline void Init(const float _fov, const float _aspect, const float _near, const float _far) {
         fov = _fov;
         aspect = _aspect;
-        near = _near;
-        far = _far;
+        fNear = _near;
+        fFar = _far;
 
         double tanFovOver2 = tan(fov/2.0f);
-        Vec3 nearRight = (near*tanFovOver2) * aspect * g_Right;
-        Vec3 farRight = (far*tanFovOver2) * aspect * g_Right;
-        Vec3 nearUp = (near*tanFovOver2) * g_Up;
-        Vec3 farUp =  (far*tanFovOver2) * g_Up;
+        Vec3 nearRight = (fNear*tanFovOver2) * aspect * g_Right;
+        Vec3 farRight = (fFar*tanFovOver2) * aspect * g_Right;
+        Vec3 nearUp = (fNear*tanFovOver2) * g_Up;
+        Vec3 farUp =  (fFar*tanFovOver2) * g_Up;
 
         // points start in the upper right and go around counterclockwise
-        nearClip[0] = (near*g_Forward) - nearRight + nearUp;
-        nearClip[1] = (near*g_Forward) + nearRight + nearUp;
-        nearClip[2] = (near*g_Forward) + nearRight - nearUp;
-        nearClip[3] = (near*g_Forward) - nearRight - nearUp;
+        nearClip[0] = (fNear*g_Forward) - nearRight + nearUp;
+        nearClip[1] = (fNear*g_Forward) + nearRight + nearUp;
+        nearClip[2] = (fNear*g_Forward) + nearRight - nearUp;
+        nearClip[3] = (fNear*g_Forward) - nearRight - nearUp;
 
-        farClip[0] = (far*g_Forward) - farRight + farUp;
-        farClip[1] = (far*g_Forward) + farRight + farUp;
-        farClip[2] = (far*g_Forward) + farRight - farUp;
-        farClip[3] = (far*g_Forward) - farRight - farUp;
+        farClip[0] = (fFar*g_Forward) - farRight + farUp;
+        farClip[1] = (fFar*g_Forward) + farRight + farUp;
+        farClip[2] = (fFar*g_Forward) + farRight - farUp;
+        farClip[3] = (fFar*g_Forward) - farRight - farUp;
 
         // now we have all eight points, time to construct 6 planes.
         // the normal points away from you if you use counterclockwise verts

@@ -5,6 +5,8 @@
 
 #define DBG_PRINT 1
 
+using namespace tinyxml2;
+
 namespace XmlResourceLoader
 {
 

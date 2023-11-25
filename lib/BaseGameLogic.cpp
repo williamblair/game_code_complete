@@ -7,6 +7,8 @@
 #include "MakeStrongPtr.h"
 #include "ActorFactory.h"
 
+using namespace tinyxml2;
+
 bool LevelManager::Initialize(const std::vector<std::string>& levels)
 {
     std::vector<std::string>::const_iterator i = levels.begin();

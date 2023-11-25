@@ -79,7 +79,7 @@ bool BaseSocketManager::Send(int sockId, IPacketPtr pPacket)
     if (!pSock) {
         return false;
     }
-    pSock->send(pPacket);
+    pSock->Send(pPacket);
     return true;
 }
 
@@ -146,7 +146,7 @@ void BaseSocketManager::DoSelect(int pauseMicroSecs, int handleInput)
 
             if (handleInput &&
                     !(pSock->m_deleteFlag & 1) &&
-                    FD_ISSET(pSock->m_sock, &inp_set) {
+                    FD_ISSET(pSock->m_sock, &inp_set)) {
                 pSock->VHandleInput();
             }
         }
@@ -158,7 +158,7 @@ void BaseSocketManager::DoSelect(int pauseMicroSecs, int handleInput)
     auto i = m_SockList.begin();
     while (i != m_SockList.end())
     {
-        pSock = *i;
+        NetSocket* pSock = *i;
         if (pSock->m_timeOut && pSock->m_timeOut < timeNow) {
             pSock->VTimeOut();
         }
@@ -224,6 +224,14 @@ const char* BaseSocketManager::GetHostByAddr(unsigned int ip)
     return nullptr;
 }
 
+int BaseSocketManager::GetIpAddress(int sockId)
+{
+    NetSocket* pSocket = FindSocket(sockId);
+    if (pSocket) {
+        return pSocket->GetIpAddress();
+    }
+    return 0;
+}
 
 
 bool ClientSocketManager::Connect()

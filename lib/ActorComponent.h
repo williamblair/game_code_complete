@@ -21,13 +21,13 @@ public:
     /**
      * to be overridden by component implementations
      */
-    virtual bool VInit( XMLElement* pData ) = 0;
+    virtual bool VInit( tinyxml2::XMLElement* pData ) = 0;
     virtual void VPostInit() {}
     virtual void VUpdate(int deltaMs) {}
     virtual void VOnChanged() {}
 
     // For the editor
-    virtual XMLElement* VGenerateXml() = 0;
+    virtual tinyxml2::XMLElement* VGenerateXml() = 0;
 
     // To be overridden by the interface class
     virtual ComponentId VGetId() const { return GetIdFromName(VGetName()); }

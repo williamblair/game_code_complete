@@ -1,5 +1,5 @@
-#ifndef COMPONENT_TYPES_H_INCLUDED
-#define COMPONENT_TYPES_H_INCLUDED
+#ifndef GCC4_COMPONENT_TYPES_H_INCLUDED
+#define GCC4_COMPONENT_TYPES_H_INCLUDED
 
 #include <cstdint>
 #include <string>

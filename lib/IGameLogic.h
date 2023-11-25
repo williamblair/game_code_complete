@@ -15,7 +15,7 @@ public:
     virtual WeakActorPtr VGetActor(const ActorId id) = 0;
     virtual StrongActorPtr VCreateActor(
         const std::string& actorResource,
-        XMLElement* overrides,
+        tinyxml2::XMLElement* overrides,
         const Mat4x4* initialTransform = nullptr,
         const ActorId serversActorId = INVALID_ACTOR_ID
     ) = 0;

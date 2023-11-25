@@ -2,9 +2,11 @@
 #define GCC4_NET_SOCKET_H_INCLUDED
 
 #include <list>
+#include <sstream>
 
 #include "GCCTime.h"
 #include "IPacket.h"
+#include "EventData.h"
 
 #define MAX_PACKET_SIZE (256)
 #define RECV_BUFFER_SIZE (MAX_PACKET_SIZE * 512)
@@ -95,7 +97,7 @@ public:
     virtual void VHandleInput();
 
 protected:
-    void CreateEvent(std::istrstream& in);
+    void CreateEvent(std::istringstream& in);
 };
 
 class NetworkEventForwarder

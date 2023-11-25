@@ -2,6 +2,8 @@
 #include <cstring>
 #include "TransformComponent.h"
 
+using namespace tinyxml2;
+
 const char* TransformComponent::g_Name = "TransformComponent.h";
 
 bool TransformComponent::VInit(XMLElement* pData)

@@ -3,6 +3,8 @@
 #include <Actor.h>
 #include <ActorComponent.h>
 
+using namespace tinyxml2;
+
 Actor::Actor( ActorId id )
 {
     m_id = id;

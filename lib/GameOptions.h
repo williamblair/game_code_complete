@@ -36,7 +36,7 @@ struct GameOptions
     
     bool m_bUseDevelopmentDirectories;
     
-    XMLDocument* m_pDoc;
+    tinyxml2::XMLDocument* m_pDoc;
 
     GameOptions();
     ~GameOptions() { if (m_pDoc) { delete m_pDoc; } }

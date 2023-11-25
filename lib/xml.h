@@ -3,12 +3,12 @@
 
 #include <tinyxml2.h>
 
-using namespace tinyxml2;
+//using namespace tinyxml2;
 
 namespace XmlResourceLoader
 {
 
-XMLElement* LoadAndReturnRootXmlElement( const char* filename );
+tinyxml2::XMLElement* LoadAndReturnRootXmlElement( const char* filename );
 
 } // namespace XmlResourceLoader
 

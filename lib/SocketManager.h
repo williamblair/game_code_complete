@@ -31,6 +31,8 @@ public:
 
     unsigned int GetHostByName(const std::string& hostName);
     const char* GetHostByAddr(unsigned int ip);
+    
+    int GetIpAddress(int sockId);
 
     void AddToOutbound(int rc) { m_Outbound += rc; }
     void AddToInbound(int rc) { m_Inbound += rc; }
@@ -70,6 +72,9 @@ private:
     std::string m_HostName;
     unsigned int m_Port;
 };
+
+// located in SocketManager.cpp
+extern BaseSocketManager* g_pSocketManager;
 
 #endif // GCC4_SOCKET_MANAGER_H_INCLUDED
 

@@ -25,18 +25,18 @@ public:
      */
     StrongActorPtr CreateActor(
         const char* actorResourceXML,
-        XMLElement* overrides,
+        tinyxml2::XMLElement* overrides,
         const Mat4x4* initialTransform,
         const ActorId serversActorId
     );
 
-    void ModifyActor(StrongActorPtr pActor, XMLElement* overrides);
+    void ModifyActor(StrongActorPtr pActor, tinyxml2::XMLElement* overrides);
 
     // this function can be overwritten by a subclass so you can create
     // game specific c++ components. If you do this, make sure you call the
     // base class version first. If it returns null, you know it's not an
     // engine component.
-    virtual StrongActorComponentPtr VCreateComponent(XMLElement* pData);
+    virtual StrongActorComponentPtr VCreateComponent(tinyxml2::XMLElement* pData);
 
 protected:
     GenericObjectFactory<ActorComponent,ComponentId> m_ComponentFactory;

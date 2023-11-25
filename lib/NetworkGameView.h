@@ -1,6 +1,8 @@
 #ifndef GCC4_NETWORK_GAME_VIEW_H_INCLUDED
 #define GCC4_NETWORK_GAME_VIEW_H_INCLUDED
 
+// TODO - define game views
+#if 0
 class NetworkGameView : public IGameView
 {
 public:
@@ -27,6 +29,7 @@ protected:
     ActorId m_ActorId;
     int m_SockId;
 };
+#endif
 
 #endif // GCC4_NETWORK_GAME_VIEW_H_INCLUDED
 

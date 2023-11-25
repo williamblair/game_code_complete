@@ -59,13 +59,13 @@ public:
 
     virtual StrongActorPtr VCreateActor(
         const std::string& actorResource,
-        XMLElement* overrides,
+        tinyxml2::XMLElement* overrides,
         const Mat4x4* initialTransform = nullptr,
         const ActorId serversActorId = INVALID_ACTOR_ID
     );
     virtual void VDestroyActor(const ActorId actorId);
     virtual WeakActorPtr VGetActor(const ActorId actorId);
-    virtual void VModifyActor(const ActorId actorId, XMLElement* overrides);
+    virtual void VModifyActor(const ActorId actorId, tinyxml2::XMLElement* overrides);
     virtual void VMoveActor(const ActorId id, const Mat4x4& mat) {}
 
     // editor functions
@@ -126,7 +126,7 @@ protected:
     virtual ActorFactory* VCreateActorFactory();
 
     // override this function to do any game-specific loading.
-    virtual bool VLoadGameDelegate(XMLElement* pLevelData) { return true; }
+    virtual bool VLoadGameDelegate(tinyxml2::XMLElement* pLevelData) { return true; }
 
     void MoveActorDelegate(IEventDataPtr pEventData);
     void RequestNewActorDelegate(IEventDataPtr pEventData);

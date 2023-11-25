@@ -4,6 +4,8 @@
 //#include "AmmoPickup.h"
 //#include "HealthPickup.h"
 
+using namespace tinyxml2;
+
 ActorFactory::ActorFactory()
 {
     //m_actorComponentCreators["AmmoPickup"] = AmmoPickup::Create;

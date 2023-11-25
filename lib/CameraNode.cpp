@@ -23,7 +23,7 @@ bool CameraNode::VOnRestore(Scene* pScene)
     m_Frustum.SetAspect(
         (float)pScene->GetRenderer()->VGetWidth() /
         (float)pScene->GetRenderer()->VGetHeight());
-    m_Projection = Perspective(m_Frustum.fov, m_Frustum.aspect, m_Frustum.near, m_Frustum.far);
+    m_Projection = Perspective(m_Frustum.fov, m_Frustum.aspect, m_Frustum.fNear, m_Frustum.fFar);
     pScene->GetRenderer()->VSetProjectionTransform(&m_Projection);
     return true;
 }

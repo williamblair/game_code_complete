@@ -8,6 +8,7 @@
 
 #include "ComponentTypes.h"
 #include "GCCMath.h"
+#include "IPacket.h" // for socket defs
 
 // forward declaration
 class IEventData;
@@ -569,6 +570,8 @@ private:
 };
 
 // Networking stuff
+
+// Sent whenever a new client attaches to a game logic acting as a server
 class EvtDataRemoteClient : public BaseEventData
 {
 public:
@@ -607,9 +610,55 @@ private:
     int m_ipAddress;
 };
 
-// TODO
+// sent by the server to the clients when a network view
+// is assigned a player number
 class EvtDataNetworkPlayerActorAssignment : public BaseEventData
 {
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+    
+    EvtDataNetworkPlayerActorAssignment() :
+        m_ActorId(INVALID_ACTOR_ID),
+        m_SocketId(INVALID_SOCKET)
+    {
+    }
+    explicit EvtDataNetworkPlayerActorAssignment(
+        const ActorId actorId,
+        const int socketId)
+    {
+        m_ActorId = actorId;
+        m_SocketId = socketId;
+    }
+    
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataNetworkPlayerActorAssignment(m_ActorId, m_SocketId)
+        );
+    }
+    
+    virtual const char* GetName() const {
+        return "EvtDataNetworkPlayerActorAssignment";
+    }
+    
+    virtual void VSerialize(std::ostringstream& out) const {
+        out << m_ActorId << " ";
+        out << m_SocketId;
+    }
+    
+    //TODO
+    /*virtual void VDeserialize(std::istrstream& in) {
+        in >> m_ActorId;
+        in >> m_SocketId;
+    }*/
+    
+    // specific to this event type
+    ActorId GetActorId() const { return m_ActorId; }
+    int GetSocketId() const { return m_SocketId; }
+    
+private:
+    ActorId m_ActorId;
+    int m_SocketId;
 };
 
 #endif // EVENT_DATA_H_INCLUDED
