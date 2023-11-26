@@ -3,24 +3,27 @@
 
 #include <LuaPlus/LuaPlus.h>
 
-#include <EventData.h>
-#include <ScriptEvent.h>
+#include <GCC4/EventData.h>
+#include "ScriptEvent.h"
 
 class ScriptEventListener
 {
 public:
 
-    explicit ScriptEventListener( const EventType& eventType,
-                                  const LuaPlus::LuaObject& scriptCallbackFunc );
+    explicit ScriptEventListener(
+        const EventType& eventType,
+        const LuaPlus::LuaObject& scriptCallbackFunc
+    );
     ~ScriptEventListener();
 
     EventListenerDelegate GetDelegate()
     {
         return EventListenerDelegate( 
-            DECL_MBR_DELEGATE( &ScriptEventListener::ScriptEventDelegate ) );
+            DECL_MBR_DELEGATE(&ScriptEventListener::ScriptEventDelegate)
+        );
     }
 
-    void ScriptEventDelegate( IEventDataPtr pEventPtr );
+    void ScriptEventDelegate(IEventDataPtr pEventPtr);
 
 private:
 

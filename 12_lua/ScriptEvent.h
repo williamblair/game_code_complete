@@ -5,17 +5,18 @@
 
 #include <LuaPlus/LuaPlus.h>
 
-#include <EventData.h>
+#include <GCC4/EventData.h>
 
+#if 0
 // the # places quotes around the token
 // to be called in app initialization for each script event class
-#define REGISTER_SCRIPT_EVENT( eventClass, eventType ) \
-    ScriptEvent::RegisterEventTypeWithScript( #eventClass, eventType ); \
-    ScriptEvent::AddCreationFunction( eventType, \
-                                      &eventClass::CreateEventForScript )
+#define REGISTER_SCRIPT_EVENT(eventClass, eventType) \
+    ScriptEvent::RegisterEventTypeWithScript(#eventClass, eventType); \
+    ScriptEvent::AddCreationFunction(eventType, \
+        &eventClass::CreateEventForScript)
 
 // To be placed within the script event class declaration
-#define EXPORT_FOR_SCRIPT_EVENT( eventClass ) \
+#define EXPORT_FOR_SCRIPT_EVENT(eventClass) \
     public: \
         static ScriptEvent* CreateEventForScript() \
         { \
@@ -38,13 +39,14 @@ public:
 
     // should only be called from ScripExports functions
     LuaPlus::LuaObject GetEventData(); // called when event is sent from C++ to script
-    bool SetEventData( LuaPlus::LuaObject eventData ); // called when event is sent from script to C++
+    bool SetEventData(LuaPlus::LuaObject eventData); // called when event is sent from script to C++
 
-    static void RegisterEventTypeWithScript( const char* key, EventType type );
-    static void AddCreationFunction( EventType type, 
-                                     CreateEventForScriptFunctionType pCreateFunc );
-    static ScriptEvent* CreateEventFromScript( EventType type );
-
+    static void RegisterEventTypeWithScript(const char* key, EventType type);
+    static void AddCreationFunction(
+        EventType type, 
+        CreateEventForScriptFunctionType pCreateFunc
+    );
+    static ScriptEvent* CreateEventFromScript(EventType type);
 
 protected:
 
@@ -56,6 +58,7 @@ protected:
     virtual void VBuildEventData(); // fill m_eventData
     virtual bool VBuildEventFromScript() { return true; } // extract data from m_eventData
 };
+#endif
 
 #endif // SCRIPT_EVENT_H_INCLUDED
 

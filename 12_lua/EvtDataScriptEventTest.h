@@ -1,7 +1,7 @@
 #ifndef EVT_DATA_SCRIPT_EVENT_TEST
 #define EVT_DATA_SCRIPT_EVENT_TEST
 
-#include <ScriptEvent.h>
+#include "ScriptEvent.h"
 
 class EvtDataScriptEventFromLua : public ScriptEvent
 {
@@ -10,19 +10,19 @@ public:
     static const EventType sk_EventType;
 
     EvtDataScriptEventFromLua();
-    EvtDataScriptEventFromLua( int num ) :
-        m_num( num )
+    EvtDataScriptEventFromLua(int num) :
+        m_num(num)
     {}
 
     virtual const EventType& VGetEventType() const { return sk_EventType; }
     virtual const char* GetName() const { return "EvtDataScriptEventFromLua"; }
     virtual IEventDataPtr VCopy() const {
-        return IEventDataPtr( new EvtDataScriptEventFromLua( m_num ) );
+        return IEventDataPtr(new EvtDataScriptEventFromLua(m_num));
     }
 
     int GetVal() const { return m_num; }
 
-    EXPORT_FOR_SCRIPT_EVENT( EvtDataScriptEventFromLua );
+    EXPORT_FOR_SCRIPT_EVENT(EvtDataScriptEventFromLua);
 
 protected:
 
@@ -37,17 +37,17 @@ public:
     static const EventType sk_EventType;
 
     EvtDataScriptEventToLua();
-    EvtDataScriptEventToLua( int num ) :
-        m_num( num )
+    EvtDataScriptEventToLua(int num) :
+        m_num(num)
     {}
 
     virtual const EventType& VGetEventType() const { return sk_EventType; }
     virtual const char* GetName() const { return "EvtDataScriptEventToLua"; }
     virtual IEventDataPtr VCopy() const {
-        return IEventDataPtr( new EvtDataScriptEventToLua( m_num ) );
+        return IEventDataPtr(new EvtDataScriptEventToLua(m_num));
     }
 
-    EXPORT_FOR_SCRIPT_EVENT( EvtDataScriptEventToLua );
+    EXPORT_FOR_SCRIPT_EVENT(EvtDataScriptEventToLua);
 
 protected:
 

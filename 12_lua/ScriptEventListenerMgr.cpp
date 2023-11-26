@@ -1,39 +1,31 @@
 #include <iostream>
-#include <ScriptEventListenerMgr.h>
+#include "ScriptEventListenerMgr.h"
 
 ScriptEventListenerMgr::~ScriptEventListenerMgr()
 {
-    for ( auto it = m_listeners.begin(); it != m_listeners.end(); ++it )
-    {
+    for (auto it = m_listeners.begin(); it != m_listeners.end(); ++it) {
         delete *it;
     }
     m_listeners.clear();
 }
 
-void ScriptEventListenerMgr::AddListener( ScriptEventListener* pListener )
+void ScriptEventListenerMgr::AddListener(ScriptEventListener* pListener)
 {
-    if ( m_listeners.find( pListener ) == m_listeners.end() )
-    {
+    if (m_listeners.find(pListener) == m_listeners.end()) {
         m_listeners.insert( pListener );
-    }
-    else
-    {
-        
+    } else {
         std::cout << __FILE__ << ":" << __LINE__ << ": "
-                  << "Listener already in list" << std::endl;
+            << "Listener already in list" << std::endl;
     }
 }
 
-void ScriptEventListenerMgr::DestroyListener( ScriptEventListener* pListener )
+void ScriptEventListenerMgr::DestroyListener(ScriptEventListener* pListener)
 {
-    if ( m_listeners.find( pListener ) != m_listeners.end() )
-    {
-        m_listeners.erase( pListener );
-    }
-    else
-    {
+    if (m_listeners.find(pListener) != m_listeners.end()) {
+        m_listeners.erase(pListener);
+    } else {
         std::cout << __FILE__ << ":" << __LINE__ << ": "
-                  << "Failed to find listener" << std::endl;
+            << "Failed to find listener" << std::endl;
     }
 }
 

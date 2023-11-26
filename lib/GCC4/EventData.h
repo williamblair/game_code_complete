@@ -6,6 +6,8 @@
 #include <memory>
 #include <functional>
 
+#include <LuaPlus/LuaPlus.h>
+
 #include "ComponentTypes.h"
 #include "GCCMath.h"
 #include "IPacket.h" // for socket defs
@@ -205,11 +207,10 @@ private:
 class ScriptEvent : public BaseEventData
 {
 public:
-    ScriptEvent() { m_bEventDataIsValid = false; }
+    ScriptEvent() { m_eventDataIsValid = false; }
 
-    //TODO
-    //LuaPlus::LuaObject GetEventData(); // called when event sent from c++ to script
-    //bool SetEventData(LuaPlus::LuaObject eventData); // called when event is sent from script to c++
+    LuaPlus::LuaObject GetEventData(); // called when event sent from c++ to script
+    bool SetEventData(LuaPlus::LuaObject eventData); // called when event is sent from script to c++
 
     // helper functions for registering with the script. You should call REGISTER_SCRIPT_EVENT()
     // instead of calling this directly. Any class that needs to be exported also needs to
@@ -223,11 +224,10 @@ public:
 
 protected:
     typedef std::map<EventType,CreateEventForScriptFunctionType> CreationFunctions;
-    static CreationFunctions s_CreationFunctions;
+    static CreationFunctions s_creationFunctions;
 
-    bool m_bEventDataIsValid;
-    //TODO
-    //LuaPlus::LuaObject m_EventData;
+    bool m_eventDataIsValid;
+    LuaPlus::LuaObject m_eventData;
 
     // This function must be overridden if you want to fire this event in c++ and have it
     // received by the script. If you only fire the event from the script side, this function

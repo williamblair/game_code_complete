@@ -3,14 +3,14 @@
 
 #include <set>
 
-#include <ScriptEventListener.h>
+#include "ScriptEventListener.h"
 
 class ScriptEventListenerMgr
 {
 public:
     ~ScriptEventListenerMgr();
-    void AddListener( ScriptEventListener* pListener );
-    void DestroyListener( ScriptEventListener* pListener );
+    void AddListener(ScriptEventListener* pListener);
+    void DestroyListener(ScriptEventListener* pListener);
 
 private:
     typedef std::set<ScriptEventListener*> ScriptEventListenerSet;

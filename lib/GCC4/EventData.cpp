@@ -15,16 +15,16 @@ const EventType EvtDataPhysTriggerLeave::sk_EventType(0x77DD2B3A);
 const EventType EvtDataRemoteClient::sk_EventType(0x77DD2B3B);
 const EventType EvtDataNetworkPlayerActorAssignment::sk_EventType(0x77DD2B3C);
 
-void ScriptEvent::VBuildEventData()
-{
-    //TODO
-    //m_eventData.AssignNil(LuaStateManager::Get()->GetLuaState());
-}
+//void ScriptEvent::VBuildEventData()
+//{
+//    m_eventData.AssignNil(LuaStateManager::GetInstance()->GetLuaState());
+//}
 
 void EvtDataPhysCollision::VBuildEventData()
 {
     //TODO
-    /*m_eventData.AssignNewTable(LuaStateManager::Get()->GetLuaState());
-    m_eventData.SetInteger("actorA", m_ActorA);
-    m_eventData.SetInteger("actorB", m_ActorB);*/
+    //m_eventData.AssignNewTable(LuaStateManager::GetInstance()->GetLuaState());
+    //m_eventData.SetInteger("actorA", m_ActorA);
+    //m_eventData.SetInteger("actorB", m_ActorB);
 }
+

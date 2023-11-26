@@ -1,10 +1,10 @@
 #ifndef APP_H_INCLUDED
 #define APP_H_INCLUDED
 
-#include <EventManager.h>
-#include <ProcessManager.h>
-#include <ResCache.h>
-#include <ResourceZipFile.h>
+#include <GCC4/EventManager.h>
+#include <GCC4/ProcessManager.h>
+#include <GCC4/ResCache.h>
+#include <GCC4/ResourceZipFile.h>
 
 class App
 {
@@ -27,7 +27,7 @@ private:
     void FromLuaTestHandler( IEventDataPtr pEventData );
 };
 
-extern App* g_pApp; // global instance
+extern App* g_pTestApp; // global instance
 
 #endif // APP_H_INCLUDED
 
