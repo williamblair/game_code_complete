@@ -1,7 +1,7 @@
 #ifndef EVT_DATA_SCRIPT_EVENT_TEST
 #define EVT_DATA_SCRIPT_EVENT_TEST
 
-#include "ScriptEvent.h"
+#include <GCC4/EventData.h>
 
 class EvtDataScriptEventFromLua : public ScriptEvent
 {

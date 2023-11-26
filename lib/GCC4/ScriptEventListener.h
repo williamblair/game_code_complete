@@ -1,10 +1,10 @@
-#ifndef SCRIPT_EVENT_LISTENER_H_INCLUDED
-#define SCRIPT_EVENT_LISTENER_H_INCLUDED
+#ifndef GCC4_SCRIPT_EVENT_LISTENER_H_INCLUDED
+#define GCC4_SCRIPT_EVENT_LISTENER_H_INCLUDED
 
 #include <LuaPlus/LuaPlus.h>
 
-#include <GCC4/EventData.h>
-#include "ScriptEvent.h"
+#include "EventData.h"
+//#include "ScriptEvent.h"
 
 class ScriptEventListener
 {
@@ -32,5 +32,5 @@ private:
 
 };
 
-#endif // SCRIPT_EVENT_LISTENER_H_INCLUDED
+#endif // GCC4_SCRIPT_EVENT_LISTENER_H_INCLUDED
 

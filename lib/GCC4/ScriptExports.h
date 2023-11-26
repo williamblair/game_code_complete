@@ -1,13 +1,12 @@
-#ifndef INTERNAL_SCRIPT_EXPORTS_H_INCLUDED
-#define INTERNAL_SCRIPT_EXPORTS_H_INCLUDED
+#ifndef GCC4_INTERNAL_SCRIPT_EXPORTS_H_INCLUDED
+#define GCC4_INTERNAL_SCRIPT_EXPORTS_H_INCLUDED
 
 #include <memory>
 
-#include <GCC4/EventManager.h>
-#include <GCC4/EventData.h>
-
+#include "EventManager.h"
+#include "EventData.h"
 #include "LuaStateManager.h"
-#include "ScriptEvent.h"
+//#include "ScriptEvent.h"
 #include "ScriptEventListener.h"
 #include "ScriptEventListenerMgr.h"
 
@@ -50,5 +49,5 @@ namespace ScriptExports
     void Unregister();
 }
 
-#endif // INTERNAL_SCRIPT_EXPORTS_H_INCLUDED
+#endif // GCC4_INTERNAL_SCRIPT_EXPORTS_H_INCLUDED
 

@@ -1,6 +1,10 @@
 #include "GameCodeApp.h"
 
-GameCodeApp::GameCodeApp()
+GameCodeApp::GameCodeApp() :
+    m_pGame(nullptr),
+    m_pResCache(nullptr),
+    m_pEventManager(nullptr),
+    m_pProcessMgr(nullptr)
 {
     //TODO
 }

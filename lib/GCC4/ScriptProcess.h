@@ -1,8 +1,8 @@
-#ifndef SCRIPT_PROCESS_H_INCLUDED
-#define SCRIPT_PROCESS_H_INCLUDED
+#ifndef GCC4_SCRIPT_PROCESS_H_INCLUDED
+#define GCC4_SCRIPT_PROCESS_H_INCLUDED
 
 #include <LuaPlus/LuaPlus.h>
-#include <GCC4/Process.h>
+#include "Process.h"
 
 class ScriptProcess : public Process
 {
@@ -59,5 +59,5 @@ private:
     static void Destroy(ScriptProcess* pObj);
 };
 
-#endif // SCRIPT_PROCESS_H_INCLUDED
+#endif // GCC4_SCRIPT_PROCESS_H_INCLUDED
 

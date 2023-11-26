@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
-#include "ScriptEvent.h"
+
+#include "EventData.h"
 #include "LuaStateManager.h"
 
 ScriptEvent::CreationFunctions ScriptEvent::s_creationFunctions;

@@ -1,12 +1,11 @@
-#ifndef LUA_STATE_MANAGER_H_INCLUDED
-#define LUA_STATE_MANAGER_H_INCLUDED
+#ifndef GCC4_LUA_STATE_MANAGER_H_INCLUDED
+#define GCC4_LUA_STATE_MANAGER_H_INCLUDED
 
 #include <string>
 #include <cassert>
 
 #include <LuaPlus/LuaPlus.h>
-//#include "Vec3.h"
-#include <GCC4/GCCMath.h>
+#include "GCCMath.h"
 
 class IScriptManager
 {

@@ -1,12 +1,14 @@
 #include <iostream>
 #include <cassert>
 #include <memory>
+
 #include <LuaPlus/LuaPlus.h>
-#include <GCC4/Process.h>
-#include <GCC4/Resource.h>
-#include <GCC4/ResCache.h>
+
+#include "Process.h"
+#include "Resource.h"
+#include "ResCache.h"
 #include "ScriptExports.h"
-#include "App.h"
+#include "GameCodeApp.h"
 
 ScriptEventListenerMgr* InternalScriptExports::s_pScriptEventListenerMgr = nullptr;
 
@@ -76,7 +78,7 @@ void InternalScriptExports::AttachScriptProcess(
         std::shared_ptr<Process> pProcess(
             static_cast<Process*>(tmp.GetLightUserdata())
         );
-        g_pTestApp->m_pProcessMgr->AttachProcess(pProcess);
+        g_pApp->m_pProcessMgr->AttachProcess(pProcess);
     }
     else
     {
@@ -91,7 +93,7 @@ InternalScriptExports::LoadAndExecuteScriptResource(
 {
     Resource resource(scriptResource);
     std::shared_ptr<ResHandle> pResourceHandle =
-        g_pTestApp->m_pResCache->GetHandle(&resource);
+        g_pApp->m_pResCache->GetHandle(&resource);
     if (pResourceHandle) {
         return true;
     }
@@ -168,6 +170,7 @@ void Unregister()
 }
 
 } // end namespace ScriptExports
+
 
 
 

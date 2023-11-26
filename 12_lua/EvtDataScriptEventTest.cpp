@@ -1,5 +1,5 @@
 #include "EvtDataScriptEventTest.h"
-#include "LuaStateManager.h"
+#include <GCC4/LuaStateManager.h>
 
 const EventType EvtDataScriptEventFromLua::sk_EventType = EventType(0x12345678);
 const EventType EvtDataScriptEventToLua::sk_EventType = EventType(0x12345679);

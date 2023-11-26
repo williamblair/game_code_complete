@@ -1,6 +1,7 @@
-#include "ScriptEventListener.h"
-#include <GCC4/EventManager.h>
 #include <cassert>
+
+#include "ScriptEventListener.h"
+#include "EventManager.h"
 
 ScriptEventListener::ScriptEventListener(
         const EventType& eventType,
@@ -47,4 +48,5 @@ void ScriptEventListener::ScriptEventDelegate(IEventDataPtr pEventPtr)
         }
     }
 }
+
 

@@ -1,25 +1,25 @@
 #include <iostream>
-#include "App.h"
-#include "LuaStateManager.h"
-#include "EvtDataScriptEventTest.h"
-#include "ScriptExports.h"
 
-App* g_pTestApp = nullptr;
+#include <GCC4/LuaStateManager.h>
+#include <GCC4/ScriptExports.h>
+
+#include "App.h"
+#include "EvtDataScriptEventTest.h"
 
 #define RESOURCE_FILE "resources.zip"
 
-App::App() :
-    m_pProcessMgr(nullptr),
+LuaTestApp::LuaTestApp() :
+    //m_pProcessMgr(nullptr),
     m_pResCache(nullptr),
     m_pZipFile(nullptr),
     m_pEvtMgr(nullptr),
     m_fromLuaTestEvtDelegate(
-        DECL_MBR_DELEGATE(&App::FromLuaTestHandler)
+        DECL_MBR_DELEGATE(&LuaTestApp::FromLuaTestHandler)
     )
 {
 }
 
-App::~App()
+LuaTestApp::~LuaTestApp()
 {
     if (m_pResCache != nullptr) {
         delete m_pResCache;
@@ -38,8 +38,12 @@ App::~App()
     LuaStateManager::Destroy();
 }
 
-bool App::Init()
+bool LuaTestApp::Init(const char* title, int screenWidth, int screenHeight)
 {
+    (void)title;
+    (void)screenWidth;
+    (void)screenHeight;
+
     // Resources
     m_pZipFile = new ResourceZipFile(RESOURCE_FILE); // freed automatically
     m_pResCache = new ResCache(50, m_pZipFile);
@@ -87,7 +91,7 @@ bool App::Init()
     return true;
 }
 
-void App::Run()
+void LuaTestApp::Run()
 {
     LuaStateManager* pLuaMgr = LuaStateManager::GetInstance();
 
@@ -109,7 +113,7 @@ void App::Run()
 
 // Called when EvtDataScriptEventFromLua event happens;
 // event is created by Lua Script scripts/EvtDataScriptEvent.lua
-void App::FromLuaTestHandler(IEventDataPtr pEventData)
+void LuaTestApp::FromLuaTestHandler(IEventDataPtr pEventData)
 {
     std::shared_ptr<EvtDataScriptEventFromLua> pCastEventData(
         std::static_pointer_cast<EvtDataScriptEventFromLua>(pEventData)

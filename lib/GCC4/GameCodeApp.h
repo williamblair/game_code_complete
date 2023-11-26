@@ -59,6 +59,9 @@ public:
     // Event manager
     EventManager* m_pEventManager;
 
+    // Process manager
+    ProcessManager* m_pProcessMgr;
+
     // TODO
     // Socker manager - could be server or client
     //BaseSocketManager* m_pBaseSocketManager;
@@ -90,3 +93,4 @@ private:
 extern GameCodeApp* g_pApp;
 
 #endif // GCC4_GAME_CODE_APP_H_INCLUDED
+

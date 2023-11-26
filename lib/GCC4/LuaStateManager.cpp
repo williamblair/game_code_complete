@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+
 #include "LuaStateManager.h"
 
 LuaStateManager* LuaStateManager::s_pSingleton = nullptr;
