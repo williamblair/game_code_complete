@@ -34,6 +34,9 @@ NetSocket::NetSocket(SOCKET newSock, unsigned int hostIp)
 #ifdef GCC4_USE_WIN_SOCKET
     setsockopt(m_sock, SOL_SOCKET, SO_DONTLINGER, nullptr, 0);
 #endif
+#ifdef GCC4_USE_POSIX_SOCKET
+    //TODO?
+#endif
 }
 
 NetSocket::~NetSocket()
@@ -242,7 +245,7 @@ void NetListenSocket::Init(int portnum)
 
     memset(&sa, 0, sizeof(sa));
     sa.sin_family = AF_INET;
-    sa.sin_addr.s_addr = ADDR_ANY;
+    sa.sin_addr.s_addr = GCC4_ADDR_ANY;
     sa.sin_port = htons(portnum);
 
     // bind to port
@@ -271,7 +274,7 @@ SOCKET NetListenSocket::AcceptConnection(unsigned int* pAddr)
 {
     SOCKET newSock;
     struct sockaddr_in sock;
-    int size = sizeof(sock);
+    GCC4_SOCKLEN_TYPE size = sizeof(sock);
 
     if ((newSock = accept(m_sock, (struct sockaddr*)&sock, &size)) == INVALID_SOCKET) {
         return INVALID_SOCKET;
@@ -293,8 +296,13 @@ void GameServerListenSocket::VHandleInput()
     unsigned int theipaddr;
     SOCKET newSock = AcceptConnection(&theipaddr);
 
+#ifdef GCC4_USE_WIN_SOCKET
     int value = 1;
     setsockopt(newSock, SOL_SOCKET, SO_DONTLINGER, (char*)&value, sizeof(value));
+#endif
+#ifdef GCC4_USE_POSIX_SOCKET
+    //TODO?
+#endif
 
     if (newSock != INVALID_SOCKET) {
         RemoteEventSocket* pSock = new RemoteEventSocket(newSock, theipaddr);
@@ -319,7 +327,8 @@ void RemoteEventSocket::VHandleInput()
         const char* pBuf = pPacket->VGetData();
         int size = static_cast<int>(pPacket->VGetSize());
 
-        std::istringstream in(pBuf+sizeof(unsigned long), (size - sizeof(unsigned long)));
+        std::string inString(pBuf+sizeof(unsigned long), (size - sizeof(unsigned long)));
+        std::istringstream in(inString);
 
         int type;
         in >> type;

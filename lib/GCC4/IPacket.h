@@ -11,9 +11,15 @@
 #endif
 
 #ifdef GCC4_USE_POSIX_SOCKET
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <arpa/inet.h> // htonl
+#include <netdb.h> // gethostbyname
+#include <fcntl.h>
+#include <unistd.h> // close
 #include <assert.h>
 #include <string.h> // memcpy
-#include <arpa/inet.h> // htonl
 typedef int SOCKET;
 #define INVALID_SOCKET (-1)
 #define SOCKET_ERROR (-1)
@@ -27,12 +33,16 @@ typedef int SOCKET;
 
 #ifdef GCC4_USE_POSIX_SOCKET
 #define GCC4_CLOSE_SOCKET close
+#define GCC4_ADDR_ANY INADDR_ANY
+#define GCC4_SOCKLEN_TYPE socklen_t
 #define GCC4_SELECT_SUCCESS(ret) (((ret) != -1) && ((ret) != 0))
 #define GCC4_SELECT_ERROR(ret) ((ret) < 0)
 #endif
 
 #ifdef GCC4_USE_WIN_SOCKET
 #define GCC4_CLOSE_SOCKET closesocket
+#define GCC4_ADDR_ANY ADDR_ANY
+#define GCC4_SOCKLEN_TYPE int
 #define GCC4_SELECT_SUCCESS(ret) (((ret) != SOCKET_ERROR) && ((ret) > 0))
 #define GCC4_SELECT_ERROR(ret) ((ret) == SOCKET_ERROR)
 #endif

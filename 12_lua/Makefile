@@ -1,43 +1,23 @@
-CC = g++
-CFLAGS = -std=c++17 -g
-LUAPLUS_DIR = /home/bj/luaplus
-LUAPLUS_BUILD_DIR = $(LUAPLUS_DIR)/.build/bin.lua53-luaplus.gcc.linux64
-INCDIRS = -I./ \
-          -I$(LUAPLUS_DIR)/Src \
-          -I$(LUAPLUS_DIR)/Src/LuaPlus/lua53-luaplus/src \
-          -I../09_resource_cache \
-          -I../08_zip \
-          -I../07_coop_multitasker \
-          -I../11_event_manager
-LIBDIRS = -L$(LUAPLUS_BUILD_DIR)
-LIBS = -llua53-luaplus-static -ldl -lz
-OBJS = main.o \
-       App.o \
-       ScriptExports.o \
-       LuaStateManager.o \
-       ScriptProcess.o \
-       ScriptEvent.o \
-       ScriptEventListener.o \
-       ScriptEventListenerMgr.o \
-       EvtDataScriptEventTest.o \
-       ../09_resource_cache/ResCache.o \
-       ../09_resource_cache/ResHandle.o \
-       ../09_resource_cache/Resource.o \
-       ../09_resource_cache/WildcardMatch.o \
-       ../09_resource_cache/ResourceZipFile.o \
-       ../08_zip/ZipFile.o \
-       ../07_coop_multitasker/ProcessManager.o \
-       ../07_coop_multitasker/Process.o \
-       ../11_event_manager/EventData.o \
-       ../11_event_manager/EventManager.o
+CXX = g++
+CC = gcc
+CXXFLAGS = -g -Wall -std=c++17
+CFLAGS = -g -Wall
+INCDIRS = -I. -I../lib -I../lib/LuaPlus/lua53-luaplus/src -I/usr/include/bullet
+LIBDIRS = 
+LIBS = -lSDL2 -lSDL2main -lGLEW -lGLU -lGL -lstdc++ -ldl -pthread -lz -lassimp -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath
+CPPSOURCES = $(wildcard ./*.cpp) $(wildcard ../lib/GCC4/*.cpp) $(wildcard ../lib/LuaPlus/*.cpp)
+CSOURCES = $(wildcard ../lib/LuaPlus/*.c) $(wildcard ../lib/LuaPlus/lua53-luaplus/src/*.c)
+OBJS = $(CPPSOURCES:.cpp=.o) $(CSOURCES:.c=.o)
 TARGET = main
 
-all: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET) $(LIBDIRS) $(LIBS)
-
 %.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCDIRS)
+
+%.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $< $(INCDIRS)
 
-clean:
-	rm -f $(OBJS)
+all: $(OBJS)
+	$(CXX) $(CFLAGS) -o $(TARGET) $(OBJS) $(INCDIRS) $(LIBDIRS) $(LIBS)
 
+clean:
+	rm -f $(OBJS) $(TARGET)
