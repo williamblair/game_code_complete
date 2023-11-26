@@ -326,10 +326,12 @@ void RemoteEventSocket::VHandleInput()
         switch (type)
         {
         case NetMsg_Event:
+            printf("RemoteEventSocket NetMsg_Event\n");
             CreateEvent(in);
             break;
         case NetMsg_PlayerLoginOk:
         {
+            printf("RemoteEventSocket NetMsg_PlayerLoginOk\n");
             int serverSockId, actorId;
             in >> serverSockId;
             in >> actorId;
