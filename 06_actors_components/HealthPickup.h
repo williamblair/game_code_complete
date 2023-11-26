@@ -1,22 +1,27 @@
 #ifndef HEALTH_PICKUP_H_INCLUDED
 #define HEALTH_PICKUP_H_INCLUDED
 
-#include <xml.h>
-#include <PickupInterface.h>
-#include <ComponentIds.h>
+#include <GCC4/xml.h>
+#include "PickupInterface.h"
 
 class HealthPickup : public PickupInterface
 {
 public:
 
-    static ActorComponent* Create();
+    static const char * const sName;// = "HealthPickup";
+    
+    ComponentId VGetComponentId() const {
+        void* rawId = HashedString::hash_name(sName);
+        return reinterpret_cast<ComponentId>(rawId);
+    }
 
-    static const ComponentId COMPONENT_ID = 
-        ComponentId(COMPONENT_IDS::HEALTH_PICKUP); // unique ID for this component type
-    ComponentId VGetComponentId() const { return COMPONENT_ID; }
+    virtual tinyxml2::XMLElement* VGenerateXml();
 
-    virtual bool VInit( XMLElement* pData );
-    virtual void VApply( WeakActorPtr pActor );
+    virtual bool VInit(tinyxml2::XMLElement* pData);
+    virtual void VApply(WeakActorPtr pActor);
+    
+    
+    virtual const char* VGetName() const { return sName; }
 
     virtual std::string VGetPrintInfo();
 

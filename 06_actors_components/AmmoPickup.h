@@ -1,21 +1,25 @@
 #ifndef AMMO_PICKUP_H_INCLUDED
 #define AMMO_PICKUP_H_INCLUDED
 
-#include <PickupInterface.h>
-#include <ComponentIds.h>
+#include "PickupInterface.h"
 
 class AmmoPickup : public PickupInterface
 {
 public:
 
-    static ActorComponent* Create();
+    static const char * const sName;// = "AmmoPickup";
 
-    static const ComponentId COMPONENT_ID = 
-        ComponentId(COMPONENT_IDS::AMMO_PICKUP); // unique ID for this component type
-    ComponentId VGetComponentId() const { return COMPONENT_ID; }
+    ComponentId VGetComponentId() const {
+        void* rawId = HashedString::hash_name(sName);
+        return reinterpret_cast<ComponentId>(rawId);
+    }
 
-    virtual bool VInit( XMLElement* pData );
-    virtual void VApply( WeakActorPtr pActor );
+    virtual tinyxml2::XMLElement* VGenerateXml();
+
+    virtual bool VInit(tinyxml2::XMLElement* pData);
+    virtual void VApply(WeakActorPtr pActor);
+    
+    virtual const char* VGetName() const { return sName; }
 
     virtual std::string VGetPrintInfo();
 

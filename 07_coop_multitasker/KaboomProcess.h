@@ -3,7 +3,8 @@
 
 #include <cstdint>
 #include <string>
-#include <Process.h>
+
+#include <GCC4/Process.h>
 
 class KaboomProcess : public Process
 {
@@ -13,7 +14,7 @@ public:
 
 protected:
 
-    virtual void VOnUpdate( uint64_t deltaMs );
+    virtual void VOnUpdate(uint64_t deltaMs);
 
 private:
     

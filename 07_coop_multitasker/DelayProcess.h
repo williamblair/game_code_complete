@@ -2,17 +2,17 @@
 #define DELAY_PROCESS_H_INCLUDED
 
 #include <cstdint>
-#include <Process.h>
+#include <GCC4/Process.h>
 
 class DelayProcess : public Process
 {
 public:
 
-    explicit DelayProcess( uint64_t timeToDelay );
+    explicit DelayProcess(uint64_t timeToDelay);
 
 protected:
 
-    virtual void VOnUpdate( uint64_t deltaMs );
+    virtual void VOnUpdate(uint64_t deltaMs);
 
 private:
 

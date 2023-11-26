@@ -1,21 +1,25 @@
 #include <iostream>
-#include <App.h>
-#include <ScriptExports.h>
-#include <LuaStateManager.h>
+
+#include <GCC4/ResCache.h>
+#include <GCC4/GameCodeApp.h>
+
+#include "App.h"
+
+// Required globals - TODO move
+ResCache* g_ResCache = nullptr;
+LuaTestApp g_LuaTestApp;
+GameCodeApp* g_pApp = &g_LuaTestApp;
 
 int main(void)
 {
-    App theApp;
-    g_pApp = &theApp;
-
-    if ( !g_pApp->Init() )
+    if (!g_LuaTestApp.Init("LuaTestApp",0,0))
     {
         std::cout << __FILE__ << ":" << __LINE__
                   << ": failed to init app" << std::endl;
         return 1;
     }
 
-    g_pApp->Run();
+    g_LuaTestApp.Run();
     
     return 0;
 }
