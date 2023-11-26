@@ -38,7 +38,7 @@ public:
     // engine component.
     virtual StrongActorComponentPtr VCreateComponent(tinyxml2::XMLElement* pData);
 
-protected:
+//protected:
     GenericObjectFactory<ActorComponent,ComponentId> m_ComponentFactory;
 
 private:

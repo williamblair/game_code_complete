@@ -4,19 +4,19 @@
 
 #include <SDL2/SDL.h>
 
-#include <GCCMath.h>
-#include <IRenderer.h>
-#include <Scene.h>
-#include <ResCache.h>
-#include <ResourceZipFile.h>
-#include <AssimpMeshResourceLoader.h>
-#include <TextureResourceLoader.h>
-#include <AssimpMeshNode.h>
-#include <LightNode.h>
-#include <OGLRenderer.h>
-#include <OGLVertexBuffer.h>
-#include <OGLSkyNode.h>
-#include <GameCodeApp.h>
+#include <GCC4/GCCMath.h>
+#include <GCC4/IRenderer.h>
+#include <GCC4/Scene.h>
+#include <GCC4/ResCache.h>
+#include <GCC4/ResourceZipFile.h>
+#include <GCC4/AssimpMeshResourceLoader.h>
+#include <GCC4/TextureResourceLoader.h>
+#include <GCC4/AssimpMeshNode.h>
+#include <GCC4/LightNode.h>
+#include <GCC4/OGLRenderer.h>
+#include <GCC4/OGLVertexBuffer.h>
+#include <GCC4/OGLSkyNode.h>
+#include <GCC4/GameCodeApp.h>
 
 std::shared_ptr<IRenderer>
 createRenderer()

@@ -2,7 +2,7 @@
 #define WAVE_RESOURCE_LOADER_H_INCLUDED
 
 #include <cstdint>
-#include <IResourceLoader.h>
+#include <GCC4/IResourceLoader.h>
 
 class WaveResourceLoader : public IResourceLoader
 {

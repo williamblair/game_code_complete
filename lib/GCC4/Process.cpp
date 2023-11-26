@@ -1,6 +1,7 @@
 #include "Process.h"
 
-Process::Process()
+Process::Process() :
+    m_state(State::UNINITIALIZED)
 {
 }
 

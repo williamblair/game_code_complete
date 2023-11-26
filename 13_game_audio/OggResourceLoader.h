@@ -1,7 +1,7 @@
 #ifndef OGG_RESOURCE_LOADER_H_INCLUDED
 #define OGG_RESOURCE_LOADER_H_INCLUDED
 
-#include <IResourceLoader.h>
+#include <GCC4/IResourceLoader.h>
 
 class OggResourceLoader : public IResourceLoader
 {

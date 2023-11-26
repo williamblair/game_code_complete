@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
-#include <SoundResourceExtraData.h>
-#include <WaveResourceLoader.h>
+#include "SoundResourceExtraData.h"
+#include "WaveResourceLoader.h"
 
 // converts four characters into a 4byte integer
 inline constexpr int32_t mmioFOURCC( char a, char b, char c, char d )

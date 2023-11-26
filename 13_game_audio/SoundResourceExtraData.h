@@ -3,8 +3,10 @@
 
 #include <string>
 
-#include <SoundType.h>
-#include <ResHandle.h>
+#include <GCC4/ResHandle.h>
+
+#include "SoundType.h"
+
 
 class SoundResourceExtraData : public IResourceExtraData
 {

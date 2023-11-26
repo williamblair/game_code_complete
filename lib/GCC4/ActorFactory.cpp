@@ -90,9 +90,10 @@ StrongActorComponentPtr
 ActorFactory::VCreateComponent(XMLElement* pData)
 {
     std::string name(pData->Value());
+    ComponentId id = ActorComponent::GetIdFromName(name.c_str());
     StrongActorComponentPtr pComponent(
         m_ComponentFactory.Create(
-            ActorComponent::GetIdFromName(name.c_str())
+            id
         )
     );
 
