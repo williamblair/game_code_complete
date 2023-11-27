@@ -25,10 +25,6 @@ private:
     std::queue<Data> the_queue;
 };
 
-// force compiler generation
-template class ConcurrentQueue<int>;
-template class ConcurrentQueue<IEventDataPtr>;
-
 typedef ConcurrentQueue<IEventDataPtr> ThreadSafeEventQueue;
 
 #endif // GCC4_CONCURRENT_QUEUE_H_INCLUDED

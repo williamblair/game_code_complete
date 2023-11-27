@@ -24,7 +24,7 @@ protected:
     std::thread m_thread;
 
     virtual void VOnInit();
-    virtual void VOnUpdate(unsigned long deltaMs) {}
+    virtual void VOnUpdate(uint64_t deltaMs) {}
     virtual void VThreadProc() = 0;
 };
 

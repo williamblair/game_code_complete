@@ -72,7 +72,7 @@ protected:
 
     // interface functions; to be overridden by subclass
     virtual void VOnInit() { m_state = State::RUNNING; }
-    virtual void VOnUpdate( uint64_t deltaMs ) = 0;
+    virtual void VOnUpdate(uint64_t deltaMs) = 0;
     virtual void VOnSuccess() {}
     virtual void VOnFail() {}
     virtual void VOnAbort() {}
