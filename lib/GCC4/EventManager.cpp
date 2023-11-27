@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <iostream>
 
+#include "GCCTime.h"
+
 #define DBG_ASSERT( cond ) assert( cond )
 //#define DBG_ASSERT( cond )
 
@@ -118,28 +120,34 @@ bool EventManager::VQueueEvent( const IEventDataPtr& pEvent )
     return false;
 }
 
-bool EventManager::VAbortEvent( const EventType& type, bool allOfType )
+bool EventManager::VThreadSafeQueueEvent(const IEventDataPtr& pEvent)
 {
-    DBG_ASSERT( m_activeQueue >= 0 );
-    DBG_ASSERT( m_activeQueue < EVTMGR_NUM_QUEUES );
+    m_realtimeEventQueue.push(pEvent);
+    return true;
+}
+
+bool EventManager::VAbortEvent(const EventType& type, bool allOfType)
+{
+    DBG_ASSERT(m_activeQueue >= 0);
+    DBG_ASSERT(m_activeQueue < EVTMGR_NUM_QUEUES);
 
     bool success = false;
-    auto findIt = m_eventListeners.find( type );
-    if ( findIt != m_eventListeners.end() )
+    auto findIt = m_eventListeners.find(type);
+    if (findIt != m_eventListeners.end())
     {
         EventQueue& eventQueue = m_queues[m_activeQueue];
         auto it = eventQueue.begin();
-        while ( it != eventQueue.end() )
+        while (it != eventQueue.end())
         {
             // removing item invalidates iterator, so we need to save the next entry
             auto thisIt = it;
             ++it;
-            if ( (*thisIt)->VGetEventType() == type )
+            if ((*thisIt)->VGetEventType() == type)
             {
-                eventQueue.erase( thisIt );
+                eventQueue.erase(thisIt);
                 success = true;
                 // stop if we only wanted to delete one event
-                if ( !allOfType )
+                if (!allOfType)
                 {
                     break;
                 }
@@ -150,9 +158,25 @@ bool EventManager::VAbortEvent( const EventType& type, bool allOfType )
     return success;
 }
 
-bool EventManager::VTickUpdate( unsigned long maxMillis )
+bool EventManager::VTickUpdate(unsigned long maxMillis)
 {
     auto startTime = std::chrono::steady_clock::now();
+
+    // Handle events from other threads
+    IEventDataPtr pRealtimeEvent;
+    unsigned long curMs = GCC4Time::timeGetTime();
+    unsigned long maxMs = (maxMillis == IEventManager::kINFINITE) ?
+        IEventManager::kINFINITE : (curMs + maxMillis);
+    while (m_realtimeEventQueue.try_pop(pRealtimeEvent))
+    {
+        VQueueEvent(pRealtimeEvent);
+        curMs = GCC4Time::timeGetTime();
+        if (maxMillis != IEventManager::kINFINITE) {
+            if (curMs >= maxMs) {
+                printf("A realtime process is spamming the event manager!\n");
+            }
+        }
+    }
 
     // swap active queues and clear the new queue after swap
     int queueToProcess = m_activeQueue;
@@ -160,7 +184,7 @@ bool EventManager::VTickUpdate( unsigned long maxMillis )
     m_queues[m_activeQueue].clear();
 
     // process the queue
-    while ( !m_queues[queueToProcess].empty() )
+    while (!m_queues[queueToProcess].empty())
     {
         // Remove the next event from the queue
         IEventDataPtr pEvent = m_queues[queueToProcess].front();
@@ -168,32 +192,32 @@ bool EventManager::VTickUpdate( unsigned long maxMillis )
         const EventType& eventType = pEvent->VGetEventType();
 
         // find all listeners for the current event
-        auto findIt = m_eventListeners.find( eventType );
-        if ( findIt != m_eventListeners.end() )
+        auto findIt = m_eventListeners.find(eventType);
+        if (findIt != m_eventListeners.end())
         {
             const EventListenerList& eventListeners = findIt->second;
 
             // call each listener
-            for ( auto it = eventListeners.begin(); it != eventListeners.end(); ++it )
+            for (auto it = eventListeners.begin(); it != eventListeners.end(); ++it)
             {
                 EventListenerDelegate listener = *it;
-                (*listener)( pEvent );
+                (*listener)(pEvent);
             }
         }
         else
         {
             std::cout << __FILE__ << ":" << __LINE__ << ": "
-                      << "failed to find event listeners for type: 0x"
-                      << std::hex << (unsigned long long)eventType << std::endl
-                      << std::dec;
+                << "failed to find event listeners for type: 0x"
+                << std::hex << (unsigned long long)eventType << std::endl
+                << std::dec;
         }
 
         // check if we ran out of time
-        if ( maxMillis != kINFINITE )
+        if (maxMillis != kINFINITE)
         {
             auto timeNow = std::chrono::steady_clock::now();
-            if ( std::chrono::duration_cast<std::chrono::milliseconds>( 
-                    timeNow - startTime ).count() >= maxMillis )
+            if (std::chrono::duration_cast<std::chrono::milliseconds>( 
+                    timeNow - startTime).count() >= maxMillis)
             {
                 break;
             }
@@ -202,20 +226,20 @@ bool EventManager::VTickUpdate( unsigned long maxMillis )
 
     // if there are still events left unprocessed, add them to the next queue
     bool queueFlushed = m_queues[queueToProcess].empty();
-    if ( !queueFlushed )
+    if (!queueFlushed)
     {
-        while ( !m_queues[queueToProcess].empty() )
+        while (!m_queues[queueToProcess].empty())
         {
             // add them to the front of the next queue so they will be processed first
             IEventDataPtr pEvent = m_queues[queueToProcess].back();
             m_queues[queueToProcess].pop_back();
-            m_queues[m_activeQueue].push_front( pEvent );
+            m_queues[m_activeQueue].push_front(pEvent);
         }
     }
 
+
     return queueFlushed;
 }
-
 
 
 

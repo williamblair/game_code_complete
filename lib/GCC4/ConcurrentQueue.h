@@ -5,6 +5,8 @@
 #include <mutex>
 #include <condition_variable>
 
+#include "EventData.h"
+
 template<typename Data>
 class ConcurrentQueue
 {
@@ -25,6 +27,9 @@ private:
 
 // force compiler generation
 template class ConcurrentQueue<int>;
+template class ConcurrentQueue<IEventDataPtr>;
+
+typedef ConcurrentQueue<IEventDataPtr> ThreadSafeEventQueue;
 
 #endif // GCC4_CONCURRENT_QUEUE_H_INCLUDED
 

@@ -3,6 +3,7 @@
 
 #include <thread>
 
+#include "EventManager.h"
 #include "Process.h"
 
 class RealtimeProcess : public Process
@@ -25,6 +26,17 @@ protected:
     virtual void VOnInit();
     virtual void VOnUpdate(unsigned long deltaMs) {}
     virtual void VThreadProc() = 0;
+};
+
+class EventReaderProcess : public RealtimeProcess
+{
+public:
+    EventReaderProcess();
+    void UpdateTickDelegate(IEventDataPtr pEventData);
+    virtual void VThreadProc();
+protected:
+    static ThreadSafeEventQueue m_realtimeEventQueue;
+    int m_eventsRead;
 };
 
 #endif // GCC4_REALTIME_PROCESS_H_INCLUDED

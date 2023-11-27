@@ -661,6 +661,107 @@ private:
     int m_SocketId;
 };
 
+
+// For background-threaded unzip/resource load
+class EvtDataDecompressRequest : public BaseEventData
+{
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+    EvtDataDecompressRequest(
+            const std::string& zipFileName,
+            const std::string& fileName) :
+        m_zipFileName(zipFileName),
+        m_fileName(fileName)
+    {
+    }
+    virtual void VSerialize(std::ostringstream& out) const {
+        /*
+        out << m_Id << " ";
+        for (int i=0; i<4; ++i) {
+            for (int j=0; j<4; ++j) {
+                out << m_Matrix.v[i][j] << " ";
+            }
+        }*/
+        //TODO
+    }
+    //TODO
+    /*virtual void VDeserialize(std::istrstream& in) {
+        in >> m_Id;
+        for (int i=0; i<4; ++i) {
+            for (int j=0; j<4; ++j) {
+                in >> m_Matrix.v[i][j];
+            }
+        }
+    }*/
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataDecompressRequest(
+                m_zipFileName,
+                m_fileName
+            )
+        );
+    }
+    virtual const char* GetName() const { return "EvtDataDecompressRequest"; }
+    
+    std::string m_zipFileName;
+    std::string m_fileName;
+};
+
+class EvtDataDecompressProgress : public BaseEventData
+{
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+    EvtDataDecompressProgress(
+            int progressPercent,
+            const std::string& zipFileName,
+            const std::string fileName,
+            char* buffer) :
+        m_progressPercent(progressPercent),
+        m_zipFileName(zipFileName),
+        m_fileName(fileName),
+        m_dataBuffer(buffer)
+    {
+    }
+    virtual void VSerialize(std::ostringstream& out) const {
+        /*
+        out << m_Id << " ";
+        for (int i=0; i<4; ++i) {
+            for (int j=0; j<4; ++j) {
+                out << m_Matrix.v[i][j] << " ";
+            }
+        }*/
+        //TODO
+    }
+    //TODO
+    /*virtual void VDeserialize(std::istrstream& in) {
+        in >> m_Id;
+        for (int i=0; i<4; ++i) {
+            for (int j=0; j<4; ++j) {
+                in >> m_Matrix.v[i][j];
+            }
+        }
+    }*/
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataDecompressProgress(
+                m_progressPercent,
+                m_zipFileName,
+                m_fileName,
+                m_dataBuffer
+            )
+        );
+    }
+    virtual const char* GetName() const { return "EvtDataDecompressProgress"; }
+    
+private:
+    int m_progressPercent;
+    std::string m_zipFileName;
+    std::string m_fileName;
+    char* m_dataBuffer;
+};
+
 #endif // GCC4_EVENT_DATA_H_INCLUDED
 
 
