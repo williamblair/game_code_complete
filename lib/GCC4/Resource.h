@@ -7,7 +7,7 @@ class Resource
 {
 public:
 
-    Resource( const std::string& name );
+    Resource(const std::string& name);
 
     std::string m_name;
 

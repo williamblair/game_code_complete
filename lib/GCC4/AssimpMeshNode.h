@@ -33,3 +33,4 @@ private:
 };
 
 #endif // GCC4_ASSIMP_MESH_NODE_H_INCLUDED
+

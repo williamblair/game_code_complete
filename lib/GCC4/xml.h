@@ -8,7 +8,7 @@
 namespace XmlResourceLoader
 {
 
-tinyxml2::XMLElement* LoadAndReturnRootXmlElement( const char* filename );
+tinyxml2::XMLElement* LoadAndReturnRootXmlElement(const char* filename);
 
 } // namespace XmlResourceLoader
 

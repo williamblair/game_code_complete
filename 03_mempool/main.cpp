@@ -51,14 +51,16 @@ int main(void)
     // free from pool
     while (allocMap.size() > 0) {
         auto pairIter = allocMap.begin();
-        uint8_t** ppChunkHeader = (uint8_t**)( (uint8_t*)pairIter->first - 
-                                            sizeof(uint8_t*) );
+        uint8_t** ppChunkHeader = (uint8_t**)(
+            (uint8_t*)pairIter->first - 
+            sizeof(uint8_t*)
+        );
         uint8_t* pNextListEntry = ppChunkHeader[0];
         printf("Freeing 0x%08X (chunk header = 0x%08X)\n", 
-            pairIter->first, (void*)ppChunkHeader );
-        printf("  Points to: 0x%08X\n", (void*)pNextListEntry );
-            memPool.Free( pairIter->first );
-        allocMap.erase( pairIter );
+            pairIter->first, (void*)ppChunkHeader);
+        printf("  Points to: 0x%08X\n", (void*)pNextListEntry);
+            memPool.Free(pairIter->first);
+        allocMap.erase(pairIter);
     }
 
     return 0;

@@ -5,12 +5,12 @@
 #include "AlphaSceneNode.h"
 
 SceneNode::SceneNode(
-        ActorId actorId,
-        std::string name,
-        RenderPass renderPass,
-        const Color& diffuseColor,
-        const Mat4x4* to,
-        const Mat4x4* from
+    ActorId actorId,
+    std::string name,
+    RenderPass renderPass,
+    const Color& diffuseColor,
+    const Mat4x4* to,
+    const Mat4x4* from
 )
 {
     m_pParent = nullptr;

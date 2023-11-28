@@ -15,7 +15,7 @@ public:
     ZipFile();
     ~ZipFile();
 
-    bool Init( const std::string& zipFileName );
+    bool Init(const std::string& zipFileName);
     void End();
 
     int GetNumFiles() const { return m_nEntries; }
@@ -23,9 +23,9 @@ public:
     /**
      * input is a dir entry number for the compressed file within the zip
      */ 
-    std::string GetFilename( int i ) const;
-    int GetFileLen( int i ) const;
-    bool ReadFile( int i, void* pBuf );
+    std::string GetFilename(int i) const;
+    int GetFileLen(int i) const;
+    bool ReadFile(int i, void* pBuf );
 
     // TODO
     //bool ReadLargeFile( int i, void* pBuf, void (*progressCallback)(int, bool&) );
@@ -33,7 +33,7 @@ public:
     /**
      * Returns a dir entry number for the given internal filename
      */ 
-    int Find( const std::string& path ) const;
+    int Find(const std::string& path) const;
 
     ZipContentsMap m_zipContentsMap;
 

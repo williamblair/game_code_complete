@@ -120,3 +120,4 @@ private:
 };
 
 #endif // GCC4_BULLET_PHYSICS_H_INCLUDED
+

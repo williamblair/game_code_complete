@@ -8,17 +8,17 @@ class ResourceZipFile : public IResourceFile
 {
 public:
 
-    ResourceZipFile( const std::string& resFileName ) {
+    ResourceZipFile(const std::string& resFileName) {
         m_pZipFile = nullptr;
         m_resFileName = resFileName;
     }
     virtual ~ResourceZipFile();
 
     virtual bool VOpen();
-    virtual int VGetRawResourceSize( const Resource& r );
-    virtual int VGetRawResource( const Resource& r, char* buffer );
+    virtual int VGetRawResourceSize(const Resource& r);
+    virtual int VGetRawResource(const Resource& r, char* buffer);
     virtual int VGetNumResources() const;
-    virtual std::string VGetResourceName( int num ) const;
+    virtual std::string VGetResourceName(int num) const;
 
 private:
 

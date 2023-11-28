@@ -72,9 +72,11 @@ private:
 int main(void)
 {
     std::unique_ptr<EventManager> pEventMgr(
-        new EventManager("EventManager", true) ); // set this as the global instance
+        new EventManager("EventManager", true) // set this as the global instance
+    );
     std::unique_ptr<RoleSystem> pRoleSystem(
-        new RoleSystem() );
+        new RoleSystem()
+    );
 
     bool eventFired = false;
 

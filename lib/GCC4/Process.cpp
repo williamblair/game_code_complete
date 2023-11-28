@@ -7,8 +7,7 @@ Process::Process() :
 
 Process::~Process()
 {
-    if ( m_pChild )
-    {
+    if (m_pChild) {
         m_pChild->VOnAbort();
     }
 }
@@ -16,8 +15,7 @@ Process::~Process()
 
 StrongProcessPtr Process::RemoveChild()
 {
-    if ( m_pChild )
-    {
+    if (m_pChild) {
         // prevents child from being destroyed when we reset m_pChild
         StrongProcessPtr pChild = m_pChild; 
         m_pChild.reset();

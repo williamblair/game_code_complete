@@ -35,4 +35,5 @@ protected:
     Vec4 m_CamOffsetVector;
 };
 
-#endif // CAMERA_NODE_H_INCLUDED
+#endif // GCC4_CAMERA_NODE_H_INCLUDED
+

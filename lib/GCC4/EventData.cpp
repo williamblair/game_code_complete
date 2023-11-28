@@ -17,11 +17,6 @@ const EventType EvtDataNetworkPlayerActorAssignment::sk_EventType(0x77DD2B3C);
 const EventType EvtDataDecompressRequest::sk_EventType(0x77DD2B3D);
 const EventType EvtDataDecompressProgress::sk_EventType(0x77DD2B3E);
 
-//void ScriptEvent::VBuildEventData()
-//{
-//    m_eventData.AssignNil(LuaStateManager::GetInstance()->GetLuaState());
-//}
-
 void EvtDataPhysCollision::VBuildEventData()
 {
     //TODO

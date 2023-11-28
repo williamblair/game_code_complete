@@ -16,15 +16,17 @@ class ResCache
 
 public:
 
-    ResCache( const unsigned int sizeInMb, IResourceFile* pResFile );
+    ResCache(const unsigned int sizeInMb, IResourceFile* pResFile);
     ~ResCache();
     
     bool Init();
-    void RegisterLoader( std::shared_ptr<IResourceLoader> pLoader );
+    void RegisterLoader(std::shared_ptr<IResourceLoader> pLoader);
     
-    std::shared_ptr<ResHandle> GetHandle( Resource* pResource );
-    int Preload( const std::string pattern, 
-                 void (*progressCallback)(int, bool&) );
+    std::shared_ptr<ResHandle> GetHandle(Resource* pResource);
+    int Preload(
+        const std::string pattern, 
+        void (*progressCallback)(int, bool&)
+    );
     std::vector<std::string> Match(const std::string& pattern);
     void Flush();
 
@@ -39,15 +41,15 @@ protected:
     unsigned int m_cacheSize; // total memory size
     unsigned int m_allocated; // total memory allocated
     
-    std::shared_ptr<ResHandle> Find( Resource* pResource );
-    void Update( std::shared_ptr<ResHandle> pHandle );
-    std::shared_ptr<ResHandle> Load( Resource* pResource );
-    void Free( std::shared_ptr<ResHandle> pGonner );
+    std::shared_ptr<ResHandle> Find(Resource* pResource);
+    void Update(std::shared_ptr<ResHandle> pHandle);
+    std::shared_ptr<ResHandle> Load(Resource* pResource);
+    void Free(std::shared_ptr<ResHandle> pGonner);
     
-    bool MakeRoom( unsigned int size );
-    char* Allocate( unsigned int size );
+    bool MakeRoom(unsigned int size);
+    char* Allocate(unsigned int size);
     void FreeOneResource();
-    void MemoryHasBeenFreed( unsigned int size );
+    void MemoryHasBeenFreed(unsigned int size);
 
 };
 

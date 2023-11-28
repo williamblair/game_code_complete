@@ -14,7 +14,7 @@ bool LuaStateManager::Create()
     s_pSingleton = new LuaStateManager();
     if (!s_pSingleton) {
         std::cout << __FILE__ << ":" << __LINE__ << ": "
-                  << "failed to create lua state manager instance" << std::endl;
+            << "failed to create lua state manager instance" << std::endl;
         return false;
     }
     return s_pSingleton->VInit();
@@ -45,7 +45,7 @@ bool LuaStateManager::VInit()
     m_pLuaState = LuaPlus::LuaState::Create(true);
     if (m_pLuaState == nullptr) {
         std::cout << __FILE__ << ":" << __LINE__ << ": "
-                  << "Failed to create lua state" << std::endl;
+            << "Failed to create lua state" << std::endl;
         return false;
     }
 
@@ -133,8 +133,7 @@ LuaStateManager::CreatePath(
         do
         {
             std::string curToken = "";
-            while (i < len && pathString[i] != '.')
-            {
+            while (i < len && pathString[i] != '.') {
                 curToken += pathString[i];
                 ++i;
             }

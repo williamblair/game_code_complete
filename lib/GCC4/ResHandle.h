@@ -15,17 +15,19 @@ class ResHandle
 
 public:
 
-    ResHandle( Resource& resource,
-               char* pBuffer,
-               unsigned int size,
-               ResCache* pResCache );
+    ResHandle(
+        Resource& resource,
+        char* pBuffer,
+        unsigned int size,
+        ResCache* pResCache
+    );
     virtual ~ResHandle();
 
     unsigned int Size() const { return m_size; }
     char* Buffer() const { return m_pBuffer; }
     char* WriteableBuffer() { return m_pBuffer; }
     std::shared_ptr<IResourceExtraData> GetExtra() { return m_pExtra; }
-    void SetExtra( std::shared_ptr<IResourceExtraData> extra ) { m_pExtra = extra; }
+    void SetExtra(std::shared_ptr<IResourceExtraData> extra) { m_pExtra = extra; }
 
 protected:
 

@@ -54,7 +54,7 @@ void ScriptEvent::AddCreationFunction(
     EventType type, 
     CreateEventForScriptFunctionType pCreateFunc)
 {
-    if ( s_creationFunctions.find(type) != s_creationFunctions.end() ) {
+    if (s_creationFunctions.find(type) != s_creationFunctions.end()) {
         std::cout << __FILE__ << ":" << __LINE__ << ": "
             << "warning: overwriting existing create function of type "
             << (unsigned long)type << std::endl;

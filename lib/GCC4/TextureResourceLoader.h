@@ -9,8 +9,8 @@ public:
     virtual bool VUseRawFile() { return false; }
     virtual bool VDiscardRawbufferAfterLoad() { return true; }
     virtual unsigned int VGetLoadedResourceSize(
-            char* pRawBuffer,
-            unsigned int rawSize)
+        char* pRawBuffer,
+        unsigned int rawSize)
     { 
         return 0;
     }

@@ -28,22 +28,16 @@ void ScriptEventListener::ScriptEventDelegate(IEventDataPtr pEventPtr)
     std::cout << "Calling script event delegate callback" << std::endl;
     if (m_scriptCallbackFunc.IsFunction())
     {
-        if (pScriptEvent->GetEventData().IsInteger())
-        {
+        if (pScriptEvent->GetEventData().IsInteger()) {
             std::cout << "  is integer: " << pScriptEvent->GetEventData().GetInteger()
                 << std::endl;
-        }
-        else if (pScriptEvent->GetEventData().IsNil())
-        {
+        } else if (pScriptEvent->GetEventData().IsNil()) {
             std::cout << "  is nil" << std::endl;
         }
         callback(pScriptEvent->GetEventData());
-    }
-    else
-    {
+    } else {
         std::cout << "ERROR - callback is not function" << std::endl;
-        if (m_scriptCallbackFunc.IsNil())
-        {
+        if (m_scriptCallbackFunc.IsNil()) {
             std::cout << "  callback is nil" << std::endl;
         }
     }

@@ -13,4 +13,5 @@ struct ConstantBuffer_Lighting
     int m_NumLights;
 };
 
-#endif // CONSTANT_BUFFER_LIGHTING_H_INCLUDED
+#endif // GCC4_CONSTANT_BUFFER_LIGHTING_H_INCLUDED
+

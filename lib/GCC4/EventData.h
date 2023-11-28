@@ -48,7 +48,7 @@ class IEventData
 public:
     virtual const EventType& VGetEventType() const = 0;
     virtual float VGetTimeStamp() const = 0;
-    virtual void VSerialize( std::ostringstream& out ) const = 0;
+    virtual void VSerialize(std::ostringstream& out) const = 0;
     virtual IEventDataPtr VCopy() const = 0;
     virtual const char* GetName() const = 0;
 };
@@ -56,8 +56,8 @@ public:
 class BaseEventData : public IEventData
 {
 public:
-    explicit BaseEventData( const float timeStamp = 0.0f ) :
-        m_timeStamp( timeStamp )
+    explicit BaseEventData(const float timeStamp = 0.0f) :
+        m_timeStamp(timeStamp)
     {}
     virtual ~BaseEventData()
     {}
@@ -172,10 +172,10 @@ class EvtDataDestroyActor : public BaseEventData
 public:
     static const EventType sk_EventType;
 
-    explicit EvtDataDestroyActor( ActorId id ) :
-        m_id( id )
+    explicit EvtDataDestroyActor(ActorId id) :
+        m_id(id)
     {}
-    explicit EvtDataDestroyActor( std::istringstream& in )
+    explicit EvtDataDestroyActor(std::istringstream& in)
     {
         in >> m_id;
     }
@@ -184,10 +184,10 @@ public:
 
     virtual IEventDataPtr VCopy() const
     {
-        return IEventDataPtr( new EvtDataDestroyActor(m_id) );
+        return IEventDataPtr(new EvtDataDestroyActor(m_id));
     }
 
-    virtual void VSerialize( std::ostringstream& out ) const
+    virtual void VSerialize(std::ostringstream& out) const
     {
         out << m_id;
     }

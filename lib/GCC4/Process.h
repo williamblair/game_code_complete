@@ -49,22 +49,22 @@ public:
     // accessors
     State GetState() const { return m_state; }
     bool IsAlive() const { 
-        return ( m_state == State::RUNNING || m_state == State::PAUSED );
+        return (m_state == State::RUNNING || m_state == State::PAUSED);
     }
     bool IsDead() const {
-        return ( m_state == State::SUCCEEDED || 
-                 m_state == State::FAILED    || 
-                 m_state == State::ABORTED );
+        return (m_state == State::SUCCEEDED || 
+            m_state == State::FAILED || 
+            m_state == State::ABORTED);
     }
     bool IsPaused() const {
-        return ( m_state == State::PAUSED );
+        return (m_state == State::PAUSED);
     }
     bool IsRemoved() const {
-        return ( m_state == State::REMOVED );
+        return (m_state == State::REMOVED);
     }
 
     // child functions
-    inline void AttachChild( StrongProcessPtr pChild );
+    inline void AttachChild(StrongProcessPtr pChild);
     StrongProcessPtr RemoveChild();
     StrongProcessPtr PeekChild() { return m_pChild; }
 
@@ -88,53 +88,47 @@ private:
     // Fail() or was aborted, it will NOT be added and ran
     StrongProcessPtr m_pChild; // child process, if any
 
-    void SetState( State newState ) { m_state = newState; }
+    void SetState(State newState) { m_state = newState; }
 };
 
 inline void Process::Succeed()
 {
-    DBG_ASSERT( m_state == State::RUNNING || m_state == State::PAUSED );
+    DBG_ASSERT(m_state == State::RUNNING || m_state == State::PAUSED);
     m_state = State::SUCCEEDED;
 }
 
 inline void Process::Fail()
 {
-    DBG_ASSERT( m_state == State::RUNNING || m_state == State::PAUSED );
+    DBG_ASSERT(m_state == State::RUNNING || m_state == State::PAUSED);
     m_state = State::FAILED;
 }
 
 inline void Process::Pause()
 {
-    if ( m_state == State::RUNNING )
-    {
+    if (m_state == State::RUNNING) {
         m_state = State::PAUSED;
-    }
-    else
-    {
+    } else {
         std::cout << __func__ 
-                  << ": warning: pause called on process not running"
-                  << std::endl;
+            << ": warning: pause called on process not running"
+            << std::endl;
     }
 }
 
 inline void Process::UnPause()
 {
-    if ( m_state == State::PAUSED)
-    {
+    if (m_state == State::PAUSED) {
         m_state = State::RUNNING;
-    }
-    else
-    {
+    } else {
         std::cout << __func__ 
-                  << ": warning: unpause called on process not paused"
-                  << std::endl;
+            << ": warning: unpause called on process not paused"
+            << std::endl;
     }
 }
 
-inline void Process::AttachChild( StrongProcessPtr pChild )
+inline void Process::AttachChild(StrongProcessPtr pChild)
 {
-    if ( m_pChild ) {
-        m_pChild->AttachChild( pChild );
+    if (m_pChild) {
+        m_pChild->AttachChild(pChild);
     } else {
         m_pChild = pChild;
     }

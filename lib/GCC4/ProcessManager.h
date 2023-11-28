@@ -16,9 +16,9 @@ public:
     ProcessManager();
     ~ProcessManager();
 
-    uint32_t UpdateProcesses( uint64_t deltaMs );
-    WeakProcessPtr AttachProcess( StrongProcessPtr pProcess );
-    void AbortAllProcesses( bool immediate );
+    uint32_t UpdateProcesses(uint64_t deltaMs);
+    WeakProcessPtr AttachProcess(StrongProcessPtr pProcess);
+    void AbortAllProcesses(bool immediate);
 
     uint32_t GetProcessCount() const { return m_processList.size(); }
 

@@ -21,7 +21,7 @@ public:
     /**
      * to be overridden by component implementations
      */
-    virtual bool VInit( tinyxml2::XMLElement* pData ) = 0;
+    virtual bool VInit(tinyxml2::XMLElement* pData) = 0;
     virtual void VPostInit() {}
     virtual void VUpdate(int deltaMs) {}
     virtual void VOnChanged() {}

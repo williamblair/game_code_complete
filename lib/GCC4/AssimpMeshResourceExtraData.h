@@ -11,7 +11,8 @@ class AssimpMeshResourceExtraData : public IResourceExtraData
     friend class AssimpMeshResourceLoader;
 public:
     AssimpMeshResourceExtraData() :
-        m_pScene(nullptr) {}
+        m_pScene(nullptr)
+    {}
     virtual ~AssimpMeshResourceExtraData() {}
     virtual std::string VToString() { return "AssimpMeshResourceExtraData"; }
     

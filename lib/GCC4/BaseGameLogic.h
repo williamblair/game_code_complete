@@ -135,3 +135,4 @@ protected:
 };
 
 #endif // GCC4_BASE_GAME_LOGIC_H_INCLUDED
+

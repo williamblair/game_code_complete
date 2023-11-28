@@ -25,3 +25,4 @@ bool AssimpMeshResourceLoader::VLoadResource(
     handle->SetExtra(extra);
     return true;
 }
+

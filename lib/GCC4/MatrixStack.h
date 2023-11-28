@@ -27,4 +27,4 @@ private:
     Mat4x4 m_CurMatrix;
 };
 
-#endif // MATRIX_STACK_H_INCLUDED
+#endif // GCC4_MATRIX_STACK_H_INCLUDED

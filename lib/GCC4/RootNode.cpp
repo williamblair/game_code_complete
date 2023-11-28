@@ -88,3 +88,4 @@ bool RootNode::VRenderChildren(Scene* pScene)
 
     return true;
 }
+

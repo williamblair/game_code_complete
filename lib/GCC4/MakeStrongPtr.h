@@ -5,11 +5,10 @@
 
 template<class ClassType>
 static inline std::shared_ptr<ClassType>
-MakeStrongPtr( std::weak_ptr<ClassType> pWeakPtr )
+MakeStrongPtr(std::weak_ptr<ClassType> pWeakPtr)
 {
-    if ( !pWeakPtr.expired() )
-    {
-        return std::shared_ptr<ClassType>( pWeakPtr );
+    if (!pWeakPtr.expired()) {
+        return std::shared_ptr<ClassType>(pWeakPtr);
     }
     return std::shared_ptr<ClassType>();
 }

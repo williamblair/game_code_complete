@@ -19,13 +19,13 @@ friend class ActorFactory;
 public:
 
     // prevent copy/assignment using non-ActorId ulong value
-    explicit Actor( ActorId id );
+    explicit Actor(ActorId id);
     ~Actor();
 
-    bool Init( tinyxml2::XMLElement* pData );
+    bool Init(tinyxml2::XMLElement* pData);
     void PostInit();
     void Destroy();
-    void Update( int deltaMs );
+    void Update(int deltaMs);
 
     std::string ToXml();
 
@@ -75,7 +75,7 @@ private:
     std::string m_resource; 
 
     // only the ActorFactory should call this function
-    void AddComponent( StrongActorComponentPtr pComponent );
+    void AddComponent(StrongActorComponentPtr pComponent);
 };
 
 #endif // GCC4_ACTOR_H_INCLUDED
