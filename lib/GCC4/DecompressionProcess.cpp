@@ -17,10 +17,12 @@ DecompressionProcess::DecompressionProcess() :
 
 DecompressionProcess::~DecompressionProcess()
 {
-    IEventManager::GetInstance()->VRemoveListener(
-        m_DecompressRequestDelegate,
-        EvtDataDecompressRequest::sk_EventType
-    );
+    //if (IEventManager::GetInstance()) {
+    //    IEventManager::GetInstance()->VRemoveListener(
+    //        m_DecompressRequestDelegate,
+    //        EvtDataDecompressRequest::sk_EventType
+    //    );
+    //}
     m_bRunThread = false;
 }
 
@@ -51,6 +53,7 @@ void DecompressionProcess::VThreadProc()
 
         ZipFile zipFile;
         if (!zipFile.Init(pDecomp->m_zipFileName.c_str())) {
+            printf("Zip file init failed\n");
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             continue;
         }
@@ -71,7 +74,10 @@ void DecompressionProcess::VThreadProc()
                     buffer
                 )
             );
-            IEventManager::GetInstance()->VThreadSafeQueueEvent(e);
+            IEventManager::GetInstance()->VThreadSafeQueueEvent(pRes);
+        }
+        else {
+            printf("Zip file resource num < 0\n");
         }
     }
     Succeed();

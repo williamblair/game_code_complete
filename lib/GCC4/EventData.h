@@ -754,8 +754,8 @@ public:
         );
     }
     virtual const char* GetName() const { return "EvtDataDecompressProgress"; }
-    
-private:
+
+
     int m_progressPercent;
     std::string m_zipFileName;
     std::string m_fileName;
