@@ -8,6 +8,8 @@
 #include "IRenderer.h"
 #include "BaseGameLogic.h"
 #include "GameOptions.h"
+#include "SocketManager.h"
+#include "NetSocket.h"
 
 #ifndef _MAX_PATH
 // arbitrarily chosen
@@ -62,11 +64,10 @@ public:
     // Process manager
     ProcessManager* m_pProcessMgr;
 
-    // TODO
     // Socker manager - could be server or client
-    //BaseSocketManager* m_pBaseSocketManager;
-    //NetworkEventForwarder* m_pNetworkEventForwarder;
-    //bool AttachAsClient();
+    BaseSocketManager* m_pBaseSocketManager;
+    NetworkEventForwarder* m_pNetworkEventForwarder;
+    bool AttachAsClient();
 
     // Main loop processing
     void AbortGame() { m_bQuitting = true; }
