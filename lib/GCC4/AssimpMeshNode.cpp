@@ -35,7 +35,7 @@ bool AssimpMeshNode::VOnRestore(Scene* pScene)
         // Load mesh/vertex buffer
         Resource resource(m_MeshFileName);
         std::shared_ptr<ResHandle> pResourceHandle =
-            g_ResCache->GetHandle(&resource);
+            g_pResCache->GetHandle(&resource);
         std::shared_ptr<AssimpMeshResourceExtraData> extra =
             std::static_pointer_cast<AssimpMeshResourceExtraData>(pResourceHandle->GetExtra());
         if (!extra) {
@@ -49,7 +49,7 @@ bool AssimpMeshNode::VOnRestore(Scene* pScene)
     {
         // Load texture - TESTING
         Resource resource("teapot.png");
-        std::shared_ptr<ResHandle> pResHandle = g_ResCache->GetHandle(&resource);
+        std::shared_ptr<ResHandle> pResHandle = g_pResCache->GetHandle(&resource);
         auto pExtra = std::static_pointer_cast<OGLTextureResourceExtraData>(pResHandle->GetExtra());
         if (!pExtra) {
             printf("AssimpMeshNode load texture extra is null\n");

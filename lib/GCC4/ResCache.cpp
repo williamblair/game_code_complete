@@ -5,6 +5,8 @@
 #include "IResourceFile.h"
 #include "Resource.h"
 
+ResCache* g_pResCache = nullptr;
+
 ResCache::ResCache(const unsigned int sizeInMb, IResourceFile* pResFile)
 {
     m_cacheSize = sizeInMb * 1024 * 1024;
@@ -53,6 +55,14 @@ std::shared_ptr<ResHandle> ResCache::GetHandle( Resource* pResource )
     }
     
     return pHandle;
+}
+
+int ResCache::Preload(
+    const std::string pattern,
+    void (*progressCallback)(int, bool&))
+{
+    //TODO
+    return 0;
 }
 
 static bool RegexMatch(const char* pattern, const char* expression)

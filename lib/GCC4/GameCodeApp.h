@@ -30,6 +30,7 @@ public:
     virtual bool Init(const char* title, int screenWidth, int screenHeight);
 
     bool OnDisplayChange(int colorDepth, int width, int height);
+    bool OnClose();
 
     enum Renderer
     {
@@ -87,11 +88,15 @@ protected:
     virtual void VCreateNetworkEventForwarder();
     virtual void VDestroyNetworkEventForwarder();
 
+    EventListenerDelegate m_NetRequestNewActorDelegate;
+    EventListenerDelegate m_NetEnvironmentLoadedDelegate;
+    EventListenerDelegate m_NetPhysCollisionDelegate;
+
 private:
     void RegisterEngineEvents();
 };
 
-extern GameCodeApp* g_pApp;
+extern GameCodeApp* g_pApp; // GameCodeApp.cpp
 
 #endif // GCC4_GAME_CODE_APP_H_INCLUDED
 

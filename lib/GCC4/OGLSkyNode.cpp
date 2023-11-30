@@ -80,7 +80,7 @@ OGLSkyNode::OGLSkyNode(const char* textureFile, std::shared_ptr<CameraNode> came
     };
     for (int i=0; i<6; ++i) {
         Resource resource(faces[i]);
-        std::shared_ptr<ResHandle> pResHandle = g_ResCache->GetHandle(&resource);
+        std::shared_ptr<ResHandle> pResHandle = g_pResCache->GetHandle(&resource);
         if (!pResHandle) { throw std::runtime_error("Failed to load " + faces[i]); }
         auto extraData = std::static_pointer_cast<OGLTextureResourceExtraData>(pResHandle->GetExtra());
         OGLTextureResourceView* pTex = extraData->GetTexture();

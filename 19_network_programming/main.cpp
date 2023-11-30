@@ -8,16 +8,6 @@
 
 #define PROGRAM_TIME_SECONDS 10 // how long this test program should run
 
-// Required globals - TODO move
-ResCache* g_ResCache = nullptr;
-class TestGCCApp : public GameCodeApp
-{
-public:
-    virtual const char* VGetGameTitle() { return "TestGCCApp"; }
-    virtual const char* VGetGameAppDirectory() { return "./"; }
-};
-TestGCCApp g_TestGCCApp;
-GameCodeApp* g_pApp = &g_TestGCCApp;
 BaseSocketManager sockMgr; // internally sets g_pSocketManager
 
 void serverThreadFcn()
