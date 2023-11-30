@@ -53,7 +53,6 @@ protected:
 
 };
 
-// TODO - put in g_pApp; currently required to be defined in main
-extern ResCache* g_ResCache;
+extern ResCache* g_pResCache;
 
 #endif // RES_CACHE_H_INCLUDED

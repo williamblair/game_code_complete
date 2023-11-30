@@ -59,19 +59,6 @@ bool updateInput()
     return false;
 }
 
-class TestGCCApp : public GameCodeApp
-{
-public:
-    virtual const char* VGetGameTitle() { return "TestGCCApp"; }
-    virtual const char* VGetGameAppDirectory() { return "./"; }
-};
-TestGCCApp g_TestGCCApp;
-
-// Required globals - TODO move
-ResCache* g_ResCache = nullptr;
-
-GameCodeApp* g_pApp = &g_TestGCCApp;
-
 #ifdef _WIN32
 #undef main
 #endif
@@ -93,8 +80,8 @@ int main(int argc, char **argv)
         std::shared_ptr<TextureResourceLoader> pTexLoader = std::make_shared<TextureResourceLoader>();
         ResourceZipFile* pZip = new ResourceZipFile("./resources.zip");
         std::shared_ptr<ResCache> pResCache = std::make_shared<ResCache>(50, pZip); // 50 MB of cache
-        g_ResCache = pResCache.get();
-        if (!g_ResCache->Init()) {
+        g_pResCache = pResCache.get();
+        if (!g_pResCache->Init()) {
             throw std::runtime_error("g_ResCache init failed");
         }
         pResCache->RegisterLoader(pMeshLoader);

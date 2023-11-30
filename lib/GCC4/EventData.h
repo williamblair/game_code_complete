@@ -42,6 +42,17 @@ typedef ScriptEvent* (*CreateEventForScriptFunctionType)(void);
                 )                               \
             ) 
 
+// for declaring a delegate via a class member function
+// with a class instance pointer
+#define DECL_MBR_DELEGATE_THIS( func, pThis ) \
+    new std::function<void(IEventDataPtr)>(     \
+            std::bind( func,                    \
+                       pThis,                   \
+                       std::placeholders::_1    \
+                )                               \
+            ) 
+
+
 
 class IEventData
 {

@@ -8,6 +8,8 @@
 #include "IRenderer.h"
 #include "BaseGameLogic.h"
 #include "GameOptions.h"
+#include "SocketManager.h"
+#include "NetSocket.h"
 
 #ifndef _MAX_PATH
 // arbitrarily chosen
@@ -28,6 +30,7 @@ public:
     virtual bool Init(const char* title, int screenWidth, int screenHeight);
 
     bool OnDisplayChange(int colorDepth, int width, int height);
+    bool OnClose();
 
     enum Renderer
     {
@@ -62,11 +65,10 @@ public:
     // Process manager
     ProcessManager* m_pProcessMgr;
 
-    // TODO
     // Socker manager - could be server or client
-    //BaseSocketManager* m_pBaseSocketManager;
-    //NetworkEventForwarder* m_pNetworkEventForwarder;
-    //bool AttachAsClient();
+    BaseSocketManager* m_pBaseSocketManager;
+    NetworkEventForwarder* m_pNetworkEventForwarder;
+    bool AttachAsClient();
 
     // Main loop processing
     void AbortGame() { m_bQuitting = true; }
@@ -86,11 +88,15 @@ protected:
     virtual void VCreateNetworkEventForwarder();
     virtual void VDestroyNetworkEventForwarder();
 
+    EventListenerDelegate m_NetRequestNewActorDelegate;
+    EventListenerDelegate m_NetEnvironmentLoadedDelegate;
+    EventListenerDelegate m_NetPhysCollisionDelegate;
+
 private:
     void RegisterEngineEvents();
 };
 
-extern GameCodeApp* g_pApp;
+extern GameCodeApp* g_pApp; // GameCodeApp.cpp
 
 #endif // GCC4_GAME_CODE_APP_H_INCLUDED
 
