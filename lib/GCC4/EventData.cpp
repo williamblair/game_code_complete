@@ -16,6 +16,7 @@ const EventType EvtDataRemoteClient::sk_EventType(0x77DD2B3B);
 const EventType EvtDataNetworkPlayerActorAssignment::sk_EventType(0x77DD2B3C);
 const EventType EvtDataDecompressRequest::sk_EventType(0x77DD2B3D);
 const EventType EvtDataDecompressProgress::sk_EventType(0x77DD2B3E);
+const EventType EvtDataPlaySound::sk_EventType(0x77DD2B3F);
 
 void EvtDataPhysCollision::VBuildEventData()
 {
@@ -23,5 +24,10 @@ void EvtDataPhysCollision::VBuildEventData()
     //m_eventData.AssignNewTable(LuaStateManager::GetInstance()->GetLuaState());
     //m_eventData.SetInteger("actorA", m_ActorA);
     //m_eventData.SetInteger("actorB", m_ActorB);
+}
+
+void EvtDataPlaySound::VBuildEventData()
+{
+    //TODO
 }
 

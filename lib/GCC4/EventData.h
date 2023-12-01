@@ -492,6 +492,38 @@ private:
     Vec3List m_CollisionPoints;
 };
 
+class EvtDataPlaySound : public ScriptEvent
+{
+public:
+    static const EventType sk_EventType;
+    virtual const EventType& VGetEventType() const { return sk_EventType; }
+
+    EvtDataPlaySound()
+    {}
+    EvtDataPlaySound(const std::string& soundResource) :
+        m_soundResource(soundResource)
+    {}
+
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataPlaySound(
+                m_soundResource
+            )
+        );
+    }
+
+    virtual const char* GetName() const { return "EvtDataPlaySound"; }
+
+    virtual void VBuildEventData();
+
+    EXPORT_FOR_SCRIPT_EVENT(EvtDataPlaySound);
+
+    const std::string& GetResource() const { return m_soundResource; }
+
+private:
+    std::string m_soundResource;
+};
+
 class EvtDataPhysTriggerEnter : public BaseEventData
 {
 public:
