@@ -11,6 +11,7 @@
 #include "ComponentTypes.h"
 #include "GCCMath.h"
 #include "IPacket.h" // for socket defs
+#include "IGameView.h"
 
 // forward declaration
 class IEventData;
@@ -93,17 +94,15 @@ public:
 
     EvtDataNewActor() {
         m_ActorId = INVALID_ACTOR_ID;
-        //TODO
-        //m_ViewId = gc_InvalidGameViewId;
+        m_ViewId = gc_InvalidGameViewId;
     }
 
     explicit EvtDataNewActor(
-        ActorId actorId/*,
-        GameViewId viewId = gc_InvalidGameViewId*/)
+        ActorId actorId,
+        GameViewId viewId = gc_InvalidGameViewId)
     {
         m_ActorId = actorId;
-        //TODO
-        //m_ViewId = viewId;
+        m_ViewId = viewId;
     }
 
     //TODO
@@ -124,9 +123,8 @@ public:
     }
 
     virtual void VSerialize(std::ostringstream& out) const {
-        out << m_ActorId /*<< " "*/;
-        //TODO
-        //out << m_ViewId << " ";
+        out << m_ActorId << " "
+            << m_ViewId << " ";
     }
 
     virtual const char* GetName() const {
@@ -134,13 +132,11 @@ public:
     }
 
     const ActorId GetActorId() const { return m_ActorId; }
-    //TODO
-    //const GameViewId GetViewId() const { return m_ViewId; }
+    const GameViewId GetViewId() const { return m_ViewId; }
 
 private:
     ActorId m_ActorId;
-    //TODO
-    //GameViewId m_ViewId;
+    GameViewId m_ViewId;
 };
 
 // This event is sent when a client has loaded its environment.

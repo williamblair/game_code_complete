@@ -30,6 +30,7 @@ public:
     std::string ToXml();
 
     ActorId GetId() const { return m_id; }
+    ActorType GetType() const { return m_type; }
 
     template<class ComponentType>
     std::weak_ptr<ComponentType> GetComponent(ComponentId id)
