@@ -1,6 +1,9 @@
 #ifndef GCC4_IGAMEVIEW_H_INCLUDED
 #define GCC4_IGAMEVIEW_H_INCLUDED
 
+#include <memory>
+#include <list>
+
 #include "ComponentTypes.h"
 
 typedef unsigned int GameViewId;
@@ -31,6 +34,8 @@ public:
     //virtual LRESULT CALLBACK VOnMsgProc(AppMsg msg) = 0;
     virtual void VOnUpdate(unsigned long deltaMs) = 0;
 };
+
+typedef std::list<std::shared_ptr<IGameView>> GameViewList;
 
 #endif // GCC4_IGAMEVIEW_H_INCLUDED
 

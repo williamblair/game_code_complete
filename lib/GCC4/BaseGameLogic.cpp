@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "MakeStrongPtr.h"
 #include "ActorFactory.h"
+#include "HumanView.h"
 
 using namespace tinyxml2;
 
@@ -43,16 +44,14 @@ BaseGameLogic::BaseGameLogic() :
     assert(m_pLevelManager && m_pProcessManager);
     m_pLevelManager->Initialize(g_pApp->m_pResCache->Match("world\\*.xml"));
 
-    //TODO
-    //RegisterEngineScriptEvents();
+    RegisterEngineScriptEvents();
 }
 
 BaseGameLogic::~BaseGameLogic()
 {
-    //TODO
-    //while (!m_GameViews.empty()) {
-    //    m_GameViews.pop_front();
-    //}
+    while (!m_GameViews.empty()) {
+        m_GameViews.pop_front();
+    }
 
     if (m_pLevelManager) { delete m_pLevelManager; }
     if (m_pProcessManager) { delete m_pProcessManager; }
@@ -152,8 +151,7 @@ bool BaseGameLogic::VLoadGame(const char* levelResource)
     }
 
     // Initialize all human views
-    // TODO
-    /*for (auto it = m_GameViews.begin(); it != m_GameViews.end(); ++it)
+    for (auto it = m_GameViews.begin(); it != m_GameViews.end(); ++it)
     {
         std::shared_ptr<IGameView> pView = *it;
         if (pView->VGetType() == GameView_Human) {
@@ -161,7 +159,7 @@ bool BaseGameLogic::VLoadGame(const char* levelResource)
                 std::static_pointer_cast<HumanView,IGameView>(pView);
             pHumanView->LoadGame(pRoot);
         }
-    }*/
+    }
 
     // call the delegate load function
     if (!VLoadGameDelegate(pRoot)) {
@@ -343,11 +341,10 @@ void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
     }
 
     // update all game views
-    //TODO
-    /*for (GameViewList::iterator it = m_GameViews.begin(); it != m_GameViews.end(); ++it)
+    for (GameViewList::iterator it = m_GameViews.begin(); it != m_GameViews.end(); ++it)
     {
         (*it)->VOnUpdate(deltaMilliseconds);
-    }*/
+    }
 
     // update game actors
     for (ActorMap::const_iterator it = m_Actors.begin(); it != m_Actors.end(); ++it)
@@ -361,8 +358,7 @@ void BaseGameLogic::VChangeState(BaseGameState newState)
     if (newState == BGS_WaitingForPlayers)
     {
         // Get rid of the main menu
-        //TODO
-        // m_GameViews.pop_front();
+        m_GameViews.pop_front();
 
         // Note - split screen support would require this to change!
         m_ExpectedPlayers = 1;
@@ -419,23 +415,20 @@ void BaseGameLogic::VRenderDiagnostics()
     }
 }
 
-//TODO
-/*
 void BaseGameLogic::VAddView(std::shared_ptr<IGameView> pView, ActorId actorId)
 {
     // This makes sure that all views have a non-zero view id
     int viewId = static_cast<int>(m_GameViews.size());
     m_GameViews.push_back(pView);
     pView->VOnAttach(viewId, actorId);
-    pView->VOnRestore();
-}*/
+    //TODO?
+    //pView->VOnRestore();
+}
 
-//TODO
-/*
 void BaseGameLogic::VRemoveView(std::shared_ptr<IGameView> pView)
 {
     m_GameViews.remove(pView);
-}*/
+}
 
 ActorFactory* BaseGameLogic::VCreateActorFactory()
 {
@@ -479,7 +472,7 @@ void BaseGameLogic::RequestNewActorDelegate(IEventDataPtr pEventData)
     );
     if (pActor) {
         std::shared_ptr<EvtDataNewActor> pEvent(
-            new EvtDataNewActor(pActor->GetId()/*, pCastEventData->GetViewId()*/)
+            new EvtDataNewActor(pActor->GetId(), pCastEventData->GetViewId())
         );
         IEventManager::GetInstance()->VQueueEvent(pEvent);
     }

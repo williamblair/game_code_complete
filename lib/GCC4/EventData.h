@@ -34,6 +34,8 @@ typedef ScriptEvent* (*CreateEventForScriptFunctionType)(void);
             return new eventClass; \
         }
 
+void RegisterEngineScriptEvents();
+
 // for declaring a delegate via a class member function
 #define DECL_MBR_DELEGATE( func )               \
     new std::function<void(IEventDataPtr)>(     \
@@ -52,7 +54,6 @@ typedef ScriptEvent* (*CreateEventForScriptFunctionType)(void);
                        std::placeholders::_1    \
                 )                               \
             ) 
-
 
 
 class IEventData
@@ -118,7 +119,7 @@ public:
 
     virtual IEventDataPtr VCopy() const {
         return IEventDataPtr(
-            new EvtDataNewActor(m_ActorId/*, m_ViewId*/)
+            new EvtDataNewActor(m_ActorId, m_ViewId)
         );
     }
 
@@ -308,14 +309,13 @@ public:
         m_bHasInitialTransform = false;
         m_InitialTransform = Mat4x4::g_Identity;
         m_ServerActorId = -1;
-        //TODO
-        //m_ViewId = gc_InvalidGameViewId;
+        m_ViewId = gc_InvalidGameViewId;
     }
     explicit EvtDataRequestNewActor(
         const std::string& actorResource,
         const Mat4x4* initialTransform = nullptr,
-        const ActorId serverActorId = INVALID_ACTOR_ID/*,
-        const GameViewId = gc_InvalidGameViewId*/)
+        const ActorId serverActorId = INVALID_ACTOR_ID,
+        const GameViewId viewId = gc_InvalidGameViewId)
     {
         m_ActorResource = actorResource;
         if (initialTransform) {
@@ -325,8 +325,7 @@ public:
             m_bHasInitialTransform = false;
         }
         m_ServerActorId = serverActorId;
-        //TODO
-        //m_ViewId = viewId;
+        m_ViewId = viewId;
     }
     virtual const EventType& VGetEventType() const { return sk_EventType; }
     //TODO
@@ -349,8 +348,8 @@ public:
             new EvtDataRequestNewActor(
                 m_ActorResource,
                 m_bHasInitialTransform ? &m_InitialTransform : nullptr,
-                m_ServerActorId/*,
-                m_ViewId*/ /* TODO */
+                m_ServerActorId,
+                m_ViewId
             )
         );
     }
@@ -365,23 +364,20 @@ public:
             }
         }
         out << m_ServerActorId << " ";
-        //TODO
-        //out << m_ViewId << " ";
+        out << m_ViewId << " ";
     }
     virtual const char* GetName() const { return "EvtDataRequestNewActor"; }
 
     const std::string& GetActorResource() const { return m_ActorResource; }
     const Mat4x4* GetInitialTransform() const { return m_bHasInitialTransform ? &m_InitialTransform : nullptr; }
     const ActorId GetServerActorId() const { return m_ServerActorId; }
-    //TODO
-    //GameViewId GetViewId() const { return m_ViewId; }
+    GameViewId GetViewId() const { return m_ViewId; }
 private:
     std::string m_ActorResource;
     bool m_bHasInitialTransform;
     Mat4x4 m_InitialTransform;
     ActorId m_ServerActorId;
-    //TODO
-    //GameViewId m_ViewId;
+    GameViewId m_ViewId;
 };
 
 // Sent when actors are moved
