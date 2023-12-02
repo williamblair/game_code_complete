@@ -7,6 +7,7 @@
 
 #include "ComponentTypes.h"
 #include "IGameLogic.h"
+#include "IGameView.h"
 #include "EventData.h"
 #include "ProcessManager.h"
 #include "GCCRandom.h"
@@ -53,9 +54,8 @@ public:
 
     GCCRandom& GetRNG() { return m_Random; }
 
-    //TODO
-    //virtual void VAddView(std::shared_ptr<IGameView> pView, ActorId actorId = INVALID_ACTOR_ID);
-    //virtual void VRemoveView(std::shared_ptr<IGameView> pView);
+    virtual void VAddView(std::shared_ptr<IGameView> pView, ActorId actorId = INVALID_ACTOR_ID);
+    virtual void VRemoveView(std::shared_ptr<IGameView> pView);
 
     virtual StrongActorPtr VCreateActor(
         const std::string& actorResource,
@@ -111,7 +111,7 @@ protected:
     int m_HumanPlayersAttached;
     int m_AiPlayersAttached;
     int m_HumanGamesLoaded;
-    //GameViewList m_gameViews; /* TODO */
+    GameViewList m_GameViews;
     //std::shared_ptr<PathingGraph> m_pPathingGraph; // the pathing graph /* TODO */
     ActorFactory* m_pActorFactory;
 
