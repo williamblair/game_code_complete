@@ -3,11 +3,14 @@
 
 #include <memory>
 
+class HumanView;
+
 #include "EventManager.h"
 #include "ResCache.h"
 #include "IRenderer.h"
 #include "BaseGameLogic.h"
 #include "GameOptions.h"
+#include "HumanView.h"
 #include "SocketManager.h"
 #include "NetSocket.h"
 
@@ -48,10 +51,9 @@ public:
 
     // You must define these functions to initialize your game.
     // Look in TeapotWars.h and TeapotWars.cpp
-    //TODO
-    //virtual BaseGameLogic* VCreateGameAndView() = 0;
+    virtual BaseGameLogic* VCreateGameAndView() = 0;
     virtual bool VLoadGame();
-    //HumanView* GetHumanView();
+    HumanView* GetHumanView();
 
     // File and Resource system
     ResCache* m_pResCache;

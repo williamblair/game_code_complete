@@ -2,19 +2,8 @@
 #define GCC4_GAME_OPTIONS_H_INCLUDED
 
 #include <string>
+#include "Point.h"
 #include "xml.h"
-
-struct Point
-{
-    int x,y;
-
-    Point() :
-        x(0),y(0)
-    {}
-    Point(int _x, int _y) :
-        x(_x),y(_y)
-    {}
-};
 
 struct GameOptions
 {

@@ -95,12 +95,11 @@ bool GameCodeApp::Init(
     m_Renderer->VSetBackgroundColor(255, 20, 20, 200);
     m_Renderer->VOnRestore();
 
-    //TODO
-    //m_pGame = VCreateGameAndView();
-    //if (!m_pGame) {
-    //    printf("Failed to create game and view\n");
-    //    return false;
-    //}
+    m_pGame = VCreateGameAndView();
+    if (!m_pGame) {
+        printf("Failed to create game and view\n");
+        return false;
+    }
 
     // now that all major systems are initialized, preload resources
     m_pResCache->Preload("*.ogg", nullptr);
