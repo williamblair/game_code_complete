@@ -1,0 +1,9 @@
+#ifndef GCC4_JOYSTICK_H_INCLUDED
+#define GCC4_JOYSTICK_H_INCLUDED
+
+bool CheckForJoystick();
+
+
+
+#endif // GCC4_JOYSTICK_H_INCLUDED
+
