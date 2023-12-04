@@ -37,16 +37,24 @@ HumanView::~HumanView()
 {
     RemoveAllDelegates();
 
-    //TODO
-    //while (!m_ScreenElements.empty()) {
-    //    m_ScreenElements.pop_front();
-    //}
+    while (!m_ScreenElements.empty()) {
+        m_ScreenElements.pop_front();
+    }
 
     if (m_pProcessManager) { delete m_pProcessManager; }
     //TODO
     //if (g_pAudio) { delete g_pAudio; }
 }
 
+template<class T>
+struct SortBy_SharedPtr_Content
+{
+    bool operator()(
+            const std::shared_ptr<T>& lhs,
+            const std::shared_ptr<T>& rhs) const {
+        return *lhs < *rhs;
+    }
+};
 
 void HumanView::VOnRender(float fTime, float fElapsedTime)
 {
@@ -59,13 +67,12 @@ void HumanView::VOnRender(float fTime, float fElapsedTime)
     {
         if (g_pApp->m_Renderer->VPreRender())
         {
-            //TODO
-            //m_ScreenElements.sort(SortBy_SharedPtr_Content<IScreenElement>());
-            //for (auto i=m_ScreenElements.begin(); i != m_ScreenElements.end(); ++i) {
-            //    if ((*i)->VIsVisible()) {
-            //        (*i)->VOnRender(fTime, fElapsedTime);
-            //    }
-            //}
+            m_ScreenElements.sort(SortBy_SharedPtr_Content<IScreenElement>());
+            for (auto i=m_ScreenElements.begin(); i != m_ScreenElements.end(); ++i) {
+                if ((*i)->VIsVisible()) {
+                    (*i)->VOnRender(fTime, fElapsedTime);
+                }
+            }
 
             VRenderText();
 
@@ -79,10 +86,9 @@ void HumanView::VOnRender(float fTime, float fElapsedTime)
 void HumanView::VOnUpdate(unsigned long deltaMs)
 {
     m_pProcessManager->UpdateProcesses(deltaMs);
-    //TODO
-    //for (auto i=m_ScreenElements.begin(); i != m_ScreenElements.end(); ++i) {
-    //    (*i)->VOnUpdate(deltaMs);
-    //}
+    for (auto i=m_ScreenElements.begin(); i != m_ScreenElements.end(); ++i) {
+        (*i)->VOnUpdate(deltaMs);
+    }
 }
 
 
@@ -92,17 +98,15 @@ bool HumanView::LoadGame(tinyxml2::XMLElement* pLevelData)
     return VLoadGameDelegate(pLevelData);
 }
 
-//TODO
-//void HumanView::VPushElement(std::shared_ptr<IScreenElement> pElement)
-//{
-//    m_ScreenElements.push_front(pElement);
-//}
+void HumanView::VPushElement(std::shared_ptr<IScreenElement> pElement)
+{
+    m_ScreenElements.push_front(pElement);
+}
 
-//TODO
-//void HumanView::VRemoveElement(std::shared_ptr<IScreenElement> pElement)
-//{
-//    m_ScreenElements.remove(pElement);
-//}
+void HumanView::VRemoveElement(std::shared_ptr<IScreenElement> pElement)
+{
+    m_ScreenElements.remove(pElement);
+}
 
 void HumanView::TogglePause(bool bActive)
 {

@@ -9,6 +9,7 @@
 #include "GCCMath.h"
 #include "IGameView.h"
 #include "IRenderer.h"
+#include "IScreenElement.h"
 #include "ProcessManager.h"
 #include "xml.h"
 
@@ -36,9 +37,8 @@ public:
     ProcessManager* GetProcessManager() { return m_pProcessManager; }
 
     // methods to control the layering of interface elements
-    //TODO
-    //virtual void VPushElement(std::shared_ptr<IScreenElement> pElement);
-    //virtual void VRemoveElemt(std::shared_ptr<IScreenElement> pElement);
+    virtual void VPushElement(std::shared_ptr<IScreenElement> pElement);
+    virtual void VRemoveElement(std::shared_ptr<IScreenElement> pElement);
 
     void TogglePause(bool bActive);
 
@@ -56,7 +56,9 @@ public:
 
     //TODO
     //std::shared_ptr<ScreenElementScene> m_pScene;
+    ScreenElementList m_ScreenElements;
     std::shared_ptr<CameraNode> m_pCamera;
+       
 
     void HandleGameState(BaseGameState newState);
 
