@@ -11,12 +11,17 @@
 
 // forward declarations
 struct Vec3;
+struct Vec4;
 struct Mat4x4;
 
 // globals
 extern Vec3 g_Forward;
 extern Vec3 g_Right;
 extern Vec3 g_Up;
+
+extern Vec4 g_Forward4;
+extern Vec4 g_Right4;
+extern Vec4 g_Up4;
 
 struct Vec2
 {
@@ -146,6 +151,12 @@ struct Vec3
 
         return *this;
     }
+    Vec3& operator*=(const float rhs) {
+        x *= rhs;
+        y *= rhs;
+        z *= rhs;
+        return *this;
+    }
 };
 typedef std::list<Vec3> Vec3List;
 
@@ -209,6 +220,14 @@ struct Vec4
         z -= other.z;
         w -= other.w;
 
+        return *this;
+    }
+    
+    Vec4& operator*=(const float rhs) {
+        x *= rhs;
+        y *= rhs;
+        z *= rhs;
+        w *= rhs;
         return *this;
     }
 };
@@ -282,6 +301,15 @@ inline Vec3 Normalize(const Vec3& v) {
 }
 inline Vec3 Lerp(const Vec3& lhs, const Vec3& rhs, const float t) {
     return ((1.0f - t)*lhs) + (t*rhs);
+}
+
+inline Vec4 operator+(const Vec4& lhs, const Vec4& rhs) {
+    return Vec4(
+        lhs.x + rhs.x,
+        lhs.y + rhs.y,
+        lhs.z + rhs.z,
+        lhs.w + rhs.w
+    );
 }
 
 inline bool operator==(const Vec4& lhs, const Vec4& rhs) {
