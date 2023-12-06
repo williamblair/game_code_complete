@@ -19,18 +19,15 @@ HumanView::HumanView(std::shared_ptr<IRenderer> pRenderer)
     m_BaseGameState = BGS_Initializing;
 
     if (pRenderer) {
-        //TODO
-        //m_pScene.reset(new ScreenElementScene(pRenderer));
+        m_pScene.reset(new ScreenElementScene(pRenderer));
 
         Frustum frustum;
         frustum.Init(M_PI/4.0f, 1.0f, 1.0f, 100.0f);
         m_pCamera.reset(new CameraNode(&Mat4x4::g_Identity, frustum));
-        //TODO
-        //assert(m_pScene && m_pCamera);
+        assert(m_pScene && m_pCamera);
 
-        //TODO
-        //m_pScene->VAddChild(INVALID_ACTOR_ID, m_pCamera);
-        //m_pScene->SetCAmera(m_pCamera);
+        m_pScene->VAddChild(INVALID_ACTOR_ID, m_pCamera);
+        m_pScene->SetCamera(m_pCamera);
     }
 }
 HumanView::~HumanView()

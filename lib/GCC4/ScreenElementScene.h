@@ -43,6 +43,7 @@ public:
     virtual void VSetVisible(bool) {}
     virtual bool VAddChild(ActorId id, std::shared_ptr<ISceneNode> kid) {
         Scene::AddChild(id, kid);
+        return true;
     }
 };
 
