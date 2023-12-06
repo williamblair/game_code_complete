@@ -36,8 +36,7 @@ public:
     virtual void VSetZOrder(int const) {}
     
     // Don't handle any messages
-    //TODO
-    //virtual HRESULT CALLBACK VOnMsgProc(AppMsg msg) { return 0; }
+    virtual bool VOnMsgProc(AppMsg msg) { return false; }
     
     virtual bool VIsVisible() const { return true; }
     virtual void VSetVisible(bool) {}

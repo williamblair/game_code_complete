@@ -1,6 +1,7 @@
 #ifndef GCC4_HUMAN_VIEW_H_INCLUDED
 #define GCC4_HUMAN_VIEW_H_INCLUDED
 
+#include "AppMsg.h"
 #include "BaseGameState.h"
 #include "CameraNode.h"
 #include "EventData.h"
@@ -33,6 +34,7 @@ public:
         m_ViewId = vid;
         m_ActorId = aid;
     }
+    virtual bool VOnMsgProc(AppMsg msg);
     virtual void VOnUpdate(unsigned long deltaMs);
 
     bool LoadGame(tinyxml2::XMLElement* pLevelData);
