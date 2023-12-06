@@ -12,6 +12,17 @@ int main()
 {
     CheckForJoystick();
 
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("Sdl video init failed\n");
+        return 1;
+    }
+    SDL_Window* pWindow = SDL_CreateWindow(
+        "Test Window",
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        640, 480,
+        0
+    );
+
     const int numFrames = int(10000.0f/(1000.0f/60.0f));
     for (int i=0; i<numFrames; ++i)
     {
@@ -79,6 +90,9 @@ int main()
 
         SDL_Delay(int(1000.0f/60.0f));
     }
+
+    SDL_DestroyWindow(pWindow);
+    SDL_Quit();
 
     return 0;
 }
