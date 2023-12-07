@@ -34,6 +34,19 @@ int main()
             case SDL_QUIT:
                 i = numFrames;
                 break;
+            case SDL_CONTROLLERAXISMOTION:
+                printf("Controller axis motion: %d, %d, %d\n",
+                    (int)e.caxis.which,
+                    (int)e.caxis.axis,
+                    (int)e.caxis.value);
+                break;
+            case SDL_CONTROLLERBUTTONDOWN:
+            case SDL_CONTROLLERBUTTONUP:
+                printf("Controller button down/up: %d, %d, %d\n",
+                    (int)e.cbutton.which,
+                    (int)e.cbutton.button,
+                    (int)e.cbutton.state);
+                break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
                 printf("Keydown/up: %d, %d, %d\n",

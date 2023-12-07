@@ -24,7 +24,7 @@ bool CheckForJoystick()
 {
     Uint32 initFlags = SDL_WasInit(SDL_INIT_GAMECONTROLLER);
     if (!(initFlags & SDL_INIT_GAMECONTROLLER)) {
-        if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0) {
+        if (SDL_Init(SDL_INIT_GAMECONTROLLER|SDL_INIT_JOYSTICK|SDL_INIT_EVENTS) < 0) {
             printf("SDL Init game controller failed: %s\n", SDL_GetError());
             return false;
         }
@@ -38,7 +38,8 @@ bool CheckForJoystick()
             printf("Failed to open game controller %d\n", i);
             return false;
         }
-        g_Controllers.push_back(ControllerWrapper(pCtrl));
+        // emplace as push_back causes a copy/dtor which closes pCtrl
+        g_Controllers.emplace_back(pCtrl);
     }
     printf("g_Controllers size: %d\n", (int)g_Controllers.size());
     return true;

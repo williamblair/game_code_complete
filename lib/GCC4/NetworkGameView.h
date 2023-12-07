@@ -19,7 +19,7 @@ public:
     virtual void VOnAttach(GameViewId vid, ActorId aid) {
         m_ViewId = vid; m_ActorId = aid;
     }
-    //virtual LRESULT CALLBACK VOnMsgProc(AppMsg msg) { return 0; }
+    virtual bool VOnMsgProc(AppMsg msg) { return 0; }
     virtual void VOnUpdate(unsigned long deltaMilliseconds);
 
     void NewActorDelegate(IEventDataPtr pEventData);

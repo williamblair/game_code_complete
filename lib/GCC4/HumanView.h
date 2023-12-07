@@ -61,7 +61,7 @@ public:
     std::shared_ptr<ScreenElementScene> m_pScene;
     ScreenElementList m_ScreenElements;
     std::shared_ptr<CameraNode> m_pCamera;
-       
+
 
     void HandleGameState(BaseGameState newState);
 
