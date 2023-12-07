@@ -12,7 +12,7 @@ public:
     
     // IGameView implementation
     //virtual HRESULT VOnRestore() { return S_OK; }
-    virtual void VOnRender(double fTime, float fElapsedTime) {}
+    virtual void VOnRender(float fTime, float fElapsedTime) {}
     //virtual void VOnLostDevice() {}
     virtual GameViewType VGetType() { return GameView_Remote; }
     virtual GameViewId VGetId() const { return m_ViewId; }

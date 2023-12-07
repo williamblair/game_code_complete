@@ -7,6 +7,7 @@
 
 #include "ComponentTypes.h"
 #include "IGameLogic.h"
+#include "IGamePhysics.h"
 #include "IGameView.h"
 #include "EventData.h"
 #include "ProcessManager.h"
@@ -86,7 +87,7 @@ public:
     // Render diagnostics
     void ToggleRenderDiagnostics() { m_bRenderDiagnostics = !m_bRenderDiagnostics; }
     virtual void VRenderDiagnostics();
-    //virtual std::shared_ptr<IGamePhysics> VGetGamePhysics() { return m_pPhysics; } /* TODO */
+    virtual std::shared_ptr<IGamePhysics> VGetGamePhysics() { return m_pPhysics; }
 
     void AttachProcess(StrongProcessPtr pProcess) {
         if (m_pProcessManager) {
@@ -119,7 +120,7 @@ protected:
     int m_RemotePlayerId; // if we are a remote player - what is out socker number on the server
 
     bool m_bRenderDiagnostics; // are we rendering diagnostics?
-    //std::shared_ptr<IGamePhysics> m_pPhysics; /* TODO */
+    std::shared_ptr<IGamePhysics> m_pPhysics;
 
     LevelManager* m_pLevelManager; // manages loading and chaining levels
 
