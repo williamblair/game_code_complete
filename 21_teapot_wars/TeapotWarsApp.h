@@ -16,6 +16,13 @@ private:
     virtual void VRegisterGameEvents();
     virtual void VCreateNetworkEventForwarder();
     virtual void VDestroyNetworkEventForwarder();
+
+    EventListenerDelegate m_FireWeaponDelegate;
+    EventListenerDelegate m_StartThrustDelegate;
+    EventListenerDelegate m_EndThrustDelegate;
+    EventListenerDelegate m_StartSteerDelegate;
+    EventListenerDelegate m_EndSteerDelegate;
+    EventListenerDelegate m_EnvironmentLoadedDelegate;
 };
 
 #endif // TEAPOT_WARS_APP_H_INCLUDED
