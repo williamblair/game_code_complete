@@ -1,6 +1,7 @@
 #ifndef GCC4_HUMAN_VIEW_H_INCLUDED
 #define GCC4_HUMAN_VIEW_H_INCLUDED
 
+#include "AppMsg.h"
 #include "BaseGameState.h"
 #include "CameraNode.h"
 #include "EventData.h"
@@ -8,9 +9,12 @@
 #include "GCCTime.h"
 #include "GCCMath.h"
 #include "IGameView.h"
+#include "IKeyboardHandler.h"
+#include "IPointerHandler.h"
 #include "IRenderer.h"
 #include "IScreenElement.h"
 #include "ProcessManager.h"
+#include "ScreenElementScene.h"
 #include "xml.h"
 
 class HumanView : public IGameView
@@ -30,6 +34,7 @@ public:
         m_ViewId = vid;
         m_ActorId = aid;
     }
+    virtual bool VOnMsgProc(AppMsg msg);
     virtual void VOnUpdate(unsigned long deltaMs);
 
     bool LoadGame(tinyxml2::XMLElement* pLevelData);
@@ -43,10 +48,9 @@ public:
     void TogglePause(bool bActive);
 
     // Interface sensitive objects
-    //TODO
-    //std::shared_ptr<IPointerHandler> m_PointerHandler;
+    std::shared_ptr<IPointerHandler> m_PointerHandler;
     int m_PointerRadius;
-    //std::shared_ptr<IKeyboardHandler> m_KeyboardHandler;
+    std::shared_ptr<IKeyboardHandler> m_KeyboardHandler;
 
     // Audio
     bool InitAudio();
@@ -54,11 +58,10 @@ public:
     // Camera adjustments
     virtual void VSetCameraOffset(const Vec4& camOffset);
 
-    //TODO
-    //std::shared_ptr<ScreenElementScene> m_pScene;
+    std::shared_ptr<ScreenElementScene> m_pScene;
     ScreenElementList m_ScreenElements;
     std::shared_ptr<CameraNode> m_pCamera;
-       
+
 
     void HandleGameState(BaseGameState newState);
 
@@ -85,8 +88,7 @@ protected:
 
     virtual void VRenderText() {}
     virtual bool VLoadGameDelegate(tinyxml2::XMLElement* pLevelData) {
-        //TODO
-        //VPushElement(m_pScene);
+        VPushElement(m_pScene);
         return true;
     }
 

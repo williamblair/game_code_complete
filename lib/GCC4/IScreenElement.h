@@ -4,6 +4,8 @@
 #include <list>
 #include <memory>
 
+#include "AppMsg.h"
+
 class IScreenElement
 {
 public:
@@ -20,7 +22,7 @@ public:
     virtual bool VIsVisible() const = 0;
     virtual void VSetVisible(bool visible) = 0;
     
-    //virtual LRESULT CALLBACK VOnMsgProc(AppMsg msg) = 0;
+    virtual bool VOnMsgProc(AppMsg msg) = 0;
     
     virtual bool const operator < (IScreenElement const& other) {
         return VGetZOrder() < other.VGetZOrder();

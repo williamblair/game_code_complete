@@ -22,8 +22,8 @@ public:
     virtual void VSetzOrder(int const zOrder) { m_ZOrder = zOrder; }
     virtual bool VIsVisible() const { return m_IsVisible; }
     virtual void VSetVisible(bool visible) { m_IsVisible = visible; }
+    virtual bool VOnMsgProc(AppMsg msg) { return 0; }
     //TODO
-    //virtual LRESULT CALLBACK VOnMsgProc(AppMsg msg) { return 0; }
     //virtual HRESULT VOnRestore();
     
     

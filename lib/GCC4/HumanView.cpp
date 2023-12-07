@@ -19,18 +19,15 @@ HumanView::HumanView(std::shared_ptr<IRenderer> pRenderer)
     m_BaseGameState = BGS_Initializing;
 
     if (pRenderer) {
-        //TODO
-        //m_pScene.reset(new ScreenElementScene(pRenderer));
+        m_pScene.reset(new ScreenElementScene(pRenderer));
 
         Frustum frustum;
         frustum.Init(M_PI/4.0f, 1.0f, 1.0f, 100.0f);
         m_pCamera.reset(new CameraNode(&Mat4x4::g_Identity, frustum));
-        //TODO
-        //assert(m_pScene && m_pCamera);
+        assert(m_pScene && m_pCamera);
 
-        //TODO
-        //m_pScene->VAddChild(INVALID_ACTOR_ID, m_pCamera);
-        //m_pScene->SetCAmera(m_pCamera);
+        m_pScene->VAddChild(INVALID_ACTOR_ID, m_pCamera);
+        m_pScene->SetCamera(m_pCamera);
     }
 }
 HumanView::~HumanView()
@@ -81,6 +78,69 @@ void HumanView::VOnRender(float fTime, float fElapsedTime)
 
         g_pApp->m_Renderer->VPostRender();
     }
+}
+
+bool HumanView::VOnMsgProc(AppMsg msg)
+{
+    // Iterate through screen layers first
+    // In reverse order since we'll send input messages to the
+    // screen on top
+    for (auto i = m_ScreenElements.rbegin(); i != m_ScreenElements.rend(); ++i)
+    {
+        if ((*i)->VIsVisible()) {
+            if ((*i)->VOnMsgProc(msg)) {
+                return true;
+            }
+        }
+    }
+
+    /*bool result = false;*/
+    switch (msg.type)
+    {
+    case SDL_KEYDOWN:
+        if (m_KeyboardHandler) {
+            /*result = */m_KeyboardHandler->VOnKeyDown(AppMsgKeyToChar(msg));
+        }
+        break;
+    case SDL_KEYUP:
+        if (m_KeyboardHandler) {
+            /*result = */m_KeyboardHandler->VOnKeyUp(AppMsgKeyToChar(msg));
+        }
+        break;
+    case SDL_MOUSEMOTION:
+        if (m_PointerHandler) {
+            /*result = */m_PointerHandler->VOnPointerMove(
+                Point(msg.motion.x,msg.motion.y),
+                1 // radius
+            );
+        }
+        break;
+    case SDL_MOUSEBUTTONDOWN:
+        if (m_PointerHandler) {
+            /*result = */m_PointerHandler->VOnPointerButtonDown(
+                Point(msg.button.x,msg.button.y),
+                1,
+                msg.button.button == 1 ? "PointerLeft" :
+                    (msg.button.button == 3 ? "PointerRight" :
+                        "PointerCenter")
+            );
+        }
+        break;
+    case SDL_MOUSEBUTTONUP:
+        if (m_PointerHandler) {
+            /*result = */m_PointerHandler->VOnPointerButtonUp(
+                Point(msg.button.x,msg.button.y),
+                1,
+                msg.button.button == 1 ? "PointerLeft" :
+                    (msg.button.button == 3 ? "PointerRight" :
+                        "PointerCenter")
+            );
+        }
+        break;
+    default:
+        break;
+    }
+    return false;
 }
 
 void HumanView::VOnUpdate(unsigned long deltaMs)
