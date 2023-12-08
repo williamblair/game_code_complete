@@ -17,6 +17,8 @@ GameCodeApp::GameCodeApp() :
     m_pBaseSocketManager(nullptr),
     m_pNetworkEventForwarder(nullptr)
 {
+    g_pApp = this;
+    
 }
 
 bool GameCodeApp::Init(
