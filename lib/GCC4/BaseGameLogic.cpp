@@ -327,12 +327,11 @@ void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
     case BGS_Running:
         m_pProcessManager->UpdateProcesses(deltaMilliseconds);
 
-        // TODO
-        /*if (m_pPhysics && !m_bProxy)
+        if (m_pPhysics && !m_bProxy)
         {
             m_pPhysics->VOnUpdate(elapsedTime);
             m_pPhysics->VSyncVisibleScene();
-        }*/
+        }
 
         break;
     
