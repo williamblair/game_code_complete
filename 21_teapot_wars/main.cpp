@@ -1,3 +1,4 @@
+#include <GCC4/Logger.h>
 #include "TeapotWarsApp.h"
 #include "TeapotWarsLogic.h"
 
@@ -5,8 +6,7 @@ TeapotWarsApp g_TeapotWarsApp;
 
 int GameCode4(int argc, char* argv[])
 {
-    //TODO
-    //Logger::Init("logging.xml");
+    Logger::Init("logging.xml");
     
     g_pApp->m_Options.Init("PlayerOptions.xml", argc, argv);
     
@@ -48,8 +48,7 @@ int GameCode4(int argc, char* argv[])
     //DXUTMainLoop();
     //DXUTShutdown();
     
-    //TODO
-    //Logger::Destroy();
+    Logger::Destroy();
     
     return g_pApp->GetExitCode();
 }
