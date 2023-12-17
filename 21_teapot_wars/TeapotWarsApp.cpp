@@ -1,3 +1,4 @@
+#include <GCC4/EventFactory.h>
 #include "TeapotWarsApp.h"
 #include "TeapotWarsLogic.h"
 #include "TeapotEvents.h"
@@ -16,11 +17,10 @@ BaseGameLogic* TeapotWarsApp::VCreateGameAndView()
 
 void TeapotWarsApp::VRegisterGameEvents()
 {
-    //TODO - g_eventFactory/REGISTER_EVENT
-    //REGISTER_EVENT(EvtDataStartThrust);
-    //REGISTER_EVENT(EvtDataEndThrust);
-    //REGISTER_EVENT(EvtDataStartSteer);
-    //REGISTER_EVENT(EvtDataEndSteer);
+    REGISTER_EVENT(EvtDataStartThrust);
+    REGISTER_EVENT(EvtDataEndThrust);
+    REGISTER_EVENT(EvtDataStartSteer);
+    REGISTER_EVENT(EvtDataEndSteer);
 }
 
 void TeapotWarsApp::VCreateNetworkEventForwarder()

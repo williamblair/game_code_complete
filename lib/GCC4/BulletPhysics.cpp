@@ -10,9 +10,18 @@
 #include "MakeStrongPtr.h"
 #include "Actor.h"
 #include "EventManager.h"
+#include "EventFactory.h"
 #include "GameCodeApp.h"
 
 using namespace tinyxml2;
+
+BulletPhysics::BulletPhysics()
+{
+    REGISTER_EVENT(EvtDataPhysTriggerEnter);
+    REGISTER_EVENT(EvtDataPhysTriggerLeave);
+    REGISTER_EVENT(EvtDataPhysCollision);
+    REGISTER_EVENT(EvtDataPhysSeparation);
+}
 
 BulletPhysics::~BulletPhysics()
 {

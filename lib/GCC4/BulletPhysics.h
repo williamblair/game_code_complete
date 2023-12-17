@@ -17,7 +17,7 @@ class BulletPhysics : public IGamePhysics
 {
 public:
 
-    BulletPhysics() {}
+    BulletPhysics();
     virtual ~BulletPhysics();
     
     // Initialization and maintenance of the physics world

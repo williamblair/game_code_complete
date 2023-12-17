@@ -180,6 +180,9 @@ class EvtDataDestroyActor : public BaseEventData
 public:
     static const EventType sk_EventType;
 
+    explicit EvtDataDestroyActor() :
+        m_id(INVALID_ACTOR_ID)
+    {}
     explicit EvtDataDestroyActor(ActorId id) :
         m_id(id)
     {}
