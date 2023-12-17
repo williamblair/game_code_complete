@@ -6,7 +6,8 @@
 #include "EventFactory.h"
 #include "OGLRenderer.h"
 
-#define SCRIPT_PREINIT_FILE "Scripts\\PreInit.lua"
+//#define SCRIPT_PREINIT_FILE "Scripts\\PreInit.lua"
+#define SCRIPT_PREINIT_FILE "Scripts/PreInit.lua"
 
 GameCodeApp* g_pApp = nullptr;
 

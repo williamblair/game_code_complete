@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cstdlib>
 #include "Logger.h"
 #include "xml.h"
 #include "CriticalSection.h"
@@ -261,7 +262,9 @@ void LogMgr::GetOutputBuffer(
         outOutputBuffer += "\nLine: ";
         char lineNumBuffer[11];
         memset(lineNumBuffer, 0, sizeof(char));
-        outOutputBuffer += itoa(lineNum, lineNumBuffer, 10);
+        //outOutputBuffer += itoa(lineNum, lineNumBuffer, 10);
+        sprintf(lineNumBuffer, "%d", lineNum);
+        outOutputBuffer += lineNumBuffer;
     }
 
     outOutputBuffer += "\n";

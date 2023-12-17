@@ -21,7 +21,6 @@ public:
         std::shared_ptr<ResHandle> handle
     );
 
-    // TODO - handle multiple types
     virtual std::string VGetPattern() { return ".*\\.(jpg|png|tga|bmp)"; }
 };
 
