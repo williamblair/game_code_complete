@@ -30,7 +30,7 @@ public:
     virtual void VOnRender(float fTime, float fElapsedTime);
     virtual GameViewType VGetType() { return GameView_Human; }
     virtual GameViewId VGetId() const { return m_ViewId; }
-    virtual void VOnAttached(GameViewId vid, ActorId aid) {
+    virtual void VOnAttach(GameViewId vid, ActorId aid) {
         m_ViewId = vid;
         m_ActorId = aid;
     }
