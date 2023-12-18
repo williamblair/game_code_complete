@@ -2,12 +2,13 @@
 #define MAIN_MENU_VIEW_H_INCLUDED
 
 #include <GCC4/HumanView.h>
+#include "MainMenuUI.h"
 
 class MainMenuView : public HumanView
 {
 public:
     MainMenuView();
-    ~MainMenuView();
+    virtual ~MainMenuView();
 
     virtual bool VOnMsgProc(AppMsg msg);
     virtual void VRenderText();
