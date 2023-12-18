@@ -6,15 +6,14 @@
 class ScriptResourceLoader : public IResourceLoader
 {
 public:
-    virtual std::string VGetPattern() {/*TODO*/return "*.lua";}
-    virtual bool VUseRawFile() { /*TODO*/return false; }
+    virtual std::string VGetPattern() { return ".*\\.lua$"; }
+    virtual bool VUseRawFile() { return false; }
 
     virtual unsigned int VGetLoadedResourceSize(
         char* pRawBuffer,
         unsigned int rawSize
     ) {
-        //TODO
-        return 0;
+        return rawSize;
     }
     virtual bool VLoadResource(
         char* pRawBuffer,

@@ -3,9 +3,11 @@
 #include "LuaStateManager.h"
 #include "ScriptExports.h"
 #include "ScriptProcess.h"
+#include "EventFactory.h"
 #include "OGLRenderer.h"
 
-#define SCRIPT_PREINIT_FILE "Scripts\\PreInit.lua"
+//#define SCRIPT_PREINIT_FILE "Scripts\\PreInit.lua"
+#define SCRIPT_PREINIT_FILE "Scripts/PreInit.lua"
 
 GameCodeApp* g_pApp = nullptr;
 
@@ -27,7 +29,7 @@ bool GameCodeApp::Init(
     int screenHeight)
 {
     RegisterEngineEvents();
-    //VRegsiterGameEvents();
+    VRegisterGameEvents();
     
     IResourceFile* zipFile = new ResourceZipFile("Assets.zip");
     m_pResCache = new ResCache(50, zipFile);
@@ -249,18 +251,14 @@ void GameCodeApp::VDestroyNetworkEventForwarder()
     delete m_pNetworkEventForwarder;
 }
 
-#define REGISTER_EVENT(eventClass) g_eventFactory.Register<eventClass>(eventClass::sk_EventType)
 void GameCodeApp::RegisterEngineEvents()
 {
-    // TODO - g_eventFactory
-    /*
     REGISTER_EVENT(EvtDataEnvironmentLoaded);
     REGISTER_EVENT(EvtDataNewActor);
     REGISTER_EVENT(EvtDataMoveActor);
     REGISTER_EVENT(EvtDataDestroyActor);
     REGISTER_EVENT(EvtDataRequestNewActor);
     REGISTER_EVENT(EvtDataNetworkPlayerActorAssignment);
-    */
 }
 
 
