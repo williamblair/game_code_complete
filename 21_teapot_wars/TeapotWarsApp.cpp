@@ -2,15 +2,15 @@
 #include "TeapotWarsApp.h"
 #include "TeapotWarsLogic.h"
 #include "TeapotEvents.h"
+#include "MainMenuView.h"
 
 BaseGameLogic* TeapotWarsApp::VCreateGameAndView()
 {
     m_pGame = new TeapotWarsLogic();
     m_pGame->Init();
 
-    //TODO
-    //std::shared_ptr<IGameView> menuView(new MainMenuView());
-    //m_pGame->VAddView(menuView);
+    std::shared_ptr<IGameView> menuView(new MainMenuView());
+    m_pGame->VAddView(menuView);
 
     return m_pGame;
 }
