@@ -227,6 +227,94 @@ private:
     ActorId m_id;
 };
 
+class EvtDataGameplayUIUpdate : public ScriptEvent
+{
+public:
+    static const EventType sk_EventType;
+
+    EvtDataGameplayUIUpdate()
+    {}
+    EvtDataGameplayUIUpdate(const std::string& gameplayUiString) :
+        m_gameplayUiString(gameplayUiString)
+    {}
+
+    virtual const EventType& VGetEventType() const {
+        return sk_EventType;
+    }
+
+    //TODO
+    //virtual void VDeserialize(std::istrstream& in) {
+    //    in >> m_gameplayUiString;
+    //}
+    
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(new EvtDataGameplayUIUpdate(m_gameplayUiString));
+    }
+
+    virtual void VSerialize(std::ostringstream& out) const {
+        out << m_gameplayUiString;
+    }
+
+    virtual const char* GetName() const { return "EvtDataGameplayUIUpdate"; }
+
+    std::string GetGameplayUiString() const { return m_gameplayUiString; }
+
+    virtual bool VBuildEventFromScript()
+    {
+        //TODO
+        return false;
+    }
+
+    EXPORT_FOR_SCRIPT_EVENT(EvtDataGameplayUIUpdate);
+
+private:
+    std::string m_gameplayUiString;
+};
+
+class EvtDataSetControlledActor : public ScriptEvent
+{
+public:
+    static const EventType sk_EventType;
+
+    EvtDataSetControlledActor() { m_id = INVALID_ACTOR_ID; }
+    EvtDataSetControlledActor(ActorId id) { m_id = id; }
+
+    virtual const EventType& VGetEventType() const {
+        return sk_EventType;
+    }
+
+    //TODO
+    /*virtual void VDeserialize(std::istrstream& in) {
+        in >> m_id;
+    }*/
+
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(new EvtDataSetControlledActor(m_id));
+    }
+
+    virtual void VSerialize(std::ostringstream& out) const {
+        out << m_id;
+    }
+
+    virtual const char* GetName() const { return "EvtDataSetControlledActor"; }
+    ActorId GetActorId() const { return m_id; }
+
+    virtual bool VBuildEventFromScript()
+    {
+        //TODO
+        /*if (m_EventData.IsInteger()) {
+            m_ActorId = m_EventData.GetInteger();
+            return true;
+        }
+        return false;*/
+        return false;
+    }
+
+    EXPORT_FOR_SCRIPT_EVENT(EvtDataSetControlledActor);
+private:
+    ActorId m_id;
+};
+
 void RegisterTeapotScriptEvents();
 
 #endif // TEAPOT_EVENTS_H_INCLUDED
