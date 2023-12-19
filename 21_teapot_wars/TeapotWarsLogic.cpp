@@ -1,6 +1,7 @@
 #include <GCC4/Actor.h>
 #include <GCC4/EventManager.h>
 #include <GCC4/NetworkGameView.h>
+#include "TeapotWarsHumanView.h"
 #include "TeapotWarsLogic.h"
 
 TeapotWarsLogic::TeapotWarsLogic()
@@ -34,17 +35,16 @@ void TeapotWarsLogic::VChangeState(BaseGameState newState)
         // spawn all local players (should only be one)
         assert(m_ExpectedPlayers == 1);
         for (int i=0; i<m_ExpectedPlayers; ++i) {
-            //TODO
-            //std::shared_ptr<IGameView> playersView(
-            //    new TeapotWarsHumanView(g_pApp->m_pRenderer)
-            //);
-            //VAddView(playersView);
+            std::shared_ptr<IGameView> playersView(
+                new TeapotWarsHumanView(g_pApp->m_Renderer)
+            );
+            VAddView(playersView);
 
-            //if (m_bProxy) {
+            if (m_bProxy) {
                 // if we are a remote player, all we have to do is spawn
                 // our view - the server will do the rest
-                //return;
-            //}
+                return;
+            }
         }
 
         // spawn all remote players views on the game

@@ -66,7 +66,7 @@ public:
     void HandleGameState(BaseGameState newState);
 
     // helps the network system attach views to the right actor
-    virtual void VSetControllerActor(ActorId actorId) { m_ActorId = actorId; }
+    virtual void VSetControlledActor(ActorId actorId) { m_ActorId = actorId; }
 
     // Event delegates
     EventListenerDelegate m_PlaySoundDelegate;
