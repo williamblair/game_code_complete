@@ -1,6 +1,10 @@
 #ifndef AI_TEAPOT_VIEW_H_INCLUDED
 #define AI_TEAPOT_VIEW_H_INCLUDED
 
+#include <GCC4/PathingGraph.h>
+#include <GCC4/IGameView.h>
+#include <GCC4/Logger.h>
+
 class AITeapotView : public IGameView
 {
     friend class AITeapotViewListener;

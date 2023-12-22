@@ -13,9 +13,10 @@
 #include "ProcessManager.h"
 #include "GCCRandom.h"
 #include "BaseGameState.h"
+#include "PathingGraph.h"
 
 // Forward declarations
-class PathingGraph;
+//class PathingGraph;
 class ActorFactory;
 class LevelManager;
 
@@ -50,8 +51,7 @@ public:
 
     ActorId GetNewActorId() { return ++m_LastActorId; }
 
-    //TODO
-    //std::shared_ptr<PathingGraph> GetPathingGraph() { return m_pPathingGraph; }
+    std::shared_ptr<PathingGraph> GetPathingGraph() { return m_pPathingGraph; }
 
     GCCRandom& GetRNG() { return m_Random; }
 
@@ -113,7 +113,7 @@ protected:
     int m_AiPlayersAttached;
     int m_HumanGamesLoaded;
     GameViewList m_GameViews;
-    //std::shared_ptr<PathingGraph> m_pPathingGraph; // the pathing graph /* TODO */
+    std::shared_ptr<PathingGraph> m_pPathingGraph; // the pathing graph
     ActorFactory* m_pActorFactory;
 
     bool m_bProxy; // set if this is a proxy game logic, not a real one

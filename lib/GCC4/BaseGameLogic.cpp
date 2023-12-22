@@ -37,7 +37,7 @@ BaseGameLogic::BaseGameLogic() :
     m_HumanPlayersAttached = 0;
     m_AiPlayersAttached = 0;
     m_HumanGamesLoaded = 0;
-    //m_pPathingGraph = nullptr; /* TODO */
+    m_pPathingGraph = nullptr;
     m_pActorFactory = nullptr;
 
     m_pLevelManager = new LevelManager();
@@ -71,8 +71,7 @@ BaseGameLogic::~BaseGameLogic()
 bool BaseGameLogic::Init()
 {
     m_pActorFactory = VCreateActorFactory();
-    //TODO
-    //m_pPathingGraph.reset(CreatePathingGraph());
+    m_pPathingGraph.reset(CreatePathingGraph());
 
     m_RequestNewActorDelegate.reset(
         DECL_MBR_DELEGATE(&BaseGameLogic::RequestNewActorDelegate)
@@ -277,8 +276,7 @@ void BaseGameLogic::VModifyActor(const ActorId actorId, XMLElement* overrides)
 
     auto findIt = m_Actors.find(actorId);
     if (findIt != m_Actors.end()) {
-        //TODO
-        //m_pActorFactor->ModifyActor(findIt->second, overrides);
+        m_pActorFactory->ModifyActor(findIt->second, overrides);
     }
 }
 

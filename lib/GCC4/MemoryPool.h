@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cstddef>
 
+#include "Logger.h"
+
 class MemoryPool
 {
 public:
@@ -56,6 +58,8 @@ private:
   
 };
 
+#define SAFE_DELETE(ptr) if ((ptr)) { delete (ptr); }
+
 //---------------------------------------------------------------------------------------------------------------------
 // These macros are designed to allow classes to easily take advantage of memory pools.  To use, follow this steps:
 // 1) Call GCC_MEMORYPOOL_DECLARATION() in the class declaration
@@ -101,11 +105,11 @@ private:
             GCC_ERROR("s_pMemoryPool is not NULL.  All data will be destroyed.  (Ignorable)"); \
             SAFE_DELETE(s_pMemoryPool); \
         } \
-        s_pMemoryPool = GCC_NEW MemoryPool; \
-        if (debugName) \
-            s_pMemoryPool->SetDebugName(debugName); \
-        else \
-            s_pMemoryPool->SetDebugName(#_className_); \
+        s_pMemoryPool = new MemoryPool; \
+        /*if (debugName)*/ \
+        /*    s_pMemoryPool->SetDebugName(debugName);*/ \
+        /*else*/ \
+        /*    s_pMemoryPool->SetDebugName(#_className_);*/ \
         s_pMemoryPool->Init(sizeof(_className_), numChunks); \
     } \
     void _className_::DestroyMemoryPool(void) \
