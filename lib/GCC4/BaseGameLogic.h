@@ -16,7 +16,7 @@
 #include "PathingGraph.h"
 
 // Forward declarations
-//class PathingGraph;
+class PathingGraph;
 class ActorFactory;
 class LevelManager;
 

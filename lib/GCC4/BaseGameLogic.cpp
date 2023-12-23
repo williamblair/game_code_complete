@@ -314,11 +314,10 @@ void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
         {
             // The server sends us the level name as a part of the login message.
             // we have to wait until it arrives before loading the level
-            //TODO
-            /*if (!g_pApp->m_Options.m_Level.empty())
+            if (!g_pApp->m_Options.m_Level.empty())
             {
                 VChangeState(BGS_LoadingGameEnvironment);
-            }*/
+            }
         }
         break;
 
@@ -359,9 +358,8 @@ void BaseGameLogic::VChangeState(BaseGameState newState)
 
         // Note - split screen support would require this to change!
         m_ExpectedPlayers = 1;
-        //TODO
-        //m_ExpectedRemotePlayers = g_pApp->m_Options.m_expectedPlayers - 1;
-        //m_ExpectedAi = g_pApp->m_Options.m_NumAis;
+        m_ExpectedRemotePlayers = g_pApp->m_Options.m_ExpectedPlayers - 1;
+        m_ExpectedAi = g_pApp->m_Options.m_NumAis;
 
         if (!g_pApp->m_Options.m_GameHost.empty())
         {

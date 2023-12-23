@@ -1,6 +1,7 @@
 #include <GCC4/Actor.h>
 #include <GCC4/EventManager.h>
 #include <GCC4/NetworkGameView.h>
+#include "AITeapotView.h"
 #include "TeapotWarsHumanView.h"
 #include "TeapotWarsLogic.h"
 
@@ -54,11 +55,10 @@ void TeapotWarsLogic::VChangeState(BaseGameState newState)
         }
 
         // spawn all AI views on the game
-        //TODO
-        //for (int i=0; i<m_ExpectedAI; ++i) {
-        //    std::shared_ptr<IGameView> aiView(new AITeapotView(m_pPathingGraph));
-        //    VAddView(aiView);
-        //}
+        for (int i=0; i<m_ExpectedAi; ++i) {
+            std::shared_ptr<IGameView> aiView(new AITeapotView(m_pPathingGraph));
+            VAddView(aiView);
+        }
 
         break;
     }
@@ -101,8 +101,7 @@ void TeapotWarsLogic::VChangeState(BaseGameState newState)
                 }
             }
 
-            //TODO
-            /*else if (pView->VGetType() == GameView_AI) {
+            else if (pView->VGetType() == GameView_AI) {
                 std::shared_ptr<AITeapotView> pAiView =
                     std::static_pointer_cast<AITeapotView,IGameView>(pView);
                 StrongActorPtr pActor = VCreateActor("actors\\ai_teapot.xml", nullptr);
@@ -115,7 +114,7 @@ void TeapotWarsLogic::VChangeState(BaseGameState newState)
                     );
                     IEventManager::GetInstance()->VTriggerEvent(pNewActorEvent);
                 }
-            }*/
+            }
         }
 
         break;
