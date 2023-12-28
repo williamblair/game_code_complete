@@ -28,6 +28,8 @@ private:
 
     EventListenerDelegate m_fromLuaTestEvtDelegate;
     void FromLuaTestHandler(IEventDataPtr pEventData);
+
+    virtual BaseGameLogic* VCreateGameAndView();
 };
 
 #endif // APP_H_INCLUDED

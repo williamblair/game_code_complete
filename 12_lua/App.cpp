@@ -123,3 +123,8 @@ void LuaTestApp::FromLuaTestHandler(IEventDataPtr pEventData)
         << pCastEventData->GetVal() << std::endl;
 }
 
+BaseGameLogic* LuaTestApp::VCreateGameAndView()
+{
+    return nullptr;
+}
+
