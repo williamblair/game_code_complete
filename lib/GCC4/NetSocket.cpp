@@ -137,7 +137,7 @@ void NetSocket::VHandleOutput()
             fSent = 0;
         }
 
-        if (m_sendOfs == pPkt->VGetSize()) {
+        if (m_sendOfs == (int)pPkt->VGetSize()) {
             m_OutList.pop_front();
             m_sendOfs = 0;
         }
@@ -210,7 +210,7 @@ void NetSocket::VHandleInput()
                 RECV_BUFFER_SIZE) {
             // we don't want to overrun the buffer - so we copy the leftover
             // bits to the beginning of the receive buffer and start over
-            int leftover = m_recvOfs;
+            //int leftover = m_recvOfs;
             memcpy(m_recvBuff, &m_recvBuff[m_recvBegin], m_recvOfs);
             m_recvBegin = 0;
         }

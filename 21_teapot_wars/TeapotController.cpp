@@ -28,7 +28,7 @@ bool TeapotController::VOnPointerButtonDown(const Point& mousePos, const int rad
 
 bool TeapotController::VOnKeyDown(const char c)
 {
-    m_bKey[c] = true;
+    m_bKey[size_t(c)] = true;
 
     // send thrust event
     if (c == 'W' || c == 'S') {
@@ -58,7 +58,7 @@ bool TeapotController::VOnKeyDown(const char c)
 
 bool TeapotController::VOnKeyUp(const char c)
 {
-    m_bKey[c] = false;
+    m_bKey[size_t(c)] = false;
 
     // send end thrust event
     if (c == 'W' || c == 'S') {

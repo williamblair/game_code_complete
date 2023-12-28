@@ -177,7 +177,7 @@ void TeapotWarsLogic::RemoteClientDelegate(IEventDataPtr pEventData)
     std::shared_ptr<EvtDataRemoteClient> pCastEventData =
         std::static_pointer_cast<EvtDataRemoteClient>(pEventData);
     const int sockID = pCastEventData->GetSocketId();
-    const int ipAddress = pCastEventData->GetIpAddress();
+    //const int ipAddress = pCastEventData->GetIpAddress();
 
     // go find a NetworkView that doesn't have a socket ID,
     // and attach this client to it

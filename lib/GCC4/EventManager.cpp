@@ -6,9 +6,6 @@
 
 #include "GCCTime.h"
 
-#define DBG_ASSERT( cond ) assert( cond )
-//#define DBG_ASSERT( cond )
-
 static IEventManager* pEventManagerInstance = nullptr;
 
 IEventManager::IEventManager(const char* pName, bool setAsGlobal)
@@ -101,8 +98,8 @@ bool EventManager::VTriggerEvent(const IEventDataPtr& pEvent) const
 
 bool EventManager::VQueueEvent(const IEventDataPtr& pEvent)
 {
-    DBG_ASSERT(m_activeQueue >= 0);
-    DBG_ASSERT(m_activeQueue < EVTMGR_NUM_QUEUES);
+    assert(m_activeQueue >= 0);
+    assert(size_t(m_activeQueue) < EVTMGR_NUM_QUEUES);
 
     auto findIt = m_eventListeners.find(pEvent->VGetEventType());
     if (findIt != m_eventListeners.end())
@@ -128,8 +125,8 @@ bool EventManager::VThreadSafeQueueEvent(const IEventDataPtr& pEvent)
 
 bool EventManager::VAbortEvent(const EventType& type, bool allOfType)
 {
-    DBG_ASSERT(m_activeQueue >= 0);
-    DBG_ASSERT(m_activeQueue < EVTMGR_NUM_QUEUES);
+    assert(m_activeQueue >= 0);
+    assert(size_t(m_activeQueue) < EVTMGR_NUM_QUEUES);
 
     bool success = false;
     auto findIt = m_eventListeners.find(type);
@@ -216,7 +213,8 @@ bool EventManager::VTickUpdate(unsigned long maxMillis)
         if (maxMillis != kINFINITE)
         {
             auto timeNow = std::chrono::steady_clock::now();
-            if (std::chrono::duration_cast<std::chrono::milliseconds>( 
+            if ((unsigned long)
+                std::chrono::duration_cast<std::chrono::milliseconds>( 
                     timeNow - startTime).count() >= maxMillis)
             {
                 break;

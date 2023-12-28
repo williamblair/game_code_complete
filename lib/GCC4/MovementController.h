@@ -30,8 +30,8 @@ public:
     bool VOnPointerButtonUp(const Point& mousePos, const int radius, const std::string& buttonName);
 
     // IKeyboardHandler interface
-    bool VOnKeyDown(const char c) { m_bKey[c] = true; return true; }
-    bool VOnKeyUp(const char c) { m_bKey[c] = false; return true; }
+    bool VOnKeyDown(const char c) { m_bKey[size_t(c)] = true; return true; }
+    bool VOnKeyUp(const char c) { m_bKey[size_t(c)] = false; return true; }
     
     const Mat4x4* GetToWorld() { return &m_matToWorld; }
     const Mat4x4* GetFromWorld() { return &m_matFromWorld; }

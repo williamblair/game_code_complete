@@ -129,7 +129,7 @@ LuaStateManager::CreatePath(
     std::vector<std::string> splitPath;
     {
         int i = 0;
-        const size_t len = strlen(pathString);
+        const int len = (int)strlen(pathString);
         do
         {
             std::string curToken = "";

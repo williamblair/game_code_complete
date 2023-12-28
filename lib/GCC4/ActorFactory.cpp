@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ActorFactory.h"
 #include "MakeStrongPtr.h"
+#include "TransformComponent.h"
 //#include "AmmoPickup.h"
 //#include "HealthPickup.h"
 
@@ -49,7 +50,7 @@ StrongActorPtr ActorFactory::CreateActor(
         return StrongActorPtr();
     }
 
-    bool bInitialTransformSet = false;
+    //bool bInitialTransformSet = false;
 
     // loop through each child XML element and load the component
     for (XMLElement* pNode = pRoot->FirstChildElement();
@@ -72,13 +73,12 @@ StrongActorPtr ActorFactory::CreateActor(
     // This is a bit of a hack to get the initial transform of the
     // transform component set before the other components
     // (like PhysicsComponent) read it
-    //TODO
-    /*std::shared_ptr<TransformComponent> pTransformComponent = MakeStrongPtr(
+    std::shared_ptr<TransformComponent> pTransformComponent = MakeStrongPtr(
         pActor->GetComponent<TransformComponent>(TransformComponent::g_Name)
     );
-    if (pInitialTransform && pTransformComponent) {
-        pTransformComponent->SetPosition(pInitialTransform->GetPosition());
-    }*/
+    if (initialTransform && pTransformComponent) {
+        pTransformComponent->SetPosition(initialTransform->GetPosition());
+    }
 
     // Now that the actor has been fully created, run the post init phase
     pActor->PostInit();

@@ -514,7 +514,7 @@ void BulletPhysics::AddShape(
         );
     if (!pTransformComp) {
         // physics can;t work on an actor that doesn't have a transform component
-        printf("No transform component in actor w/ id %llu\n", uint64_t(actorId));
+        printf("No transform component in actor w/ id %llu\n", (long long unsigned)actorId);
         return;
     }
     transform = pTransformComp->GetTransform();
@@ -569,7 +569,7 @@ void BulletPhysics::RemoveCollisionObject(btCollisionObject* removeMe)
         // delete the components of the object
         delete body->getMotionState();
         delete body->getCollisionShape();
-        delete body->getUserPointer();
+        //delete body->getUserPointer();
 
         for (int ii = body->getNumConstraintRefs()-1; ii >= 0; --ii)
         {

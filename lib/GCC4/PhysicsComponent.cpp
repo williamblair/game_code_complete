@@ -40,6 +40,7 @@ XMLElement* PhysicsComponent::VGenerateXml()
     //XMLText* pShapeText = new XMLText(m_shape.c_str());
     XMLElement* pShape = pBaseElement->InsertNewChildElement("Shape");
     XMLText* pShapeText = pShape->InsertNewText(m_shape.c_str());
+    (void)pShapeText;
     //pShape->LinkEndChild(pShapeText);
     //pBaseElement->LinkEndChild(pShape);
 
@@ -50,6 +51,7 @@ XMLElement* PhysicsComponent::VGenerateXml()
     //pBaseElement->LinkEndChild(pDensity);
     XMLElement* pDensity = pBaseElement->InsertNewChildElement("Density");
     XMLText* pDensityText = pDensity->InsertNewText(m_density.c_str());
+    (void)pDensityText;
 
     // material
     //XMLElement* pMaterial = new XMLElement("Material");
@@ -58,6 +60,7 @@ XMLElement* PhysicsComponent::VGenerateXml()
     //pBaseElement->LinkEndChild(pMaterial);
     XMLElement* pMaterial = pBaseElement->InsertNewChildElement("Material");
     XMLText* pMaterialText = pMaterial->InsertNewText(m_material.c_str());
+    (void)pMaterialText;
 
     // rigid body transform
     //XMLElement* pInitialTransform = new XMLElement("RigidBodyTransform");
@@ -166,8 +169,8 @@ void PhysicsComponent::VUpdate(int deltaMs)
         // The velocity vector is a combination of the direction this actor
         // is going in and the speed of the actor.
         // The scalar is just he speed component.
-        Vec3 velocity(m_pGamePhysics->VGetVelocity(m_pOwner->GetId()));
-        float velocityScalar = Mag(velocity);
+        //Vec3 velocity(m_pGamePhysics->VGetVelocity(m_pOwner->GetId()));
+        //float velocityScalar = Mag(velocity);
 
         Vec3 direction(transform.GetDirection());
         m_pGamePhysics->VApplyForce(direction, accelToApplyThisFrame, m_pOwner->GetId());

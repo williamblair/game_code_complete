@@ -69,7 +69,6 @@ OGLSkyNode::OGLSkyNode(const char* textureFile, std::shared_ptr<CameraNode> came
     // Load the texture
     glGenTextures(1, &m_CubeTexId);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_CubeTexId);
-    int width, height, bytesPerPixel;
     std::string faces[6] = {
         m_TextureBaseName + "_right.jpg", // right
         m_TextureBaseName + "_left.jpg", // left
@@ -151,7 +150,7 @@ bool OGLSkyNode::VRender(Scene* pScene)
 
 bool OGLSkyNode::VPreRender(Scene* pScene)
 {
-    const Mat4x4& viewMat = m_Camera->VGet()->GetToWorld();
+    //const Mat4x4& viewMat = m_Camera->VGet()->GetToWorld();
     OGLRenderer* rndr = static_cast<OGLRenderer*>(pScene->GetRenderer());
     rndr->SetShader(m_Shader);
     //rndr->VSetViewTransform(&viewMat);

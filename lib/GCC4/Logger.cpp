@@ -230,7 +230,7 @@ void LogMgr::WriteToLogFile(const std::string& data)
     if (!pLogFile) {
         return;
     }
-    fprintf(pLogFile, data.c_str());
+    fprintf(pLogFile, "%s", data.c_str());
     fclose(pLogFile);
 }
 

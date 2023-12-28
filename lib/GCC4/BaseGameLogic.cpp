@@ -91,7 +91,7 @@ std::string BaseGameLogic::GetActorXml(const ActorId id)
         return pActor->ToXml();
     } else {
         char msg[256];
-        sprintf(msg, "Couldn't find actor: %llu\n", (uint64_t)id);
+        sprintf(msg, "Couldn't find actor: %llu\n", (long long unsigned)id);
         throw std::runtime_error(msg);
     }
 
