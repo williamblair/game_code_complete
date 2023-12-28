@@ -129,6 +129,10 @@ bool GameCodeApp::Init(
 
 void GameCodeApp::MsgProc(const AppMsg& msg)
 {
+    if (!g_pApp || g_pApp->m_bQuitting || !g_pApp->m_bIsRunning) {
+        return;
+    }
+
     if (msg.type == SDL_QUIT) {
         g_pApp->m_bQuitting = true;
         g_pApp->m_bIsRunning = false;
@@ -147,6 +151,19 @@ void GameCodeApp::MsgProc(const AppMsg& msg)
             }
         }
     }
+}
+
+void GameCodeApp::OnFrameRender(float fTime, float fElapsedTime)
+{
+    BaseGameLogic* pGame = g_pApp->m_pGame;
+    for (auto i = pGame->m_GameViews.begin();
+        i != pGame->m_GameViews.end();
+        ++i)
+    {
+        (*i)->VOnRender(fTime, fElapsedTime);
+    }
+
+    g_pApp->m_pGame->VRenderDiagnostics();
 }
 
 bool GameCodeApp::OnDisplayChange(int colorDepth, int width, int height)

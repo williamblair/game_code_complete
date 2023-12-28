@@ -33,6 +33,7 @@ public:
     virtual bool Init(const char* title, int screenWidth, int screenHeight);
 
     static void MsgProc(const AppMsg& msg);
+    static void OnFrameRender(float fTime, float fElapsedTime);
 
     bool OnDisplayChange(int colorDepth, int width, int height);
     bool OnClose();
