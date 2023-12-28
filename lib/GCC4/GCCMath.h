@@ -596,6 +596,16 @@ struct Mat4x4
         Vec3 forward = Transform(justRot, g_Forward);
         return forward;
     }
+
+    inline Vec3 GetUp() const {
+        Mat4x4 justRot = *this;
+        // set translation to 0
+        justRot.r0c3 = 0.0f;
+        justRot.r1c3 = 0.0f;
+        justRot.r2c3 = 0.0f;
+        Vec3 up = Transform(justRot, g_Up);
+        return up;
+    }
     
     inline Vec3 GetYawPitchRoll() const {
         float yaw, pitch, roll;

@@ -55,6 +55,19 @@ public:
     virtual void VApplyTorque(const Vec3& dir, float newtons, ActorId id) override;
     virtual bool VKinematicMove(const Mat4x4& mat, ActorId id) override;
 
+    // Physics actor states
+    virtual void VRotateY(ActorId actorId, float angleRadians, float time) override;
+    virtual float VGetOrientationY(ActorId actorId) override;
+    virtual void VStopActor(ActorId actorId) override;
+    virtual Vec3 VGetVelocity(ActorId actorId) override;
+    virtual void VSetVelocity(ActorId actorId, const Vec3& vel) override;
+    virtual Vec3 VGetAngularVelocity(ActorId actorId) override;
+    virtual void VSetAngularVelocity(ActorId actorId, const Vec3& vel) override;
+    virtual void VTranslate(ActorId actorId, const Vec3& vec) override;
+
+    virtual void VSetTransform(const ActorId id, const Mat4x4& mat) override;
+    virtual Mat4x4 VGetTransform(const ActorId id) override;
+
 private:
     // Bullet library vars
     btDynamicsWorld* m_pDynamicsWorld;

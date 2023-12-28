@@ -26,7 +26,7 @@ public:
 
     // Physics functions
     void ApplyForce(const Vec3& direction, float forceNewtons);
-    void ApplyTorque(const Vec3& direction, float forecNewtons);
+    void ApplyTorque(const Vec3& direction, float forceNewtons);
     bool KinematicMove(const Mat4x4& transform);
 
     // acceleration
@@ -42,7 +42,7 @@ public:
     void Stop();
 
 protected:
-    void CreateShape();
+    //void CreateShape();
     void BuildRigidBodyTransform(tinyxml2::XMLElement* pTransformElement);
     
     float m_acceleration, m_angularAcceleration;

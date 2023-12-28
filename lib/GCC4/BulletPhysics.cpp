@@ -661,3 +661,57 @@ void BulletPhysics::BulletInternalTickCallback(
     bulletPhysics->m_previousTickCollisionPairs = currentTickCollisionPairs;
 }
 
+void BulletPhysics::VRotateY(ActorId actorId, float angleRadians, float time)
+{
+    //TODO
+}
+
+float BulletPhysics::VGetOrientationY(ActorId actorId)
+{
+    //TODO
+    return 0.0f;
+}
+
+void BulletPhysics::VStopActor(ActorId actorId)
+{
+    //TODO
+}
+
+Vec3 BulletPhysics::VGetVelocity(ActorId actorId)
+{
+    //TODO
+    return Vec3();
+}
+
+void BulletPhysics::VSetVelocity(ActorId actorId, const Vec3& vel)
+{
+    //TODO
+}
+
+Vec3 BulletPhysics::VGetAngularVelocity(ActorId actorId)
+{
+    //TODO
+    return Vec3();
+}
+
+void BulletPhysics::VSetAngularVelocity(ActorId actorId, const Vec3& vel)
+{
+    //TODO
+}
+
+void BulletPhysics::VTranslate(ActorId actorId, const Vec3& vec)
+{
+    //TODO
+}
+
+void BulletPhysics::VSetTransform(const ActorId id, const Mat4x4& mat)
+{
+    //TODO
+}
+
+Mat4x4 BulletPhysics::VGetTransform(const ActorId id)
+{
+    //TODO
+    return Mat4x4();
+}
+
