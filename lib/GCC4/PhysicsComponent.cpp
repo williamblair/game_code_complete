@@ -14,25 +14,25 @@ PhysicsComponent::~PhysicsComponent()
     //TODO
 }
 
-XMLElement* PhysicsComponent::VGenerateXml() override
+XMLElement* PhysicsComponent::VGenerateXml()
 {
     //TODO
     return nullptr;
 }
 
 // ActorComponent interface
-bool PhysicsComponent::VInit(XMLElement* pData) override
+bool PhysicsComponent::VInit(XMLElement* pData)
 {
     //TODO
     return true;
 }
 
-void PhysicsComponent::VPostInit() override
+void PhysicsComponent::VPostInit()
 {
     //TODO
 }
 
-void PhysicsComponent::VUpdate(int deltaMs) override
+void PhysicsComponent::VUpdate(int deltaMs)
 {
     //TODO
 }

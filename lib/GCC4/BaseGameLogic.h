@@ -131,7 +131,7 @@ protected:
 
     void MoveActorDelegate(IEventDataPtr pEventData);
     void RequestNewActorDelegate(IEventDataPtr pEventData);
-    EventListenerDelegate m_MoveActorDelgate;
+    EventListenerDelegate m_MoveActorDelegate;
     EventListenerDelegate m_RequestNewActorDelegate;
 };
 

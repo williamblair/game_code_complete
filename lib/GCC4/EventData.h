@@ -643,6 +643,9 @@ public:
     }*/
     virtual const char* GetName() const { return "EvtDataRemoteClient"; }
 
+    int GetSocketId() const { return m_socketId; }
+    int GetIpAddress() const { return m_ipAddress; }
+
 private:
     int m_socketId;
     int m_ipAddress;
@@ -798,6 +801,36 @@ public:
     std::string m_zipFileName;
     std::string m_fileName;
     char* m_dataBuffer;
+};
+
+class EvtDataRequestStartGame : public BaseEventData
+{
+public:
+
+    static const EventType sk_EventType;
+
+    EvtDataRequestStartGame() {}
+
+    //TODO
+    /*virtual void VDeserialize(std::istrstream& in)
+    {
+        in >> m_ActorId;
+        in >> m_ViewId;
+    }*/
+
+    virtual const EventType& VGetEventType() const {
+        return sk_EventType;
+    }
+
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(
+            new EvtDataRequestStartGame()
+        );
+    }
+
+    virtual const char* GetName() const {
+        return "EvtDataRequestStartGame";
+    }
 };
 
 #endif // GCC4_EVENT_DATA_H_INCLUDED

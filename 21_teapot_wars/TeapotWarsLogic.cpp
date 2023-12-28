@@ -3,6 +3,7 @@
 #include <GCC4/NetworkGameView.h>
 #include <GCC4/MakeStrongPtr.h>
 #include <GCC4/TransformComponent.h>
+#include <GCC4/PhysicsComponent.h>
 #include "AITeapotView.h"
 #include "TeapotWarsHumanView.h"
 #include "TeapotEvents.h"
@@ -180,7 +181,7 @@ void TeapotWarsLogic::RemoteClientDelegate(IEventDataPtr pEventData)
 
     // go find a NetworkView that doesn't have a socket ID,
     // and attach this client to it
-    for (auto it = m_gameViews.begin(); it != m_gameViews.end(); ++it) {
+    for (auto it = m_GameViews.begin(); it != m_GameViews.end(); ++it) {
         std::shared_ptr<IGameView> pView = *it;
         if (pView->VGetType() == GameView_Remote) {
             std::shared_ptr<NetworkGameView> pNetworkGameView =
@@ -207,16 +208,16 @@ void TeapotWarsLogic::NetworkPlayerActorAssignmentDelegate(IEventDataPtr pEventD
     std::shared_ptr<EvtDataNetworkPlayerActorAssignment> pCastEventData =
         std::static_pointer_cast<EvtDataNetworkPlayerActorAssignment>(pEventData);
     if (pCastEventData->GetActorId() == INVALID_ACTOR_ID) {
-        m_remotePlayerId = pCastEventData->GetSocketId();
+        m_RemotePlayerId = pCastEventData->GetSocketId();
         return;
     }
 
-    for (auto it = m_gameViews.begin(); it != m_gameViews.end(); ++it) {
+    for (auto it = m_GameViews.begin(); it != m_GameViews.end(); ++it) {
         std::shared_ptr<IGameView> pView = *it;
         if (pView->VGetType() == GameView_Human) {
             std::shared_ptr<TeapotWarsHumanView> pHumanView =
                 std::static_pointer_cast<TeapotWarsHumanView,IGameView>(pView);
-            if (m_remotePlayerId == pCastEventData->GetSocketId()) {
+            if (m_RemotePlayerId == pCastEventData->GetSocketId()) {
                 pHumanView->VSetControlledActor(pCastEventData->GetActorId());
             }
             return;

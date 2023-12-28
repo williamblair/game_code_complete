@@ -1,6 +1,10 @@
 #ifndef GCC4_PHYSICS_COMPONENT_H_INCLUDED
 #define GCC4_PHYSICS_COMPONENT_H_INCLUDED
 
+#include "ActorComponent.h"
+#include "IGamePhysics.h"
+#include "xml.h"
+
 class PhysicsComponent : public ActorComponent
 {
 public:
@@ -28,7 +32,7 @@ public:
     // acceleration
     void ApplyAcceleration(float acceleration);
     void RemoveAcceleration();
-    void ApplyAngularAcceleration(float acceleration)
+    void ApplyAngularAcceleration(float acceleration);
     void RemoveAngularAcceleration();
 
     Vec3 GetVelocity();

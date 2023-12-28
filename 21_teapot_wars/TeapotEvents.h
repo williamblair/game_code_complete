@@ -315,6 +315,94 @@ private:
     ActorId m_id;
 };
 
+class EvtDataScriptEventTestToLua : public ScriptEvent
+{
+public:
+    static const EventType sk_EventType;
+
+    EvtDataScriptEventTestToLua() { m_num = 0; }
+    EvtDataScriptEventTestToLua(int num) { m_num = num; }
+
+    virtual const EventType& VGetEventType() const {
+        return sk_EventType;
+    }
+
+    //TODO
+    /*virtual void VDeserialize(std::istrstream& in) {
+        in >> m_id;
+    }*/
+
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(new EvtDataScriptEventTestToLua(m_num));
+    }
+
+    virtual void VSerialize(std::ostringstream& out) const {
+        out << m_num;
+    }
+
+    virtual const char* GetName() const { return "EvtDataScriptEventTestToLua"; }
+    int GetNum() const { return m_num; }
+
+    virtual bool VBuildEventFromScript()
+    {
+        //TODO
+        /*if (m_EventData.IsInteger()) {
+            m_ActorId = m_EventData.GetInteger();
+            return true;
+        }
+        return false;*/
+        return false;
+    }
+
+    EXPORT_FOR_SCRIPT_EVENT(EvtDataScriptEventTestToLua);
+private:
+    int m_num;
+};
+
+class EvtDataScriptEventTestFromLua : public ScriptEvent
+{
+public:
+    static const EventType sk_EventType;
+
+    EvtDataScriptEventTestFromLua() { m_num = 0; }
+    EvtDataScriptEventTestFromLua(int num) { m_num = num; }
+
+    virtual const EventType& VGetEventType() const {
+        return sk_EventType;
+    }
+
+    //TODO
+    /*virtual void VDeserialize(std::istrstream& in) {
+        in >> m_id;
+    }*/
+
+    virtual IEventDataPtr VCopy() const {
+        return IEventDataPtr(new EvtDataScriptEventTestFromLua(m_num));
+    }
+
+    virtual void VSerialize(std::ostringstream& out) const {
+        out << m_num;
+    }
+
+    virtual const char* GetName() const { return "EvtDataScriptEventTestFromLua"; }
+    int GetNum() const { return m_num; }
+
+    virtual bool VBuildEventFromScript()
+    {
+        //TODO
+        /*if (m_EventData.IsInteger()) {
+            m_ActorId = m_EventData.GetInteger();
+            return true;
+        }
+        return false;*/
+        return false;
+    }
+
+    EXPORT_FOR_SCRIPT_EVENT(EvtDataScriptEventTestFromLua);
+private:
+    int m_num;
+};
+
 void RegisterTeapotScriptEvents();
 
 #endif // TEAPOT_EVENTS_H_INCLUDED
