@@ -91,7 +91,12 @@ bool GameCodeApp::Init(
     }
 
     if (GetRendererImpl() == Renderer_OGL) {
-        m_Renderer = std::shared_ptr<IRenderer>(new OGLRenderer);
+        OGLRenderer* pRender = new OGLRenderer;
+        if (!pRender->Init(screenWidth, screenHeight)) {
+            printf("OGL Renderer Init failed\n");
+            return false;
+        }
+        m_Renderer = std::shared_ptr<IRenderer>(pRender);
     } else {
         printf("Unsupported Renderer impl\n");
         return false;
@@ -120,6 +125,28 @@ bool GameCodeApp::Init(
     
     m_bIsRunning = true;
     return true;
+}
+
+void GameCodeApp::MsgProc(const AppMsg& msg)
+{
+    if (msg.type == SDL_QUIT) {
+        g_pApp->m_bQuitting = true;
+        g_pApp->m_bIsRunning = false;
+        g_pApp->OnClose();
+    } else {
+        if (g_pApp->m_pGame)
+        {
+            BaseGameLogic* pGame = g_pApp->m_pGame;
+            for (auto i = pGame->m_GameViews.rbegin();
+                i != pGame->m_GameViews.rend();
+                ++i)
+            {
+                if ((*i)->VOnMsgProc(msg)) {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 bool GameCodeApp::OnDisplayChange(int colorDepth, int width, int height)
@@ -153,10 +180,8 @@ GameCodeApp::Renderer GameCodeApp::GetRendererImpl()
     return Renderer_OGL;
 }
 
-void GameCodeApp::OnUpdateGame(double fTime, float fElapsedTime, void* pUserContext)
+void GameCodeApp::OnUpdateGame(float fTime, float fElapsedTime)
 {
-    (void)pUserContext;
-
     //TODO
     //if (g_pApp->HasModalDialog()) {
         // don't update the game if a modal dialog is up
@@ -176,7 +201,7 @@ void GameCodeApp::OnUpdateGame(double fTime, float fElapsedTime, void* pUserCont
             g_pApp->m_pBaseSocketManager->DoSelect(0); // pause 0 microseconds
         }
 
-        g_pApp->m_pGame->VOnUpdate(float(fTime), fElapsedTime);
+        g_pApp->m_pGame->VOnUpdate(fTime, fElapsedTime);
     }
 }
 

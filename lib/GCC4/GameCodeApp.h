@@ -32,6 +32,8 @@ public:
 
     virtual bool Init(const char* title, int screenWidth, int screenHeight);
 
+    static void MsgProc(const AppMsg& msg);
+
     bool OnDisplayChange(int colorDepth, int width, int height);
     bool OnClose();
 
@@ -43,7 +45,7 @@ public:
     std::shared_ptr<IRenderer> m_Renderer;
     static Renderer GetRendererImpl();
 
-    static void OnUpdateGame(double fTime, float fElapsedTime, void* pUserContext);
+    static void OnUpdateGame(float fTime, float fElapsedTime);
 
     BaseGameLogic* m_pGame;
     GameOptions m_Options;

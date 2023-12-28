@@ -4,6 +4,27 @@
 
 TeapotWarsApp g_TeapotWarsApp;
 
+void MainLoop()
+{
+    float fTimeCtr = 0.0f;
+    while (g_pApp->IsRunning())
+    {
+        SDL_Event e;
+        while (SDL_PollEvent(&e))
+        {
+            printf("MsgProc\n");
+            GameCodeApp::MsgProc(e);
+        }
+        printf("\n");
+        //TODO - not hardcode time
+        const float deltaTime = 1.0f/60.0f;
+        printf("UpdateGame\n");
+        GameCodeApp::OnUpdateGame(deltaTime, fTimeCtr);
+        fTimeCtr += deltaTime;
+        SDL_Delay(int(1000.0f/60.0f));
+    }
+}
+
 int GameCode4(int argc, char* argv[])
 {
     Logger::Init("logging.xml");
@@ -47,6 +68,7 @@ int GameCode4(int argc, char* argv[])
     //TODO
     //DXUTMainLoop();
     //DXUTShutdown();
+    MainLoop();
     
     Logger::Destroy();
     
