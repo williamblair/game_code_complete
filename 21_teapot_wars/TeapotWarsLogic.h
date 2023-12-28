@@ -32,13 +32,31 @@ public:
 
     // event delegates
     void RequestStartGameDelegate(IEventDataPtr pEventData);
-    void GameStateDelegate(IEventDataPtr pEventData);
     void RemoteClientDelegate(IEventDataPtr pEventData);
     void NetworkPlayerActorAssignmentDelegate(IEventDataPtr pEventData);
-    void NewGameDelegate(IEventDataPtr pEventData);
+    void EnvironmentLoadedDelegate(IEventDataPtr pEventData);
+    //void ThrustDelegate(IEventDataPtr pEventData);
+    //void SteerDelegate(IEventDataPtr pEventData);
+    void StartThrustDelegate(IEventDataPtr pEventData);
+    void EndThrustDelegate(IEventDataPtr pEventData);
+    void StartSteerDelegate(IEventDataPtr pEventData);
+    void EndSteerDelegate(IEventDataPtr pEventData);
+
+    void TestScriptDelegate(IEventDataPtr pEventData);
 
 private:
     std::list<NetworkEventForwarder*> m_NetworkEventForwarders;
+
+    EventListenerDelegate m_RequestStartGameDelegate;
+    EventListenerDelegate m_RemoteClientDelegate;
+    EventListenerDelegate m_NetworkPlayerActorAssignmentDelegate;
+    EventListenerDelegate m_EnvironmentLoadedDelegate;
+    EventListenerDelegate m_StartThrustDelegate;
+    EventListenerDelegate m_EndThrustDelegate;
+    EventListenerDelegate m_StartSteerDelegate;
+    EventListenerDelegate m_EndSteerDelegate;
+
+    EventListenerDelegate m_TestScriptDelegate;
 
     virtual bool VLoadGameDelegate(tinyxml2::XMLElement* pLevelData);
 
