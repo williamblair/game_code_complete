@@ -297,7 +297,7 @@ bool BulletPhysics::VKinematicMove(const Mat4x4& mat, ActorId id)
 void BulletPhysics::LoadXml()
 {
     // Load the physics config file and grab the root XML node
-    XMLElement* pRoot = XmlResourceLoader::LoadAndReturnRootXmlElement("config\\Physics.xml");
+    XMLElement* pRoot = XmlResourceLoader::LoadAndReturnRootXmlElement("Config\\physics.xml");
     if (!pRoot) {
         throw std::runtime_error("BulletPhysics LoadXml failed to load Physics.xml");
     }
