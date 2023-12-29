@@ -7,7 +7,7 @@
 #include "OGLRenderer.h"
 
 //#define SCRIPT_PREINIT_FILE "Scripts\\PreInit.lua"
-#define SCRIPT_PREINIT_FILE "Scripts/PreInit.lua"
+#define SCRIPT_PREINIT_FILE "Scripts\\PreInit.lua"
 
 GameCodeApp* g_pApp = nullptr;
 
@@ -43,18 +43,18 @@ bool GameCodeApp::Init(
     //extern std::shared_ptr<IResourceLoader> CreateWAVResourceLoader();
     //extern std::shared_ptr<IResourceLoader> CreateOGGResourceLoader();
     //extern std::shared_ptr<IResourceLoader> CreateDDSResourceLoader();
-    //extern std::shared_ptr<IResourceLoader> CreateJPGResourceLoader();
+    extern std::shared_ptr<IResourceLoader> CreateJPGResourceLoader();
     extern std::shared_ptr<IResourceLoader> CreateXmlResourceLoader();
-    //extern std::shared_ptr<IResourceLoader> CreateSdkMeshResourceLoader();
+    extern std::shared_ptr<IResourceLoader> CreateMeshResourceLoader();
     extern std::shared_ptr<IResourceLoader> CreateScriptResourceLoader();
 
     // Register these in order from least to most specific
     //m_pResCache->RegisterLoader(CreateWAVResourceLoader());
     //m_pResCache->RegisterLoader(CreateOGGResourceLoader());
     //m_pResCache->RegisterLoader(CreateDDSResourceLoader());
-    //m_pResCache->RegisterLoader(CreateJPGResourceLoader());
+    m_pResCache->RegisterLoader(CreateJPGResourceLoader());
     m_pResCache->RegisterLoader(CreateXmlResourceLoader());
-    //m_pResCache->RegisterLoader(CreateSdkMeshResourceLoader());
+    m_pResCache->RegisterLoader(CreateMeshResourceLoader());
     m_pResCache->RegisterLoader(CreateScriptResourceLoader());
 
     //if (!LoadStrings("English"))

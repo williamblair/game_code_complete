@@ -22,3 +22,8 @@ bool TextureResourceLoader::VLoadResource(
     return true;
 }
 
+std::shared_ptr<IResourceLoader> CreateJPGResourceLoader()
+{
+    return std::shared_ptr<IResourceLoader>(new TextureResourceLoader);
+}
+

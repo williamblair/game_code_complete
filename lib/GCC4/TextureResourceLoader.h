@@ -21,8 +21,10 @@ public:
         std::shared_ptr<ResHandle> handle
     );
 
-    virtual std::string VGetPattern() { return ".*\\.(jpg|png|tga|bmp)"; }
+    virtual std::string VGetPattern() { return ".*\\.(jpg|png|tga|bmp)$"; }
 };
+
+std::shared_ptr<IResourceLoader> CreateJPGResourceLoader();
 
 #endif // GCC4_TEXTURE_RESOURCE_LOADER_H_INCLUDED
 
