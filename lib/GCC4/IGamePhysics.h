@@ -62,4 +62,6 @@ public:
     virtual Mat4x4 VGetTransform(const ActorId id) = 0;
 };
 
+IGamePhysics* CreateGamePhysics();
+
 #endif // GCC4_IGAMEPHYSICS_H_INCLUDED

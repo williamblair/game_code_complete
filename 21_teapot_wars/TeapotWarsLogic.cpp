@@ -11,8 +11,7 @@
 
 TeapotWarsLogic::TeapotWarsLogic()
 {
-    //TODO
-    //m_pPhysics.reset(CreateGamePhysics());
+    m_pPhysics.reset(CreateGamePhysics());
     RegisterAllDelegates();
 }
 TeapotWarsLogic::~TeapotWarsLogic()

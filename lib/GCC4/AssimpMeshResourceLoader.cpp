@@ -26,3 +26,8 @@ bool AssimpMeshResourceLoader::VLoadResource(
     return true;
 }
 
+std::shared_ptr<IResourceLoader> CreateMeshResourceLoader()
+{
+    return std::shared_ptr<IResourceLoader>(new AssimpMeshResourceLoader);
+}
+

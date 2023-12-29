@@ -4,6 +4,7 @@
 #include "DefaultResourceLoader.h"
 #include "IResourceFile.h"
 #include "Resource.h"
+#include "Logger.h"
 
 ResCache* g_pResCache = nullptr;
 
@@ -106,14 +107,17 @@ std::shared_ptr<ResHandle> ResCache::Load(Resource* pResource)
     }
     
     if (!pLoader) {
-        std::cout << __func__ << ": Default resource loader not found"
-            << std::endl;
+        char buf[256];
+        sprintf(buf, "Default resource loader not found: %s", pResource->m_name.c_str());
+        GCC_ERROR(buf);
         return pHandle; // resource not loaded
     }
     
     int rawSize = m_pFile->VGetRawResourceSize(*pResource);
     if (rawSize <= 0) {
-        std::cout << __func__ << ": get raw resource size returned <= 0" << std::endl;
+        char buf[256];
+        sprintf(buf, "Get raw resource size returned <= 0 for file: %s", pResource->m_name.c_str());
+        GCC_ERROR(buf);
         return pHandle;
     }
     char* pRawBuffer = pLoader->VUseRawFile() ? 
@@ -121,6 +125,7 @@ std::shared_ptr<ResHandle> ResCache::Load(Resource* pResource)
         new char[rawSize];
     if (pRawBuffer == nullptr) {
         // resource cache out of memory
+        GCC_ERROR("Failed to allocate raw buffer");
         return std::shared_ptr<ResHandle>();
     }
     
