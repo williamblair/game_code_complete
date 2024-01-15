@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{93e8fc92-392f-4098-a923-a95bc2a7f5cf}</ProjectGuid>
+    <RootNamespace>My10userinterface</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>D:\Programming\game_coding_complete\lib\LuaPlus\lua53-luaplus\src;D:\vs_libs\include;D:\Programming\game_coding_complete\lib;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\vs_libs\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>D:\Programming\game_coding_complete\lib\LuaPlus\lua53-luaplus\src;D:\vs_libs\include;D:\Programming\game_coding_complete\lib;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\vs_libs\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlibd.lib;assimp-vc142-mtd.lib;LinearMath.lib;Bullet3Common.lib;BulletInverseDynamics.lib;Bullet3Geometry.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlibd.lib;assimp-vc142-mtd.lib;LinearMath.lib;Bullet3Common.lib;BulletInverseDynamics.lib;Bullet3Geometry.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\lib\GCC4\Actor.cpp" />
+    <ClCompile Include="..\lib\GCC4\ActorFactory.cpp" />
+    <ClCompile Include="..\lib\GCC4\AppMsg.cpp" />
+    <ClCompile Include="..\lib\GCC4\AssimpMeshNode.cpp" />
+    <ClCompile Include="..\lib\GCC4\AssimpMeshResourceLoader.cpp" />
+    <ClCompile Include="..\lib\GCC4\BaseGameLogic.cpp" />
+    <ClCompile Include="..\lib\GCC4\BulletDebugDrawer.cpp" />
+    <ClCompile Include="..\lib\GCC4\BulletPhysics.cpp" />
+    <ClCompile Include="..\lib\GCC4\CameraNode.cpp" />
+    <ClCompile Include="..\lib\GCC4\Color.cpp" />
+    <ClCompile Include="..\lib\GCC4\ConcurrentQueue.cpp" />
+    <ClCompile Include="..\lib\GCC4\DecompressionProcess.cpp" />
+    <ClCompile Include="..\lib\GCC4\EventData.cpp" />
+    <ClCompile Include="..\lib\GCC4\EventFactory.cpp" />
+    <ClCompile Include="..\lib\GCC4\EventManager.cpp" />
+    <ClCompile Include="..\lib\GCC4\GameCodeApp.cpp" />
+    <ClCompile Include="..\lib\GCC4\GameOptions.cpp" />
+    <ClCompile Include="..\lib\GCC4\GCCMath.cpp" />
+    <ClCompile Include="..\lib\GCC4\GCCRandom.cpp" />
+    <ClCompile Include="..\lib\GCC4\GCCTime.cpp" />
+    <ClCompile Include="..\lib\GCC4\HashedString.cpp" />
+    <ClCompile Include="..\lib\GCC4\HumanView.cpp" />
+    <ClCompile Include="..\lib\GCC4\IGamePhysics.cpp" />
+    <ClCompile Include="..\lib\GCC4\IPacket.cpp" />
+    <ClCompile Include="..\lib\GCC4\Joystick.cpp" />
+    <ClCompile Include="..\lib\GCC4\LightManager.cpp" />
+    <ClCompile Include="..\lib\GCC4\LightNode.cpp" />
+    <ClCompile Include="..\lib\GCC4\Logger.cpp" />
+    <ClCompile Include="..\lib\GCC4\LuaStateManager.cpp" />
+    <ClCompile Include="..\lib\GCC4\MatrixStack.cpp" />
+    <ClCompile Include="..\lib\GCC4\MemoryPool.cpp" />
+    <ClCompile Include="..\lib\GCC4\MovementController.cpp" />
+    <ClCompile Include="..\lib\GCC4\NetSocket.cpp" />
+    <ClCompile Include="..\lib\GCC4\NetworkGameView.cpp" />
+    <ClCompile Include="..\lib\GCC4\OGLAlphaPassRenderState.cpp" />
+    <ClCompile Include="..\lib\GCC4\OGLRenderer.cpp" />
+    <ClCompile Include="..\lib\GCC4\OGLShader.cpp" />
+    <ClCompile Include="..\lib\GCC4\OGLSkyBoxPassRenderState.cpp" />
+    <ClCompile Include="..\lib\GCC4\OGLSkyNode.cpp" />
+    <ClCompile Include="..\lib\GCC4\OGLTextureResourceView.cpp" />
+    <ClCompile Include="..\lib\GCC4\OGLVertexBuffer.cpp" />
+    <ClCompile Include="..\lib\GCC4\PathingGraph.cpp" />
+    <ClCompile Include="..\lib\GCC4\PhysicsComponent.cpp" />
+    <ClCompile Include="..\lib\GCC4\Process.cpp" />
+    <ClCompile Include="..\lib\GCC4\ProcessManager.cpp" />
+    <ClCompile Include="..\lib\GCC4\RealtimeProcess.cpp" />
+    <ClCompile Include="..\lib\GCC4\ResCache.cpp" />
+    <ClCompile Include="..\lib\GCC4\ResHandle.cpp" />
+    <ClCompile Include="..\lib\GCC4\Resource.cpp" />
+    <ClCompile Include="..\lib\GCC4\ResourceZipFile.cpp" />
+    <ClCompile Include="..\lib\GCC4\RootNode.cpp" />
+    <ClCompile Include="..\lib\GCC4\Scene.cpp" />
+    <ClCompile Include="..\lib\GCC4\SceneNode.cpp" />
+    <ClCompile Include="..\lib\GCC4\SceneNodeProperties.cpp" />
+    <ClCompile Include="..\lib\GCC4\ScriptEvent.cpp" />
+    <ClCompile Include="..\lib\GCC4\ScriptEventListener.cpp" />
+    <ClCompile Include="..\lib\GCC4\ScriptEventListenerMgr.cpp" />
+    <ClCompile Include="..\lib\GCC4\ScriptExports.cpp" />
+    <ClCompile Include="..\lib\GCC4\ScriptProcess.cpp" />
+    <ClCompile Include="..\lib\GCC4\ScriptResourceLoader.cpp" />
+    <ClCompile Include="..\lib\GCC4\SocketManager.cpp" />
+    <ClCompile Include="..\lib\GCC4\Sprite.cpp" />
+    <ClCompile Include="..\lib\GCC4\stb_image_impl.cpp" />
+    <ClCompile Include="..\lib\GCC4\TextStyle.cpp" />
+    <ClCompile Include="..\lib\GCC4\TextureResourceLoader.cpp" />
+    <ClCompile Include="..\lib\GCC4\tinyxml2.cpp" />
+    <ClCompile Include="..\lib\GCC4\TransformComponent.cpp" />
+    <ClCompile Include="..\lib\GCC4\xml.cpp" />
+    <ClCompile Include="..\lib\GCC4\ZipFile.cpp" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lapi.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lauxlib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lbaselib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lbitlib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lcode.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lcorolib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lctype.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\ldblib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\ldebug.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\ldo.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\ldump.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lfunc.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lgc.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\linit.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\liolib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\llex.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lmathlib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lmem.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\loadlib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lobject.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lopcodes.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\loslib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lparser.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lstate.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lstring.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lstrlib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\ltable.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\ltablib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\ltm.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lundump.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lutf8lib.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lvm.c" />
+    <ClCompile Include="..\lib\LuaPlus\lua53-luaplus\src\lzio.c" />
+    <ClCompile Include="..\lib\LuaPlus\LuaPlus.cpp" />
+    <ClCompile Include="..\lib\LuaPlus\LuaPlusAddons.c" />
+    <ClCompile Include="..\lib\LuaPlus\LuaState_DumpObject.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\lib\GCC4\Actor.h" />
+    <ClInclude Include="..\lib\GCC4\ActorComponent.h" />
+    <ClInclude Include="..\lib\GCC4\ActorFactory.h" />
+    <ClInclude Include="..\lib\GCC4\ActorMotionState.h" />
+    <ClInclude Include="..\lib\GCC4\AlphaSceneNode.h" />
+    <ClInclude Include="..\lib\GCC4\AlphaType.h" />
+    <ClInclude Include="..\lib\GCC4\AppMsg.h" />
+    <ClInclude Include="..\lib\GCC4\AssimpMeshNode.h" />
+    <ClInclude Include="..\lib\GCC4\AssimpMeshResourceExtraData.h" />
+    <ClInclude Include="..\lib\GCC4\AssimpMeshResourceLoader.h" />
+    <ClInclude Include="..\lib\GCC4\BaseGameLogic.h" />
+    <ClInclude Include="..\lib\GCC4\BaseGameState.h" />
+    <ClInclude Include="..\lib\GCC4\BaseUI.h" />
+    <ClInclude Include="..\lib\GCC4\BulletDebugDrawer.h" />
+    <ClInclude Include="..\lib\GCC4\BulletPhysics.h" />
+    <ClInclude Include="..\lib\GCC4\CameraNode.h" />
+    <ClInclude Include="..\lib\GCC4\Color.h" />
+    <ClInclude Include="..\lib\GCC4\ComponentTypes.h" />
+    <ClInclude Include="..\lib\GCC4\ConcurrentQueue.h" />
+    <ClInclude Include="..\lib\GCC4\ConstantBuffer_Lighting.h" />
+    <ClInclude Include="..\lib\GCC4\CriticalSection.h" />
+    <ClInclude Include="..\lib\GCC4\DecompressionProcess.h" />
+    <ClInclude Include="..\lib\GCC4\DefaultResourceLoader.h" />
+    <ClInclude Include="..\lib\GCC4\EventData.h" />
+    <ClInclude Include="..\lib\GCC4\EventFactory.h" />
+    <ClInclude Include="..\lib\GCC4\EventManager.h" />
+    <ClInclude Include="..\lib\GCC4\GameCodeApp.h" />
+    <ClInclude Include="..\lib\GCC4\GameOptions.h" />
+    <ClInclude Include="..\lib\GCC4\GCCMath.h" />
+    <ClInclude Include="..\lib\GCC4\GCCRandom.h" />
+    <ClInclude Include="..\lib\GCC4\GCCTime.h" />
+    <ClInclude Include="..\lib\GCC4\GenericFactory.h" />
+    <ClInclude Include="..\lib\GCC4\HashedString.h" />
+    <ClInclude Include="..\lib\GCC4\HumanView.h" />
+    <ClInclude Include="..\lib\GCC4\IGameLogic.h" />
+    <ClInclude Include="..\lib\GCC4\IGamePhysics.h" />
+    <ClInclude Include="..\lib\GCC4\IGameView.h" />
+    <ClInclude Include="..\lib\GCC4\IKeyboardHandler.h" />
+    <ClInclude Include="..\lib\GCC4\IPacket.h" />
+    <ClInclude Include="..\lib\GCC4\IPointerHandler.h" />
+    <ClInclude Include="..\lib\GCC4\IRenderer.h" />
+    <ClInclude Include="..\lib\GCC4\IRenderState.h" />
+    <ClInclude Include="..\lib\GCC4\IResourceExtraData.h" />
+    <ClInclude Include="..\lib\GCC4\IResourceFile.h" />
+    <ClInclude Include="..\lib\GCC4\IResourceLoader.h" />
+    <ClInclude Include="..\lib\GCC4\ISceneNode.h" />
+    <ClInclude Include="..\lib\GCC4\IScreenElement.h" />
+    <ClInclude Include="..\lib\GCC4\Joystick.h" />
+    <ClInclude Include="..\lib\GCC4\LightManager.h" />
+    <ClInclude Include="..\lib\GCC4\LightNode.h" />
+    <ClInclude Include="..\lib\GCC4\Logger.h" />
+    <ClInclude Include="..\lib\GCC4\LuaStateManager.h" />
+    <ClInclude Include="..\lib\GCC4\MakeStrongPtr.h" />
+    <ClInclude Include="..\lib\GCC4\Mat4ToBtTransform.h" />
+    <ClInclude Include="..\lib\GCC4\Material.h" />
+    <ClInclude Include="..\lib\GCC4\MaterialData.h" />
+    <ClInclude Include="..\lib\GCC4\MatrixStack.h" />
+    <ClInclude Include="..\lib\GCC4\MemoryPool.h" />
+    <ClInclude Include="..\lib\GCC4\MovementController.h" />
+    <ClInclude Include="..\lib\GCC4\NetSocket.h" />
+    <ClInclude Include="..\lib\GCC4\NetworkGameView.h" />
+    <ClInclude Include="..\lib\GCC4\OGLAlphaPassRenderState.h" />
+    <ClInclude Include="..\lib\GCC4\OGLCreateTexture.h" />
+    <ClInclude Include="..\lib\GCC4\OGLRenderer.h" />
+    <ClInclude Include="..\lib\GCC4\OGLShader.h" />
+    <ClInclude Include="..\lib\GCC4\OGLSkyBoxPassRenderState.h" />
+    <ClInclude Include="..\lib\GCC4\OGLSkyNode.h" />
+    <ClInclude Include="..\lib\GCC4\OGLTextureResourceExtraData.h" />
+    <ClInclude Include="..\lib\GCC4\OGLTextureResourceView.h" />
+    <ClInclude Include="..\lib\GCC4\OGLVertexBuffer.h" />
+    <ClInclude Include="..\lib\GCC4\PathingGraph.h" />
+    <ClInclude Include="..\lib\GCC4\PhysicsComponent.h" />
+    <ClInclude Include="..\lib\GCC4\Point.h" />
+    <ClInclude Include="..\lib\GCC4\Process.h" />
+    <ClInclude Include="..\lib\GCC4\ProcessManager.h" />
+    <ClInclude Include="..\lib\GCC4\ProcessTypes.h" />
+    <ClInclude Include="..\lib\GCC4\RealtimeProcess.h" />
+    <ClInclude Include="..\lib\GCC4\Rect.h" />
+    <ClInclude Include="..\lib\GCC4\RenderPass.h" />
+    <ClInclude Include="..\lib\GCC4\ResCache.h" />
+    <ClInclude Include="..\lib\GCC4\ResCacheTypes.h" />
+    <ClInclude Include="..\lib\GCC4\ResHandle.h" />
+    <ClInclude Include="..\lib\GCC4\Resource.h" />
+    <ClInclude Include="..\lib\GCC4\ResourceZipFile.h" />
+    <ClInclude Include="..\lib\GCC4\RootNode.h" />
+    <ClInclude Include="..\lib\GCC4\Scene.h" />
+    <ClInclude Include="..\lib\GCC4\SceneNode.h" />
+    <ClInclude Include="..\lib\GCC4\SceneNodeProperties.h" />
+    <ClInclude Include="..\lib\GCC4\ScreenElementScene.h" />
+    <ClInclude Include="..\lib\GCC4\ScriptEventListener.h" />
+    <ClInclude Include="..\lib\GCC4\ScriptEventListenerMgr.h" />
+    <ClInclude Include="..\lib\GCC4\ScriptExports.h" />
+    <ClInclude Include="..\lib\GCC4\ScriptProcess.h" />
+    <ClInclude Include="..\lib\GCC4\ScriptResourceLoader.h" />
+    <ClInclude Include="..\lib\GCC4\SocketManager.h" />
+    <ClInclude Include="..\lib\GCC4\Sprite.h" />
+    <ClInclude Include="..\lib\GCC4\stb_image.h" />
+    <ClInclude Include="..\lib\GCC4\TextStyle.h" />
+    <ClInclude Include="..\lib\GCC4\TextureResourceLoader.h" />
+    <ClInclude Include="..\lib\GCC4\tinyxml2.h" />
+    <ClInclude Include="..\lib\GCC4\TransformComponent.h" />
+    <ClInclude Include="..\lib\GCC4\Vec3ToBtVector3.h" />
+    <ClInclude Include="..\lib\GCC4\xml.h" />
+    <ClInclude Include="..\lib\GCC4\ZipFile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\lib\LuaPlus\lua53-luaplus\src\lua.c.bak" />
+    <None Include="..\lib\LuaPlus\lua53-luaplus\src\luac.c.bak" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

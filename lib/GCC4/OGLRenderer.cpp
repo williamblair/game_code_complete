@@ -1,6 +1,12 @@
+#include <cassert>
 #include "OGLRenderer.h"
 #include "OGLAlphaPassRenderState.h"
 #include "OGLSkyBoxPassRenderState.h"
+#include "Logger.h"
+
+
+// static member variables
+OGLRenderer* OGLRenderer::s_pInstance = nullptr;
 
 OGLRenderer::OGLRenderer() :
     mWindow(nullptr),
@@ -8,6 +14,7 @@ OGLRenderer::OGLRenderer() :
     mHeight(0)
 {
     m_pCurShader = nullptr;
+    s_pInstance = this;
 }
 
 OGLRenderer::~OGLRenderer()
@@ -18,6 +25,7 @@ OGLRenderer::~OGLRenderer()
         mWindow = nullptr;
         SDL_Quit();
     }
+    s_pInstance = nullptr;
 }
 
 bool OGLRenderer::Init(int width, int height)
@@ -49,7 +57,7 @@ bool OGLRenderer::Init(int width, int height)
 
     // create a render context
     mContext = SDL_GL_CreateContext(mWindow);
-    
+
     // enable vsync
     SDL_GL_SetSwapInterval(1);
 
@@ -105,7 +113,7 @@ bool OGLRenderer::VPostRender()
 
 bool OGLRenderer::VCalcLighting(Lights* lights, int maximumLights)
 {
-    
+
     return true;
 }
 
@@ -164,5 +172,3 @@ void OGLRenderer::DrawVertexBuffer(const OGLVertexBuffer& vb)
         glDrawArrays(GL_TRIANGLES, 0, vb.mNumVerts);
     }
 }
-
-

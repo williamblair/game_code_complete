@@ -7,6 +7,7 @@
 class OGLVertexBuffer
 {
     friend class OGLRenderer;
+    friend class Sprite;
 public:
     OGLVertexBuffer();
     ~OGLVertexBuffer();
@@ -46,7 +47,7 @@ public:
 
      /**
      * @brief Create the internal buffer and copy the given vertex data into it
-     * 
+     *
      * @param type the type of vertex data contained in the buffer
      * @param pVerts pointer array of one of the VertexColored/VertexTextured struct data formats
      * @param numVerts the number of VertexColored/VertexTextured structs in vertices
@@ -64,7 +65,7 @@ public:
 
     /**
      * @brief store new input data in the vertex buffer
-     * 
+     *
      * @param pVerts the new data to store; must be same type used in Init()
      * @param numVerts the number of VertexColored/VertexTextured structs in vertices.
      *      must be same size as what was given in Init()

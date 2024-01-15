@@ -22,3 +22,5 @@ GCC4Lib/Debug
 *.vs
 Debug
 *.filters
+*Release
+*Debug

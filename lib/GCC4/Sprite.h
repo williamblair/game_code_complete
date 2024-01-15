@@ -7,6 +7,8 @@
 #include "Point.h"
 #include "Rect.h"
 #include "TextStyle.h"
+#include "OGLShader.h"
+#include "OGLVertexBuffer.h"
 
 class Sprite : public IScreenElement
 {
@@ -14,7 +16,7 @@ public:
 
     Sprite();
     virtual ~Sprite();
-    
+
     // IScreenElement implementation
     virtual void VOnUpdate(int deltaMs);
     virtual bool VOnRender(float fTime, float fElapsedTime);
@@ -25,8 +27,8 @@ public:
     virtual bool VOnMsgProc(AppMsg msg) { return 0; }
     //TODO
     //virtual HRESULT VOnRestore();
-    
-    
+
+
     virtual Point const VGetPos() const { return m_Position; }
     virtual void VSetPos(const Point& loc) { m_Position = loc; }
     virtual void VSetHotspot(const Point& loc) { m_Hotspot = loc; }
@@ -34,10 +36,10 @@ public:
     virtual Rect const VGetRect() const { return Rect(0,0,m_Width-1,m_Height-1); }
     virtual int const VGetWidth() const { return m_Width; }
     virtual int const VGetHeight() const { return m_Height; }
-    
+
     //TODO
     //void* GetSurface() { return m_d3dSprite; }
-    
+
     void SetFrame(const int desiredFrame) { m_CurrentFrame = desiredFrame % m_NumFrames; }
     int GetFrame() const { return m_CurrentFrame; }
     int GetFrameCount() const { return m_NumFrames; }
@@ -51,7 +53,8 @@ protected:
     //TODO
     //ID3DXSprite* m_d3dSprite;
     //IDirect3DTexture9* m_pTexture;
-    
+    unsigned int m_Texture; // GLuint texture
+
     // position and pixel data
     Point m_Position, m_Hotspot; // subtract HS from pos to get origin
     int m_ZOrder;
@@ -60,12 +63,18 @@ protected:
     int m_CurrentFrame, m_NumFrames;
     bool m_HasColorKey;
     bool m_IsVisible;
-    
+
     // Members that control animation
     bool m_IsPaused;
     bool m_LoopingAnim;
     int m_ElapsedTime;
     int m_MSPerFrame; // 1000 / desired frames per second
+
+    static unsigned int s_SpriteCount;
+    static OGLShader* s_pSpriteShader;
+    static OGLVertexBuffer* s_SpriteVertBuf;
+    static bool InitSpriteShader();
+    static bool InitSpriteVertBuf();
 };
 
 class BitmapSprite : public Sprite
@@ -73,7 +82,7 @@ class BitmapSprite : public Sprite
 public:
 
     BitmapSprite(const std::string& fileName, bool inCache, const int frames);
-    
+
     //TODO
     //virtual HRESULT VOnRestore();
 
@@ -93,12 +102,12 @@ public:
         const Point& position,
         Point* pSize
     );
-    
+
     //TODO
     //virtual HRESULT VOnRestore();
-    
+
     bool VOnRender(float fTime, float fElapsedTime);
-    
+
     void SetText(const std::string text);
 
 private:

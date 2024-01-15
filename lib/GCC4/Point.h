@@ -11,12 +11,15 @@ struct Point
     Point(int _x, int _y) :
         x(_x),y(_y)
     {}
-    
+
     inline bool operator==(const Point& rhs) {
         return (x == rhs.x) && (y == rhs.y);
     }
     inline bool operator!=(const Point& rhs) {
         return !(*this == rhs);
+    }
+    inline Point operator-(const Point& rhs) {
+        return Point(x - rhs.x, y - rhs.y);
     }
 };
 

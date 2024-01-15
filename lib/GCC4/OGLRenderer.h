@@ -41,6 +41,8 @@ public:
     Mat4x4& GetViewMat() { return mViewMat; }
     Mat4x4& GetProjMat() { return mProjMat; }
 
+    static OGLRenderer* GetInstance() { return s_pInstance; }
+
 private:
     SDL_Window* mWindow;
     SDL_GLContext mContext;
@@ -51,7 +53,7 @@ private:
     Mat4x4 mProjMat; // projection matrix
 
     OGLShader* m_pCurShader;
+    static OGLRenderer* s_pInstance;
 };
 
 #endif // GCC4_OGL_RENDERER_H_INCLUDED
-
