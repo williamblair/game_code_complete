@@ -62,22 +62,32 @@ bool Sprite::VOnRender(float fTime, float fElapsedTime)
 
     // scale from [0,width] to [-1..1], also flip y position
     Point actualPos(m_Position - m_Hotspot);
-    Vec2 normPos(
+    printf("Actual Pos: %d,%d\n", actualPos.x, actualPos.y);
+    Vec2 normPosOffset(
         -1.0f + (2.0f * (actualPos.x/float(pRndr->VGetWidth()))),
         -1.0f + (2.0f * ((pRndr->VGetHeight()-actualPos.y)/float(pRndr->VGetHeight())))
     );
+    normPosOffset = normPosOffset - Vec2(-1.0f,1.0f); // starting point of the vertices
     // not *2 as vertices are already [-1..+1]
     Vec2 normScale(
-        float(m_Width)/float(pRndr->VGetWidth()),
-        float(m_Height)/float(pRndr->VGetHeight())
+        /*float(m_Width)/float(pRndr->VGetWidth()),
+        float(m_Height)/float(pRndr->VGetHeight())*/
+        1.0f,1.0f
     );
 
+    printf("Norm pos offset: %f,%f\n", normPosOffset.x, normPosOffset.y);
+    printf("Norm scale: %f,%f\n", normScale.x, normScale.y);
+
     Mat4x4 mvpMat =
-        Translate(normPos.x, normPos.y, 0.0f) *
+        Translate(normPosOffset.x, normPosOffset.y, 0.0f) *
         Scale(normScale.x, normScale.y, 1.0f);
     pRndr->SetShader(*s_pSpriteShader);
     s_pSpriteShader->SetMat4("uMvpMatrix", mvpMat);
     s_pSpriteShader->SetVec4("uColor", Vec4(1.0f,1.0f,1.0f,1.0f));
+
+    Vec3 tformPos = Transform(mvpMat, Vec3(-1.0f, 1.0f, 0.0f));
+    printf("tformPos: %f,%f,%f\n",
+        tformPos.x, tformPos.y, tformPos.z);
 
     glDisable(GL_DEPTH_TEST);
     glBindVertexArray(s_SpriteVertBuf->mVAO);
@@ -175,10 +185,10 @@ bool Sprite::InitSpriteVertBuf()
     s_SpriteVertBuf = new OGLVertexBuffer();
     float vertices[4*4] = {
         // pos      tex coord
-        0.0f,0.0f,  0.0f,1.0f, // top left
-        0.0f,-1.0f, 0.0f,0.0f, // bottom left
+        -1.0f,1.0f,  0.0f,1.0f, // top left
+        -1.0f,-1.0f, 0.0f,0.0f, // bottom left
         1.0f,-1.0f, 1.0f,0.0f, // bottom Right
-        1.0f,0.0f,  1.0f,1.0f // top right
+        1.0f,1.0f,  1.0f,1.0f // top right
     };
     uint32_t indices[3*2] = {
         1,2,3, // bottom left, bottom right, top right

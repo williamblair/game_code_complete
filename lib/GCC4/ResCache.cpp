@@ -117,6 +117,7 @@ std::shared_ptr<ResHandle> ResCache::Load(Resource* pResource)
     if (rawSize <= 0) {
         char buf[256];
         sprintf(buf, "Get raw resource size returned <= 0 for file: %s", pResource->m_name.c_str());
+        printf("%s\n", buf);
         GCC_ERROR(buf);
         return pHandle;
     }

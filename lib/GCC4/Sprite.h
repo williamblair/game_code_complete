@@ -21,7 +21,7 @@ public:
     virtual void VOnUpdate(int deltaMs);
     virtual bool VOnRender(float fTime, float fElapsedTime);
     virtual int VGetZOrder() const { return m_ZOrder; }
-    virtual void VSetzOrder(int const zOrder) { m_ZOrder = zOrder; }
+    virtual void VSetZOrder(int const zOrder) { m_ZOrder = zOrder; }
     virtual bool VIsVisible() const { return m_IsVisible; }
     virtual void VSetVisible(bool visible) { m_IsVisible = visible; }
     virtual bool VOnMsgProc(AppMsg msg) { return 0; }
